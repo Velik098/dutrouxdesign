@@ -9,7 +9,7 @@
     body {
       margin: 0;
       font-family: 'BATTLEFEST', sans-serif, sans-serif;
-      background-color: #0d1b2a; /* Тёмно-синий */
+      background-color: #0d1b2a;
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -20,9 +20,9 @@
     /* Заголовок */
     .header {
       display: flex;
-      justify-content: center;     /* центр по горизонтали */
-      align-items: center;         /* центр по вертикали */
-      height: 60px;                /* регулируй высоту под нужный отступ */
+      justify-content: center;
+      align-items: center;
+      height: 60px;
       padding-top: 10px;
       box-sizing: border-box;
       text-align: center;
@@ -40,12 +40,12 @@
       width: 100%;
       height: 1px;
       background-color: #ffffff22;
-      margin: 0 0 10px 0; /* сверху 0, снизу 10px */
+      margin: 0 0 10px 0;
     }
 
     /* Горизонтальный автоскролл категорий */
     .category-marquee {
-      overflow: hidden; /* отключает ручной скролл */
+      overflow: hidden;
       padding: 10px 0;
       background-color: #1a2b4c;
       position: relative;
@@ -57,16 +57,12 @@
       gap: 12px;
       animation: scroll-left 20s linear infinite;
       width: max-content;
-      pointer-events: auto; /* кнопки кликабельны */
+      pointer-events: auto;
     }
 
     @keyframes scroll-left {
-      0% {
-        transform: translateX(0%);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
     }
 
     .category {
@@ -84,51 +80,6 @@
 
     .category:hover {
       background-color: #5678a1;
-    }
-
-    /* Блок с вертикальной полосой и карточкой */
-    .content {
-      display: flex;
-      padding: 16px;
-      flex-grow: 1;
-    }
-
-    .vertical-bar {
-      width: 80px;
-      background-color: #1b95e0;
-      border-radius: 8px;
-      padding: 12px;
-      text-align: center;
-      font-weight: bold;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      font-size: 14px;
-      flex-shrink: 0;
-      color: #fff;
-      user-select: none;
-    }
-
-    .preview-card {
-      background-color: #13283f;
-      border: 2px solid #1b95e0;
-      border-radius: 16px;
-      padding: 16px;
-      max-width: 100%;
-      flex-grow: 1;
-    }
-
-    .preview-image {
-      width: 100%;
-      max-width: 300px;
-      border-radius: 12px;
-      display: block;
-      margin: 0 auto 12px;
-    }
-
-    .preview-description {
-      font-size: 14px;
-      color: #e0e0e0;
-      text-align: center;
     }
 
     /* Нижнее меню */
@@ -161,23 +112,13 @@
       width: 24px;
       height: 24px;
       margin-bottom: 4px;
-      pointer-events: none; /* чтобы картинка не блокировала клики по кнопке */
+      pointer-events: none;
     }
 
     .divider {
       width: 1px;
       height: 24px;
       background-color: #324a5f;
-    }
-
-    /* Адаптив */
-    @media (max-width: 480px) {
-      .preview-card {
-        padding: 12px;
-      }
-      .preview-description {
-        font-size: 13px;
-      }
     }
   </style>
 </head>
@@ -187,52 +128,40 @@
   </header>
   
   <div class="divider-horizontal"></div>
-<div class="category-marquee" aria-label="Категории товаров">
-    <div class="category-track" aria-live="polite" aria-atomic="true" role="list">
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
+
+  <div class="category-marquee">
+    <div class="category-track">
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
 
       <!-- Дубликат для плавности анимации -->
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
     </div>
   </div>
 
-  <div class="content">
-    <div class="vertical-bar">ПРИВЕТ</div>
-
-    <div class="preview-card">
-      <img src="preview.jpg" alt="Превью" class="preview-image" />
-      <p class="preview-description">
-        В этой приватке вы найдете эксклюзивные материалы, доступные только избранным пользователям. Доступ моментальный!
-      </p>
-    </div>
-  </div>
-
-  <nav class="bottom-nav" role="navigation" aria-label="Основное меню">
-    <button type="button" aria-label="Каталог">
+  <nav class="bottom-nav">
+    <button>
       <img src="home.svg" alt="" />
       <span>Каталог</span>
     </button>
     <div class="divider"></div>
-    <button type="button" aria-label="Корзина">
+    <button>
       <img src="cart.svg" alt="" />
       <span>Корзина</span>
     </button>
     <div class="divider"></div>
-    <button type="button" aria-label="Профиль">
+    <button>
       <img src="profile.svg" alt="" />
       <span>Профиль</span>
     </button>
