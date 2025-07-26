@@ -254,7 +254,7 @@
       font-weight: bold;
     }
 
-    .top-up-button {
+    .top-up-button, .activate-button {
       margin-top: 8px;
       padding: 8px 12px;
       background-color: #1b95e0;
@@ -272,6 +272,7 @@
       background-color: #1a2b3c;
       color: #fff;
       outline: none;
+      margin-top: 8px;
     }
   </style>
 </head>
@@ -339,8 +340,12 @@
       <div class="dashed-line"></div>
 
       <div class="promocode-card">
-        <label for="promo">Промокод</label>
+        <div class="balance-header">
+          <img src="promo-icon.svg" alt="Promo" />
+          <span>Промокод</span>
+        </div>
         <input type="text" id="promo" placeholder="Введите промокод" />
+        <button class="activate-button">Активировать</button>
       </div>
     </div>
   </div>
