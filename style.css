@@ -83,3 +83,38 @@ body {
   height: 24px;
   background-color: #334155;
 }
+
+.category-marquee {
+  overflow: hidden;
+  background-color: #1e293b;
+  border-bottom: 1px solid #334155;
+  height: 50px;
+  position: relative;
+}
+
+.category-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 20s linear infinite;
+}
+
+.category {
+  background-color: #334155;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  margin: 8px 10px;
+  font-size: 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
