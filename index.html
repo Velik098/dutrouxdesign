@@ -15,7 +15,6 @@
       min-height: 100vh;
       box-sizing: border-box;
     }
-
     .header {
       display: flex;
       justify-content: center;
@@ -25,19 +24,16 @@
       text-align: center;
       user-select: none;
     }
-
     .header h1 {
       margin: 0;
       font-size: 24px;
     }
-
     .divider-horizontal {
       width: 100%;
       height: 1px;
       background-color: #ffffff22;
       margin: 0 0 10px 0;
     }
-
     .category-marquee {
       overflow: hidden;
       padding: 10px 0;
@@ -45,19 +41,16 @@
       position: relative;
       user-select: none;
     }
-
     .category-track {
       display: flex;
       gap: 12px;
       animation: scroll-left 20s linear infinite;
       width: max-content;
     }
-
     @keyframes scroll-left {
       0% { transform: translateX(0%); }
       100% { transform: translateX(-50%); }
     }
-
     .category {
       background-color: #415a77;
       border: none;
@@ -67,63 +60,23 @@
       cursor: pointer;
       font-size: 14px;
       white-space: nowrap;
+      transition: background-color 0.3s;
     }
-
+    .category:hover {
+      background-color: #5678a1;
+    }
     .tab-content {
       flex: 1;
       padding: 16px;
       overflow-y: auto;
       margin-bottom: 60px;
     }
-
     .tab-pane {
       display: none;
     }
-
     .tab-pane.active {
       display: block;
     }
-
-    .product-card {
-      background-color: #0f2a42;
-      border: 1px solid #1b95e0;
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 16px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .product-card:hover {
-      transform: scale(1.03);
-    }
-
-    .product-card img {
-      width: 70px;
-      height: 70px;
-      border-radius: 12px;
-      object-fit: cover;
-    }
-
-    .product-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .product-title {
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    .product-description {
-      font-size: 14px;
-      color: #ffffffaa;
-      margin-top: 4px;
-    }
-
     .bottom-nav {
       display: flex;
       justify-content: space-around;
@@ -135,7 +88,6 @@
       width: 100%;
       border-top: 1px solid #324a5f;
     }
-
     .bottom-nav button {
       background: none;
       border: none;
@@ -147,56 +99,145 @@
       opacity: 0.5;
       color: #fff;
     }
-
     .bottom-nav button.active {
       opacity: 1;
     }
-
     .bottom-nav img {
       width: 24px;
       height: 24px;
       margin-bottom: 4px;
-      filter: brightness(0) invert(1);
+      pointer-events: none;
     }
-
     .divider {
       width: 1px;
       height: 24px;
       background-color: #324a5f;
     }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      justify-content: center;
+    .cart-header, .profile-header {
+      display: flex;
       align-items: center;
-      z-index: 1000;
+      justify-content: space-between;
+      padding: 10px 16px;
     }
-
-    .modal-content {
-      background-color: #1b263b;
-      padding: 24px;
-      border-radius: 16px;
-      max-width: 300px;
-      width: 90%;
-      text-align: center;
-      position: relative;
-    }
-
-    .modal-content h2 {
-      margin-top: 0;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 10px;
-      right: 16px;
+    .cart-back, .profile-back {
+      background: none;
+      border: none;
+      color: #fff;
       font-size: 18px;
       cursor: pointer;
+    }
+    .cart-title, .profile-title {
+      flex: 1;
+      text-align: center;
+      font-weight: bold;
       color: #fff;
+    }
+    .cart-total {
+      color: #00ff80;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .cart-body {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 16px;
+    }
+    .profile-info {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .profile-info img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 16px;
+    }
+    .profile-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .profile-text .username {
+      color: #ffffffcc;
+      font-size: 14px;
+    }
+    .profile-text .id {
+      color: #ffffff88;
+      font-size: 12px;
+    }
+    .dashed-line {
+      border-top: 1px dashed #ffffff44;
+      margin: 20px 0;
+    }
+    .balance-card, .promocode-card {
+      background-color: #0f2a42;
+      border: 1px solid #1b95e0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .balance-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .balance-header img {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) invert(1);
+    }
+    .balance-amount {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .top-up-button, .activate-button {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background-color: #1b95e0;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .promocode-card input {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+      background-color: #1a2b3c;
+      color: #fff;
+      margin-top: 8px;
+    }
+    .product-card {
+      background-color: #0f2a42;
+      border: 1px solid #1b95e0;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+    .product-card img {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    .product-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .product-title {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .product-description {
+      font-size: 13px;
+      color: #ffffffaa;
+      margin-top: 4px;
     }
   </style>
 </head>
@@ -204,9 +245,7 @@
   <header class="header">
     <h1>Dutroux Sell🔥</h1>
   </header>
-
   <div class="divider-horizontal"></div>
-
   <div class="category-marquee">
     <div class="category-track">
       <button class="category">Приватка💸</button>
@@ -215,25 +254,23 @@
       <button class="category">Превью 🚀</button>
     </div>
   </div>
-
   <div class="tab-content">
     <div id="catalog" class="tab-pane active">
-      <div class="product-card" onclick="openModal('Превью', 'Красочное превью для Telegram канала')">
+      <div class="product-card">
         <img src="preview1.png" alt="Превью 1">
         <div class="product-info">
           <div class="product-title">Превью</div>
           <div class="product-description">Красочное превью для Telegram канала</div>
         </div>
       </div>
-      <div class="product-card" onclick="openModal('Приватка', 'Доступ к приватному контенту для подписчиков')">
-        <img src="preview2.png" alt="Приватка">
+      <div class="product-card">
+        <img src="preview2.png" alt="Приватка 1">
         <div class="product-info">
           <div class="product-title">Приватка</div>
           <div class="product-description">Доступ к приватному контенту для подписчиков</div>
         </div>
       </div>
     </div>
-
     <div id="cart" class="tab-pane">
       <div class="cart-header">
         <button id="backToCatalog" class="cart-back">←</button>
@@ -242,24 +279,39 @@
       </div>
       <div class="cart-body">Здесь будет содержимое вашей корзины.</div>
     </div>
-
     <div id="profile" class="tab-pane">
       <div class="profile-header">
         <button id="backToCatalog2" class="profile-back">←</button>
         <div class="profile-title">ПРОФИЛЬ</div>
       </div>
+      <div class="profile-info">
+        <img src="avatar.png" alt="Avatar" />
+        <div class="profile-text">
+          <strong>Иван Иванов</strong>
+          <div class="username">@ivanuser</div>
+          <div class="id">ID: 123456789</div>
+        </div>
+      </div>
+      <div class="dashed-line"></div>
+      <div class="balance-card">
+        <div class="balance-header">
+          <img src="wallet.svg" alt="Wallet" />
+          <span>Баланс</span>
+        </div>
+        <div class="balance-amount">0,00 Р</div>
+        <button class="top-up-button">Пополнить баланс</button>
+      </div>
+      <div class="dashed-line"></div>
+      <div class="promocode-card">
+        <div class="balance-header">
+          <img src="promo-icon.svg" alt="Promo" />
+          <span>Промокод</span>
+        </div>
+        <input type="text" id="promo" placeholder="Введите промокод" />
+        <button class="activate-button">Активировать</button>
+      </div>
     </div>
   </div>
-
-  <!-- Модальное окно -->
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeModal()">×</span>
-      <h2 id="modalTitle"></h2>
-      <p id="modalDesc"></p>
-    </div>
-  </div>
-
   <nav class="bottom-nav">
     <button id="catalogBtn" class="active" data-tab="catalog">
       <img src="home.svg" alt="Каталог" />
@@ -276,11 +328,9 @@
       <span>Профиль</span>
     </button>
   </nav>
-
   <script>
     const buttons = document.querySelectorAll('.bottom-nav button');
     const panes = document.querySelectorAll('.tab-pane');
-
     buttons.forEach(button => {
       button.addEventListener('click', () => {
         buttons.forEach(btn => btn.classList.remove('active'));
@@ -290,31 +340,18 @@
         document.getElementById(tabId).classList.add('active');
       });
     });
-
     document.getElementById('backToCatalog').addEventListener('click', () => {
-      switchTab('catalog');
+      document.getElementById('catalog').classList.add('active');
+      document.getElementById('cart').classList.remove('active');
+      document.getElementById('catalogBtn').classList.add('active');
+      document.getElementById('cartBtn').classList.remove('active');
     });
-
     document.getElementById('backToCatalog2').addEventListener('click', () => {
-      switchTab('catalog');
+      document.getElementById('catalog').classList.add('active');
+      document.getElementById('profile').classList.remove('active');
+      document.getElementById('catalogBtn').classList.add('active');
+      document.getElementById('profileBtn').classList.remove('active');
     });
-
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      document.querySelectorAll('.bottom-nav button').forEach(btn => btn.classList.remove('active'));
-      document.querySelector(`.bottom-nav button[data-tab="${tabId}"]`).classList.add('active');
-    }
-
-    function openModal(title, desc) {
-      document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalDesc').textContent = desc;
-      document.getElementById('modal').style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
   </script>
 </body>
-</html>
+</html> 
