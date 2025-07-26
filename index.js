@@ -1,30 +1,31 @@
+const { Telegraf, Markup } = require('telegraf');
 const express = require('express');
-const { Telegraf } = require('telegraf');
 const path = require('path');
 
-const bot = new Telegraf('YOUR_TELEGRAM_BOT_TOKEN');
+// Используем токен из переменной окружения
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
+// Кнопка с мини-приложением
+bot.start((ctx) => {
+  ctx.reply(
+    'Добро пожаловать! Нажмите кнопку ниже, чтобы открыть магазин:',
+    Markup.inlineKeyboard([
+      Markup.button.webApp('🛒 Открыть магазин', 'https://dutroux.onrender.com/webapp/')
+    ])
+  );
+});
+
+// Запускаем Telegram бота
+bot.launch()
+  .then(() => console.log('🤖 Бот успешно запущен!'))
+  .catch((err) => console.error('Ошибка запуска бота:', err));
+
+// Настраиваем Express для мини-приложения
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 app.use('/webapp', express.static(path.join(__dirname, 'webapp')));
-app.get("/", (req, res) => {
-  res.send("Бот работает. Открой через Telegram.");
-});
 
 app.listen(PORT, () => {
-  console.log(`WebApp доступен по адресу: http://localhost:${PORT}/webapp`);
+  console.log(`🌐 WebApp доступен по адресу: http://localhost:${PORT}/webapp`);
 });
-
-bot.start((ctx) => {
-  ctx.reply("👋 Добро пожаловать! Получи доступ к приватному контенту по кнопке ниже:", {
-    reply_markup: {
-      inline_keyboard: [[{
-        text: "🔓 Открыть магазин",
-        web_app: { url: "https://YOUR_RENDER_URL.onrender.com/webapp" }
-      }]]
-    }
-  });
-});
-
-bot.launch();
