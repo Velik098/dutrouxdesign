@@ -2,23 +2,30 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nexus Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Магазин</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="container">
-    <h1 class="title">NEXUS SHOP</h1>
-    <div class="card">
-      <h2>🔥 Приват-доступ</h2>
-      <p>Доступ к эксклюзивному контенту навсегда.</p>
-      <button id="buyBtn">Купить за 99₽</button>
-    </div>
-    <div id="access" class="hidden access-block">
-      ✅ Успешно!<br>Ссылка: <a href="https://example.com/private" target="_blank">Открыть приватку</a>
-    </div>
+  <div class="content">
+    <h1>Добро пожаловать в магазин</h1>
+    <p>Скоро здесь появятся товары...</p>
   </div>
-  <script src="script.js"></script>
+
+  <nav class="bottom-nav">
+    <button>
+      <img src="icons/home-white.svg" alt="Каталог" />
+      <span>Каталог</span>
+    </button>
+    <button>
+      <img src="icons/cart-white.svg" alt="Корзина" />
+      <span>Корзина</span>
+    </button>
+    <button>
+      <img src="icons/profile-white.svg" alt="Профиль" />
+      <span>Профиль</span>
+    </button>
+  </nav>
 </body>
 </html>
