@@ -214,8 +214,6 @@
       <button class="category">Превью 🚀</button>
       <button class="category">Приватка💸</button>
       <button class="category">Превью 🚀</button>
-      <button class="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
     </div>
   </div>
 
@@ -256,12 +254,10 @@
       <img src="home.svg" alt="Каталог" />
       <span>Каталог</span>
     </button>
-    <div class="divider"></div>
     <button id="cartBtn" data-tab="cart">
       <img src="cart.svg" alt="Корзина" />
       <span>Корзина</span>
     </button>
-    <div class="divider"></div>
     <button id="profileBtn" data-tab="profile">
       <img src="profile.svg" alt="Профиль" />
       <span>Профиль</span>
@@ -269,33 +265,38 @@
   </nav>
 
   <script>
-    const buttons = document.querySelectorAll('.bottom-nav button');
+    const buttons = document.querySelectorAll('.bottom-nav button[data-tab]');
     const panes = document.querySelectorAll('.tab-pane');
 
     function switchTab(tabId) {
       panes.forEach(p => p.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
 
-      buttons.forEach(b => b.classList.remove('active'));
-      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+      buttons.forEach(btn => {
+        if (btn.dataset.tab === tabId) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
     }
 
     buttons.forEach(button => {
       button.addEventListener('click', () => {
         const tabId = button.dataset.tab;
-        switchTab(tabId);
+        if (tabId) switchTab(tabId);
       });
     });
 
-    document.getElementById('backToCatalog').addEventListener('click', () => {
+    document.getElementById('backToCatalog')?.addEventListener('click', () => {
       switchTab('catalog');
     });
 
-    document.getElementById('backToCatalog2').addEventListener('click', () => {
+    document.getElementById('backToCatalog2')?.addEventListener('click', () => {
       switchTab('catalog');
     });
 
-    // Заполняем профиль из Telegram WebApp
+    // Telegram WebApp user data
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe?.user) {
       const user = Telegram.WebApp.initDataUnsafe.user;
       const fullName = ${user.first_name} ${user.last_name || ''}.trim();
@@ -308,8 +309,6 @@
 
       if (user.username) {
         document.getElementById('avatar').src = https://t.me/i/userpic/320/${user.username}.jpg;
-      } else {
-        document.getElementById('avatar').src = 'https://via.placeholder.com/80';
       }
     }
   </script>
