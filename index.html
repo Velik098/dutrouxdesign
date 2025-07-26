@@ -87,8 +87,7 @@
       flex: 1;
       padding: 16px;
       overflow-y: auto;
-      /* Отступ снизу чтобы меню не перекрывало */
-      margin-bottom: 60px;
+      margin-bottom: 60px; /* отступ под меню */
     }
 
     /* Скрытый контент */
@@ -124,12 +123,13 @@
       align-items: center;
       cursor: pointer;
       opacity: 0.5;
-      transition: opacity 0.3s;
-      color: #fff; /* гарантируем белый цвет текста */
+      transition: opacity 0.3s, color 0.3s;
+      color: #fff; /* белый текст */
     }
 
     .bottom-nav button.active {
       opacity: 1;
+      color: #fff;
     }
 
     .bottom-nav img {
@@ -137,7 +137,8 @@
       height: 24px;
       margin-bottom: 4px;
       pointer-events: none;
-      filter: brightness(1) invert(1); /* белые иконки */
+      /* УДАЛЕНО: filter: brightness(1) invert(1); */
+      /* Если иконки черные внутри, придется менять SVG */
     }
 
     .divider {
@@ -169,13 +170,12 @@
     </div>
   </div>
 
-  <!-- Контейнер с контентом вкладок -->
   <div class="tab-content">
     <div id="catalog" class="tab-pane active">
       <h2>Каталог товаров</h2>
       <p>Здесь будет список товаров для покупки.</p>
-      <!-- Можно добавить карточки товаров -->
     </div>
+
     <div id="cart" class="tab-pane">
       <h2>Корзина</h2>
       <p>Здесь будет содержимое вашей корзины.</p>
@@ -210,14 +210,10 @@
 
     buttons.forEach(button => {
       button.addEventListener('click', () => {
-        // Убираем активный класс со всех кнопок
         buttons.forEach(btn => btn.classList.remove('active'));
-        // Добавляем активный текущей кнопке
         button.classList.add('active');
 
-        // Скрываем все табы
         panes.forEach(pane => pane.classList.remove('active'));
-        // Показываем нужный таб по data-tab
         const tabId = button.dataset.tab;
         const activePane = document.getElementById(tabId);
         if (activePane) {
