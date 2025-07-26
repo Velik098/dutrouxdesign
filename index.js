@@ -8,7 +8,7 @@ bot.start((ctx) => {
   ctx.reply(
     'Добро пожаловать! Нажмите кнопку ниже, чтобы открыть магазин:',
     Markup.inlineKeyboard([
-      Markup.button.webApp('🛒 Открыть магазин', 'https://dutroux.onrender.com/')
+      Markup.button.webApp('🛒 Открыть магазин', 'https://dutroux-1.onrender.com/')
     ])
   );
 });
