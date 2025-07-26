@@ -1,34 +1,77 @@
+/* Общие стили */
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #0a1a2f; /* приятный тёмно-синий фон */
+  font-family: Arial, sans-serif;
+  background-color: #0d1b2a; /* Тёмно-синий фон */
   color: white;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
 }
 
+/* Верхняя панель */
+.top-bar {
+  background-color: #0d2a4a;
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #1a3c5f;
+}
+
+.top-bar h1 {
+  margin: 0;
+  color: white;
+  font-size: 20px;
+}
+
+/* Контент */
 .content {
   flex: 1;
   padding: 20px;
-  text-align: center;
+  padding-bottom: 80px; /* чтобы контент не закрывался нижним меню */
 }
 
-.bottom-nav {
+/* Категории */
+.categories {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #0d2a4a; /* чуть светлее тёмно-синий */
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.category-btn {
+  padding: 10px 20px;
+  background-color: #1a3c5f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.category-btn:hover {
+  background-color: #23557e;
+}
+
+/* Нижнее меню */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #112f4d;
+  display: flex;
+  justify-content: space-around;
   border-top: 1px solid #1a3c5f;
-  height: 60px;
+  z-index: 999;
 }
 
 .bottom-nav button {
   flex: 1;
   background: none;
   border: none;
+  padding: 10px 0;
   color: white;
-  padding: 5px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,19 +80,20 @@ body {
   position: relative;
 }
 
-.bottom-nav button img {
+/* Разделительные линии между кнопками */
+.bottom-nav button:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 10px;
+  height: 24px;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bottom-nav img {
   width: 24px;
   height: 24px;
   margin-bottom: 4px;
-}
-
-/* Разделительные линии */
-.bottom-nav button:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 10%;
-  height: 80%;
-  width: 1px;
-  background-color: #1a3c5f; /* тонкая светлая линия */
+  filter: brightness(1000%);
 }
