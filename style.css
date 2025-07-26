@@ -25,18 +25,27 @@ body {
 
 /* Горизонтальный скролл категорий */
 .category-marquee {
-  overflow-x: auto;
-  white-space: nowrap;
+  overflow: hidden;
   background-color: #1b263b;
   padding: 10px 0;
+  position: relative;
 }
 
 .category-track {
-  display: inline-flex;
+  display: flex;
   gap: 12px;
-  padding: 0 12px;
+  animation: scroll-left 20s linear infinite;
+  width: max-content;
 }
 
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 .category {
   background-color: #415a77;
   border: none;
