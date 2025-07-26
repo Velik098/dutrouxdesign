@@ -82,6 +82,25 @@
       background-color: #5678a1;
     }
 
+    /* Контейнер для контента вкладок */
+    .tab-content {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      /* Отступ снизу чтобы меню не перекрывало */
+      margin-bottom: 60px;
+    }
+
+    /* Скрытый контент */
+    .tab-pane {
+      display: none;
+    }
+
+    /* Отображаем активный */
+    .tab-pane.active {
+      display: block;
+    }
+
     /* Нижнее меню */
     .bottom-nav {
       display: flex;
@@ -106,10 +125,7 @@
       cursor: pointer;
       opacity: 0.5;
       transition: opacity 0.3s;
-    }
-
-    .bottom-nav button span {
-      color: #ffffff; /* ← ДЕЛАЕМ ТЕКСТ БЕЛЫМ ЯВНО */
+      color: #fff; /* гарантируем белый цвет текста */
     }
 
     .bottom-nav button.active {
@@ -121,6 +137,7 @@
       height: 24px;
       margin-bottom: 4px;
       pointer-events: none;
+      filter: brightness(1) invert(1); /* белые иконки */
     }
 
     .divider {
@@ -134,7 +151,7 @@
   <header class="header">
     <h1>Dutroux Sell🔥</h1>
   </header>
-  
+
   <div class="divider-horizontal"></div>
 
   <div class="category-marquee">
@@ -152,33 +169,60 @@
     </div>
   </div>
 
-  <!-- Пока контента нет, тут пусто -->
+  <!-- Контейнер с контентом вкладок -->
+  <div class="tab-content">
+    <div id="catalog" class="tab-pane active">
+      <h2>Каталог товаров</h2>
+      <p>Здесь будет список товаров для покупки.</p>
+      <!-- Можно добавить карточки товаров -->
+    </div>
+    <div id="cart" class="tab-pane">
+      <h2>Корзина</h2>
+      <p>Здесь будет содержимое вашей корзины.</p>
+    </div>
+
+    <div id="profile" class="tab-pane">
+      <h2>Профиль</h2>
+      <p>Информация о вашем аккаунте.</p>
+    </div>
+  </div>
 
   <nav class="bottom-nav">
-    <button id="catalogBtn" class="active">
-      <img src="home.svg" alt="" />
+    <button id="catalogBtn" class="active" data-tab="catalog">
+      <img src="home.svg" alt="Каталог" />
       <span>Каталог</span>
     </button>
     <div class="divider"></div>
-    <button id="cartBtn">
-      <img src="cart.svg" alt="" />
+    <button id="cartBtn" data-tab="cart">
+      <img src="cart.svg" alt="Корзина" />
       <span>Корзина</span>
     </button>
     <div class="divider"></div>
-    <button id="profileBtn">
-      <img src="profile.svg" alt="" />
+    <button id="profileBtn" data-tab="profile">
+      <img src="profile.svg" alt="Профиль" />
       <span>Профиль</span>
     </button>
   </nav>
 
   <script>
-    const navButtons = document.querySelectorAll('.bottom-nav button');
+    const buttons = document.querySelectorAll('.bottom-nav button');
+    const panes = document.querySelectorAll('.tab-pane');
 
-    navButtons.forEach(button => {
-      button.
-        addEventListener('click', () => {
-        navButtons.forEach(btn => btn.classList.remove('active'));
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Убираем активный класс со всех кнопок
+        buttons.forEach(btn => btn.classList.remove('active'));
+        // Добавляем активный текущей кнопке
         button.classList.add('active');
+
+        // Скрываем все табы
+        panes.forEach(pane => pane.classList.remove('active'));
+        // Показываем нужный таб по data-tab
+        const tabId = button.dataset.tab;
+        const activePane = document.getElementById(tabId);
+        if (activePane) {
+          activePane.classList.add('active');
+        }
       });
     });
   </script>
