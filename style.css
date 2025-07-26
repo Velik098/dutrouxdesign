@@ -131,23 +131,31 @@ body {
   border-top: 1px solid #324a5f;
 }
 
-/* Кнопки по умолчанию — полупрозрачные */
+/* Кнопки меню: белый текст и иконка, но тусклые */
 .bottom-nav button {
   background: none;
   border: none;
-  color: #fff;
   font-size: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  opacity: 0.5;
-  transition: opacity 0.3s;
+  color: rgba(255, 255, 255, 0.5); /* полупрозрачный белый */
+  transition: color 0.3s;
 }
 
-/* Активная кнопка — полностью белая */
+.bottom-nav button img {
+  filter: brightness(0.5); /* тусклая иконка */
+  transition: filter 0.3s;
+}
+
+/* Активная кнопка — ярко-белая */
 .bottom-nav button.active {
-  opacity: 1;
+  color: #ffffff;
+}
+
+.bottom-nav button.active img {
+  filter: brightness(1);
 }
 
 .bottom-nav img {
