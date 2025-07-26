@@ -118,6 +118,46 @@ body {
   text-align: center;
 }
 
+/* ТОВАРНЫЕ КАРТОЧКИ */
+.product-card {
+  background-color: #13283f;
+  border: 2px solid #1b95e0;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 16px;
+  min-height: 120px;
+}
+
+.product-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.product-title {
+  font-weight: bold;
+  font-size: 18px;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.product-description {
+  font-size: 14px;
+  color: #ffffffaa;
+}
+
 /* Нижнее меню */
 .bottom-nav {
   display: flex;
@@ -174,5 +214,20 @@ body {
   }
   .preview-description {
     font-size: 13px;
+  }
+
+  .product-card {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+  }
+
+  .product-card img {
+    width: 100%;
+    height: auto;
+  }
+
+  .product-info {
+    padding-top: 10px;
   }
 }
