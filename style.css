@@ -1,99 +1,85 @@
-/* Общие стили */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #0d1b2a; /* Тёмно-синий фон */
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0f172a; /* тёмно-синий фон */
   color: white;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Верхняя панель */
-.top-bar {
-  background-color: #0d2a4a;
-  padding: 15px;
+.header {
+  padding: 16px;
   text-align: center;
-  border-bottom: 1px solid #1a3c5f;
+  background-color: #1e293b;
+  border-bottom: 1px solid #334155;
 }
 
-.top-bar h1 {
+.header h1 {
   margin: 0;
-  color: white;
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
-/* Контент */
-.content {
-  flex: 1;
-  padding: 20px;
-  padding-bottom: 80px; /* чтобы контент не закрывался нижним меню */
-}
-
-/* Категории */
 .categories {
   display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  overflow-x: auto;
+  padding: 10px;
+  background-color: #1e293b;
+  border-bottom: 1px solid #334155;
 }
 
-.category-btn {
-  padding: 10px 20px;
-  background-color: #1a3c5f;
+.category {
+  background-color: #334155;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 20px;
+  padding: 8px 16px;
+  margin-right: 10px;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  white-space: nowrap;
 }
 
-.category-btn:hover {
-  background-color: #23557e;
+.category.active {
+  background-color: #3b82f6;
 }
 
-/* Нижнее меню */
+.content {
+  flex-grow: 1;
+  padding: 16px;
+  text-align: center;
+  font-size: 16px;
+}
+
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #112f4d;
   display: flex;
   justify-content: space-around;
-  border-top: 1px solid #1a3c5f;
-  z-index: 999;
+  align-items: center;
+  background-color: #1e293b;
+  border-top: 1px solid #334155;
+  padding: 8px 0;
 }
 
 .bottom-nav button {
-  flex: 1;
   background: none;
   border: none;
-  padding: 10px 0;
   color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
   font-size: 12px;
-  cursor: pointer;
-  position: relative;
-}
-
-/* Разделительные линии между кнопками */
-.bottom-nav button:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 10px;
-  height: 24px;
-  width: 1px;
-  background-color: rgba(255, 255, 255, 0.2);
+  flex-grow: 1;
 }
 
 .bottom-nav img {
   width: 24px;
   height: 24px;
-  margin-bottom: 4px;
-  filter: brightness(1000%);
+  display: block;
+  margin: 0 auto 4px;
+  filter: brightness(0) invert(1);
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background-color: #334155;
 }
