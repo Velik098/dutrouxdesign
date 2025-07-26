@@ -14,7 +14,6 @@
       flex-direction: column;
       min-height: 100vh;
       box-sizing: border-box;
-      overflow-x: hidden;
     }
 
     .header {
@@ -24,6 +23,7 @@
       height: 60px;
       padding-top: 10px;
       box-sizing: border-box;
+      text-align: center;
       user-select: none;
     }
 
@@ -51,28 +51,17 @@
     .category-track {
       display: flex;
       gap: 12px;
+      animation: scroll-left 20s linear infinite;
       width: max-content;
-      animation: scroll-right 20s linear infinite;
-      /* Убираем pointer-events:none, чтобы кнопки кликабельны */
+      pointer-events: auto;
     }
 
-    /* Анимация движения с лева направо */
-    @keyframes scroll-right {
-      0% {
-        transform: translateX(-50%);
-      }
-      100% {
-        transform: translateX(0%);
-      }
+    @keyframes scroll-left {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
     }
 
-    /* Дублируем список, чтобы создать бесконечный скролл */
-    .category-track > * {
-      flex-shrink: 0;
-      white-space: nowrap;
-    }
-
-    .category-track > .category {
+    .category {
       background-color: #415a77;
       border: none;
       color: #fff;
@@ -80,11 +69,12 @@
       border-radius: 20px;
       cursor: pointer;
       font-size: 14px;
+      white-space: nowrap;
       user-select: none;
       transition: background-color 0.3s;
     }
 
-    .category-track > .category:hover {
+    .category:hover {
       background-color: #5678a1;
     }
 
@@ -139,17 +129,23 @@
       height: 24px;
       margin-bottom: 4px;
       pointer-events: none;
-      filter: invert(1);
+      filter: brightness(1) invert(1); /* <-- делаем иконки белыми */
     }
 
-    .cart-header, .profile-header {
+    .divider {
+      width: 1px;
+      height: 24px;
+      background-color: #324a5f;
+    }
+
+    .cart-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 16px;
     }
 
-    .cart-back, .profile-back {
+    .cart-back {
       background: none;
       border: none;
       color: #fff;
@@ -157,7 +153,7 @@
       cursor: pointer;
     }
 
-    .cart-title, .profile-title {
+    .cart-title {
       flex: 1;
       text-align: center;
       font-weight: bold;
@@ -175,119 +171,104 @@
       margin-top: 40px;
       font-size: 16px;
     }
-
-    .profile-body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-bottom: 10px;
-      border: 2px solid #fff;
-    }
-
-    .fullname {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-
-    .username, .userid {
-      color: #ffffff99;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
   </style>
 </head>
 <body>
-  <header class="header
-
-
-<h1>Dutroux Sell🔥</h1>
+  <header class="header">
+    <h1>Dutroux Sell🔥</h1>
   </header>
 
   <div class="divider-horizontal"></div>
 
-  <div class="category-marquee" aria-label="Категории товаров">
-    <div class="category-track" aria-live="polite" aria-atomic="true" role="list">
-      <!-- Повторяем кнопки для бесконечного эффекта -->
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
-      <button class="category" role="listitem">Приватка💸</button>
-      <button class="category" role="listitem">Превью 🚀</button>
+  <div class="category-marquee">
+    <div class="category-track">
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка💸</button>
+      <button class="category">Превью 🚀</button>
     </div>
   </div>
 
-  <div class="tab-content">
+  <div
+
+
+lass="tab-content">
     <div id="catalog" class="tab-pane active">
       <h2>Каталог товаров</h2>
       <p>Здесь будет список товаров для покупки.</p>
     </div>
 
     <div id="cart" class="tab-pane">
+      <!-- Верхняя панель -->
       <div class="cart-header">
-        <button class="cart-back" onclick="switchTab('catalog')">←</button>
+        <button id="backToCatalog" class="cart-back">←</button>
         <div class="cart-title">КОРЗИНА</div>
         <div class="cart-total">К оплате 0,00 руб</div>
       </div>
+
+      <!-- Содержимое -->
       <div class="cart-body">
         Здесь будет содержимое вашей корзины.
       </div>
     </div>
 
     <div id="profile" class="tab-pane">
-      <div class="profile-header">
-        <button class="profile-back" onclick="switchTab('catalog')">←</button>
-        <div class="profile-title">ПРОФИЛЬ</div>
-        <div style="width: 40px;"></div>
-      </div>
-      <div class="profile-body">
-        <img src="https://via.placeholder.com/80" class="avatar" id="avatar" />
-        <div class="fullname" id="fullname">Имя</div>
-        <div class="username" id="username">@username</div>
-        <div class="userid" id="userid">ID: 00000000</div>
-      </div>
+      <h2>Профиль</h2>
+      <p>Информация о вашем аккаунте.</p>
     </div>
   </div>
 
   <nav class="bottom-nav">
-    <button class="tab-btn active" data-tab="catalog">
+    <button id="catalogBtn" class="active" data-tab="catalog">
       <img src="home.svg" alt="Каталог" />
       <span>Каталог</span>
     </button>
-    <button class="tab-btn" data-tab="cart">
+    <div class="divider"></div>
+    <button id="cartBtn" data-tab="cart">
       <img src="cart.svg" alt="Корзина" />
       <span>Корзина</span>
     </button>
-    <button class="tab-btn" data-tab="profile">
+    <div class="divider"></div>
+    <button id="profileBtn" data-tab="profile">
       <img src="profile.svg" alt="Профиль" />
       <span>Профиль</span>
     </button>
   </nav>
 
   <script>
-    const buttons = document.querySelectorAll('.tab-btn');
+    const buttons = document.querySelectorAll('.bottom-nav button');
     const panes = document.querySelectorAll('.tab-pane');
-
-    function switchTab(tabId) {
-      panes.forEach(p => p.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-
-      buttons.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.tab === tabId);
-      });
-    }
 
     buttons.forEach(button => {
       button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        panes.forEach(pane => pane.classList.remove('active'));
         const tabId = button.dataset.tab;
-        switchTab(tabId);
-      });">
+        const activePane = document.getElementById(tabId);
+        if (activePane) {
+          activePane.classList.add('active');
+        }
+      });
+    });
+
+    // Назад из корзины в каталог
+    const backBtn = document.getElementById('backToCatalog');
+    if (backBtn) {
+      backBtn.addEventListener('click', () => {
+        document.getElementById('catalog').classList.add('active');
+        document.getElementById('cart').classList.remove('active');
+        document.getElementById('catalogBtn').classList.add('active');
+        document.getElementById('cartBtn').classList.remove('active');
+      });
+    }
+  </script>
+</body>
+</html> c
