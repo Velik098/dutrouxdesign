@@ -14,6 +14,7 @@
       flex-direction: column;
       min-height: 100vh;
       box-sizing: border-box;
+      overflow-x: hidden;
     }
 
     .header {
@@ -23,7 +24,6 @@
       height: 60px;
       padding-top: 10px;
       box-sizing: border-box;
-      text-align: center;
       user-select: none;
     }
 
@@ -51,17 +51,28 @@
     .category-track {
       display: flex;
       gap: 12px;
-      animation: scroll-left 20s linear infinite;
       width: max-content;
-      pointer-events: auto;
+      animation: scroll-right 20s linear infinite;
+      /* Убираем pointer-events:none, чтобы кнопки кликабельны */
     }
 
-    @keyframes scroll-left {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(-50%); }
+    /* Анимация движения с лева направо */
+    @keyframes scroll-right {
+      0% {
+        transform: translateX(-50%);
+      }
+      100% {
+        transform: translateX(0%);
+      }
     }
 
-    .category {
+    /* Дублируем список, чтобы создать бесконечный скролл */
+    .category-track > * {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .category-track > .category {
       background-color: #415a77;
       border: none;
       color: #fff;
@@ -69,12 +80,11 @@
       border-radius: 20px;
       cursor: pointer;
       font-size: 14px;
-      white-space: nowrap;
       user-select: none;
       transition: background-color 0.3s;
     }
 
-    .category:hover {
+    .category-track > .category:hover {
       background-color: #5678a1;
     }
 
@@ -196,21 +206,23 @@
   </style>
 </head>
 <body>
-  <header class="header">
-    <h1>Dutroux Sell🔥</h1>
+  <header class="header
+
+
+<h1>Dutroux Sell🔥</h1>
   </header>
 
   <div class="divider-horizontal"></div>
 
-  <div class="category-marquee">
-    <div class="category-track">
-      <button class="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
-      <button
-
-
-lass="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
+  <div class="category-marquee" aria-label="Категории товаров">
+    <div class="category-track" aria-live="polite" aria-atomic="true" role="list">
+      <!-- Повторяем кнопки для бесконечного эффекта -->
+      <button class="category" role="listitem">Приватка💸</button>
+      <button class="category" role="listitem">Превью 🚀</button>
+      <button class="category" role="listitem">Приватка💸</button>
+      <button class="category" role="listitem">Превью 🚀</button>
+      <button class="category" role="listitem">Приватка💸</button>
+      <button class="category" role="listitem">Превью 🚀</button>
     </div>
   </div>
 
@@ -270,11 +282,7 @@ lass="category">Приватка💸</button>
       document.getElementById(tabId).classList.add('active');
 
       buttons.forEach(btn => {
-        if (btn.dataset.tab === tabId) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
       });
     }
 
@@ -282,23 +290,4 @@ lass="category">Приватка💸</button>
       button.addEventListener('click', () => {
         const tabId = button.dataset.tab;
         switchTab(tabId);
-      });
-    });
-
-    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe?.user) {
-      const user = Telegram.WebApp.initDataUnsafe.user;
-      const fullName = `${user.first_name} ${user.last_name || ''}`.trim();
-      const username = user.username ? `@${user.username}` : 'нет';
-      const userId = `ID: ${user.id}`;
-
-      document.getElementById('fullname').textContent = fullName;
-      document.getElementById('username').textContent = username;
-      document.getElementById('userid').textContent = userId;
-
-      if (user.username) {
-        document.getElementById('avatar').src = `https://t.me/i/userpic/320/${user.username}.jpg`;
-      }
-    }
-  </script>
-</body>
-</html> 
+      });">
