@@ -12,9 +12,12 @@ body {
 
 /* Заголовок */
 .header {
-  background-color: #1b263b;
-  padding: 16px;
   text-align: center;
+  padding: 15px 0;
+  font-family: 'Battlefest', sans-serif;
+  font-size: 24px;
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* вот это лишнее */
 }
 
 .header h1 {
