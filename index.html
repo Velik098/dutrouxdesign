@@ -129,13 +129,7 @@
       height: 24px;
       margin-bottom: 4px;
       pointer-events: none;
-      filter: brightness(1) invert(1);
-    }
-
-    .divider {
-      width: 1px;
-      height: 24px;
-      background-color: #324a5f;
+      filter: invert(1);
     }
 
     .cart-header, .profile-header {
@@ -212,7 +206,10 @@
     <div class="category-track">
       <button class="category">Приватка💸</button>
       <button class="category">Превью 🚀</button>
-      <button class="category">Приватка💸</button>
+      <button
+
+
+lass="category">Приватка💸</button>
       <button class="category">Превью 🚀</button>
     </div>
   </div>
@@ -225,7 +222,7 @@
 
     <div id="cart" class="tab-pane">
       <div class="cart-header">
-        <button id="backToCatalog" class="cart-back">←</button>
+        <button class="cart-back" onclick="switchTab('catalog')">←</button>
         <div class="cart-title">КОРЗИНА</div>
         <div class="cart-total">К оплате 0,00 руб</div>
       </div>
@@ -236,7 +233,7 @@
 
     <div id="profile" class="tab-pane">
       <div class="profile-header">
-        <button id="backToCatalog2" class="profile-back">←</button>
+        <button class="profile-back" onclick="switchTab('catalog')">←</button>
         <div class="profile-title">ПРОФИЛЬ</div>
         <div style="width: 40px;"></div>
       </div>
@@ -250,22 +247,22 @@
   </div>
 
   <nav class="bottom-nav">
-    <button id="catalogBtn" class="active" data-tab="catalog">
+    <button class="tab-btn active" data-tab="catalog">
       <img src="home.svg" alt="Каталог" />
       <span>Каталог</span>
     </button>
-    <button id="cartBtn" data-tab="cart">
+    <button class="tab-btn" data-tab="cart">
       <img src="cart.svg" alt="Корзина" />
       <span>Корзина</span>
     </button>
-    <button id="profileBtn" data-tab="profile">
+    <button class="tab-btn" data-tab="profile">
       <img src="profile.svg" alt="Профиль" />
       <span>Профиль</span>
     </button>
   </nav>
 
   <script>
-    const buttons = document.querySelectorAll('.bottom-nav button[data-tab]');
+    const buttons = document.querySelectorAll('.tab-btn');
     const panes = document.querySelectorAll('.tab-pane');
 
     function switchTab(tabId) {
@@ -284,33 +281,24 @@
     buttons.forEach(button => {
       button.addEventListener('click', () => {
         const tabId = button.dataset.tab;
-        if (tabId) switchTab(tabId);
+        switchTab(tabId);
       });
     });
 
-    document.getElementById('backToCatalog')?.addEventListener('click', () => {
-      switchTab('catalog');
-    });
-
-    document.getElementById('backToCatalog2')?.addEventListener('click', () => {
-      switchTab('catalog');
-    });
-
-    // Telegram WebApp user data
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe?.user) {
       const user = Telegram.WebApp.initDataUnsafe.user;
-      const fullName = ${user.first_name} ${user.last_name || ''}.trim();
-      const username = user.username ? @${user.username} : 'нет';
-      const userId = ID: ${user.id};
+      const fullName = `${user.first_name} ${user.last_name || ''}`.trim();
+      const username = user.username ? `@${user.username}` : 'нет';
+      const userId = `ID: ${user.id}`;
 
       document.getElementById('fullname').textContent = fullName;
       document.getElementById('username').textContent = username;
       document.getElementById('userid').textContent = userId;
 
       if (user.username) {
-        document.getElementById('avatar').src = https://t.me/i/userpic/320/${user.username}.jpg;
+        document.getElementById('avatar').src = `https://t.me/i/userpic/320/${user.username}.jpg`;
       }
     }
   </script>
 </body>
-</html>
+</html> 
