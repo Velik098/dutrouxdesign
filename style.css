@@ -13,9 +13,9 @@ body {
 /* Заголовок */
 .header {
   display: flex;
-  justify-content: center;     /* центр по горизонтали */
-  align-items: center;         /* центр по вертикали */
-  height: 60px;                /* регулируй высоту под нужный отступ */
+  justify-content: center;
+  align-items: center;
+  height: 60px;
   padding-top: 10px;
   box-sizing: border-box;
   text-align: center;
@@ -32,12 +32,12 @@ body {
   width: 100%;
   height: 1px;
   background-color: #ffffff22;
-  margin: 0 0 10px 0; /* сверху 0, снизу 10px */
+  margin: 0 0 10px 0;
 }
 
 /* Горизонтальный автоскролл категорий */
 .category-marquee {
-  overflow: hidden; /* отключает ручной скролл */
+  overflow: hidden;
   padding: 10px 0;
   background-color: #1a2b4c;
   position: relative;
@@ -48,8 +48,8 @@ body {
   gap: 12px;
   animation: scroll-left 20s linear infinite;
   width: max-content;
-  pointer-events: auto; /* кнопки кликабельны */
-  user-select: none; /* запрет выделения текста при кликах */
+  pointer-events: auto;
+  user-select: none;
 }
 
 @keyframes scroll-left {
@@ -131,6 +131,7 @@ body {
   border-top: 1px solid #324a5f;
 }
 
+/* Кнопки по умолчанию — полупрозрачные */
 .bottom-nav button {
   background: none;
   border: none;
@@ -140,6 +141,13 @@ body {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+/* Активная кнопка — полностью белая */
+.bottom-nav button.active {
+  opacity: 1;
 }
 
 .bottom-nav img {
