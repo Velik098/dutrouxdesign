@@ -118,3 +118,47 @@ body {
     transform: translateX(-50%);
   }
 }
+
+/* Левая вертикальная панель */
+.sidebar {
+  position: absolute;
+  left: 0;
+  top: 60px;
+  height: 100%;
+  width: 10px;
+  background-color: #4fa3ff; /* светло-синий */
+  border-radius: 5px;
+}
+
+.sidebar h2 {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+  margin: 20px 0;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Карточка товара */
+.item-card {
+  margin-left: 30px;
+  margin-top: 40px;
+  background-color: #1c3b65; /* чуть отличающийся от фона */
+  border: 2px solid #4fa3ff;
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 300px;
+  color: white;
+}
+
+.item-image {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.item-description {
+  font-size: 14px;
+  line-height: 1.4;
+}
