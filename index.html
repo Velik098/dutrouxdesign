@@ -240,7 +240,7 @@
       <div class="profile-header">
         <button id="backToCatalog2" class="profile-back">←</button>
         <div class="profile-title">ПРОФИЛЬ</div>
-        <div style="width: 40px;"></div> <!-- чтобы выровнять по центру -->
+        <div style="width: 40px;"></div>
       </div>
       <div class="profile-body">
         <img src="https://via.placeholder.com/80" class="avatar" id="avatar" />
@@ -272,17 +272,18 @@
     const buttons = document.querySelectorAll('.bottom-nav button');
     const panes = document.querySelectorAll('.tab-pane');
 
+    function switchTab(tabId) {
+      panes.forEach(p => p.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+
+      buttons.forEach(b => b.classList.remove('active'));
+      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+    }
+
     buttons.forEach(button => {
       button.addEventListener('click', () => {
-        buttons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-
-        panes.forEach(pane => pane.classList.remove('active'));
         const tabId = button.dataset.tab;
-        const activePane = document.getElementById(tabId);
-        if (activePane) {
-          activePane.classList.add('active');
-        }
+        switchTab(tabId);
       });
     });
 
@@ -294,21 +295,22 @@
       switchTab('catalog');
     });
 
-    function switchTab(tabId) {
-      panes.forEach(p => p.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-
-      buttons.forEach(b => b.classList.remove('active'));
-      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-    }
-
-    // Автозаполнение профиля
+    // Заполняем профиль из Telegram WebApp
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe?.user) {
       const user = Telegram.WebApp.initDataUnsafe.user;
-      document.getElementById('fullname').textContent = ${user.first_name} ${user.last_name || ''}.trim();
-      document.getElementById('username').textContent = @${user.username || 'нет'};
-      document.getElementById('userid').textContent = ID: ${user.id};
-      document.getElementById('avatar').src = https://t.me/i/userpic/320/${user.username}.jpg;
+      const fullName = ${user.first_name} ${user.last_name || ''}.trim();
+      const username = user.username ? @${user.username} : 'нет';
+      const userId = ID: ${user.id};
+
+      document.getElementById('fullname').textContent = fullName;
+      document.getElementById('username').textContent = username;
+      document.getElementById('userid').textContent = userId;
+
+      if (user.username) {
+        document.getElementById('avatar').src = https://t.me/i/userpic/320/${user.username}.jpg;
+      } else {
+        document.getElementById('avatar').src = 'https://via.placeholder.com/80';
+      }
     }
   </script>
 </body>
