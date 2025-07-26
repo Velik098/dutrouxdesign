@@ -129,7 +129,7 @@
       height: 24px;
       margin-bottom: 4px;
       pointer-events: none;
-      filter: brightness(1) invert(1); /* <-- делаем иконки белыми */
+      filter: brightness(1) invert(1);
     }
 
     .divider {
@@ -138,14 +138,14 @@
       background-color: #324a5f;
     }
 
-    .cart-header {
+    .cart-header, .profile-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 16px;
     }
 
-    .cart-back {
+    .cart-back, .profile-back {
       background: none;
       border: none;
       color: #fff;
@@ -153,7 +153,7 @@
       cursor: pointer;
     }
 
-    .cart-title {
+    .cart-title, .profile-title {
       flex: 1;
       text-align: center;
       font-weight: bold;
@@ -170,6 +170,34 @@
       text-align: center;
       margin-top: 40px;
       font-size: 16px;
+    }
+
+    .profile-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      border: 2px solid #fff;
+    }
+
+    .fullname {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .username, .userid {
+      color: #ffffff99;
+      font-size: 14px;
+      margin-bottom: 4px;
     }
   </style>
 </head>
@@ -188,12 +216,8 @@
       <button class="category">Превью 🚀</button>
       <button class="category">Приватка💸</button>
       <button class="category">Превью 🚀</button>
-      <button class="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
-      <button class="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
     </div>
-    </div>
+  </div>
 
   <div class="tab-content">
     <div id="catalog" class="tab-pane active">
@@ -202,22 +226,28 @@
     </div>
 
     <div id="cart" class="tab-pane">
-      <!-- Верхняя панель -->
       <div class="cart-header">
         <button id="backToCatalog" class="cart-back">←</button>
         <div class="cart-title">КОРЗИНА</div>
         <div class="cart-total">К оплате 0,00 руб</div>
       </div>
-
-      <!-- Содержимое -->
       <div class="cart-body">
         Здесь будет содержимое вашей корзины.
       </div>
     </div>
 
     <div id="profile" class="tab-pane">
-      <h2>Профиль</h2>
-      <p>Информация о вашем аккаунте.</p>
+      <div class="profile-header">
+        <button id="backToCatalog2" class="profile-back">←</button>
+        <div class="profile-title">ПРОФИЛЬ</div>
+        <div style="width: 40px;"></div> <!-- чтобы выровнять по центру -->
+      </div>
+      <div class="profile-body">
+        <img src="https://via.placeholder.com/80" class="avatar" id="avatar" />
+        <div class="fullname" id="fullname">Имя</div>
+        <div class="username" id="username">@username</div>
+        <div class="userid" id="userid">ID: 00000000</div>
+      </div>
     </div>
   </div>
 
@@ -256,15 +286,29 @@
       });
     });
 
-    // Назад из корзины в каталог
-    const backBtn = document.getElementById('backToCatalog');
-    if (backBtn) {
-      backBtn.addEventListener('click', () => {
-        document.getElementById('catalog').classList.add('active');
-        document.getElementById('cart').classList.remove('active');
-        document.getElementById('catalogBtn').classList.add('active');
-        document.getElementById('cartBtn').classList.remove('active');
-      });
+    document.getElementById('backToCatalog').addEventListener('click', () => {
+      switchTab('catalog');
+    });
+
+    document.getElementById('backToCatalog2').addEventListener('click', () => {
+      switchTab('catalog');
+    });
+
+    function switchTab(tabId) {
+      panes.forEach(p => p.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+
+      buttons.forEach(b => b.classList.remove('active'));
+      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+    }
+
+    // Автозаполнение профиля
+    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe?.user) {
+      const user = Telegram.WebApp.initDataUnsafe.user;
+      document.getElementById('fullname').textContent = ${user.first_name} ${user.last_name || ''}.trim();
+      document.getElementById('username').textContent = @${user.username || 'нет'};
+      document.getElementById('userid').textContent = ID: ${user.id};
+      document.getElementById('avatar').src = https://t.me/i/userpic/320/${user.username}.jpg;
     }
   </script>
 </body>
