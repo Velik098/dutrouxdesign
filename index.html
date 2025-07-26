@@ -53,11 +53,10 @@
       gap: 12px;
       animation: scroll-left 20s linear infinite;
       width: max-content;
-      pointer-events: auto;
     }
 
     @keyframes scroll-left {
-      0% { transform: translateX(0%); }
+      0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
 
@@ -70,7 +69,6 @@
       cursor: pointer;
       font-size: 14px;
       white-space: nowrap;
-      user-select: none;
       transition: background-color 0.3s;
     }
 
@@ -121,7 +119,6 @@
 
     .bottom-nav button.active {
       opacity: 1;
-      color: #fff;
     }
 
     .bottom-nav img {
@@ -138,7 +135,7 @@
       background-color: #324a5f;
     }
 
-    /* Корзина */
+    /* Cart */
     .cart-header {
       display: flex;
       align-items: center;
@@ -173,12 +170,11 @@
       font-size: 16px;
     }
 
-    /* Профиль */
+    /* Profile */
     .profile-header {
       display: flex;
       align-items: center;
       padding: 10px 16px;
-      user-select: none;
     }
 
     .profile-back {
@@ -193,7 +189,6 @@
     .profile-title {
       font-weight: bold;
       font-size: 18px;
-      color: #fff;
     }
 
     .profile-info {
@@ -208,28 +203,23 @@
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      border: 2px solid #fff;
-      object-fit: cover;
       background-color: #415a77;
+      object-fit: cover;
     }
 
     .profile-texts {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      color: #fff;
     }
 
     .fullname {
       font-size: 20px;
       font-weight: bold;
-      margin-bottom: 6px;
     }
 
     .username, .userid {
       font-size: 14px;
       color: #ffffffaa;
-      margin-bottom: 4px;
     }
   </style>
 </head>
@@ -242,8 +232,6 @@
 
   <div class="category-marquee">
     <div class="category-track">
-      <button class="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
       <button class="category">Приватка💸</button>
       <button class="category">Превью 🚀</button>
       <button class="category">Приватка💸</button>
@@ -267,9 +255,7 @@
         <div class="cart-title">КОРЗИНА</div>
         <div class="cart-total">К оплате 0,00 руб</div>
       </div>
-      <div class="cart-body">
-        Здесь будет содержимое вашей корзины.
-      </div>
+      <div class="cart-body">Здесь будет содержимое вашей корзины.</div>
     </div>
 
     <div id="profile" class="tab-pane">
@@ -278,11 +264,11 @@
         <div class="profile-title">ПРОФИЛЬ</div>
       </div>
       <div class="profile-info">
-        <img src="https://via.placeholder.com/80" alt="Аватар" class="avatar" id="avatar" />
+        <img src="https://via.placeholder.com/80" alt="Аватар" class="avatar" />
         <div class="profile-texts">
-          <div class="fullname" id="fullname">Имя</div>
-          <div class="username" id="username">@username</div>
-          <div class="userid" id="userid">ID: 00000000</div>
+          <div class="fullname">Иван Иванов</div>
+          <div class="username">@ivanuser</div>
+          <div class="userid">ID: 123456789</div>
         </div>
       </div>
     </div>
@@ -306,5 +292,34 @@
   </nav>
 
   <script>
-    const buttons = document.querySelectorAll('.bottom-nav button');
-    const panes = document
+    const tabs = {
+      catalog: document.getElementById('catalog'),
+      cart: document.getElementById('cart'),
+      profile: document.getElementById('profile')
+    };
+
+    const tabButtons = {
+      catalogBtn: document.getElementById('catalogBtn'),
+      cartBtn: document.getElementById('cartBtn'),
+      profileBtn: document.getElementById('profileBtn')
+    };
+
+    function switchTab(target) {
+      Object.values(tabs).forEach(tab => tab.classList.remove('active'));
+      Object.values(tabButtons).forEach(btn => btn.classList.remove('active'));
+      tabs[target].classList.add('active');
+      tabButtons[target + 'Btn'].classList.add('active');
+    }
+
+    Object.entries(tabButtons).forEach(([key, btn]) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        switchTab(target);
+      });
+    });
+
+    document.getElementById('backToCatalog').addEventListener('click', () => switchTab('catalog'));
+    document.getElementById('backToCatalog2').addEventListener('click', () => switchTab('catalog'));
+  </script>
+</body>
+</html>
