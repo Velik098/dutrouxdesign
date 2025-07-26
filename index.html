@@ -118,7 +118,7 @@
       width: 24px;
       height: 24px;
       margin-bottom: 4px;
-      filter: brightness(1) invert(1);
+      filter: invert(1); /* делаем иконки белыми */
     }
 
     .divider {
@@ -130,7 +130,13 @@
     .profile-header {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 10px 16px;
+    }
+
+    .profile-title {
+      font-weight: bold;
+      font-size: 18px;
     }
 
     .profile-back {
@@ -140,11 +146,6 @@
       font-size: 18px;
       cursor: pointer;
       margin-right: 12px;
-    }
-
-    .profile-title {
-      font-weight: bold;
-      font-size: 18px;
     }
 
     .profile-info {
@@ -203,7 +204,7 @@
     .balance-header img {
       width: 20px;
       height: 20px;
-      filter: invert(1);
+      filter: invert(1); /* кошелек белым */
     }
 
     .balance-amount {
@@ -237,6 +238,24 @@
     .promo-box input::placeholder {
       color: #ffffffaa;
     }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+    }
+
+    .cart-title {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .cart-total {
+      font-size: 16px;
+      color: #00ff80;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -262,17 +281,22 @@
     </div>
 
     <div id="cart" class="tab-pane">
-      <div class="profile-header">
-        <button id="backToCatalog" class="profile-back">←</button>
-        <div class="profile-title">КОРЗИНА</div>
+      <div class="cart-header">
+        <div style="display: flex; align-items: center;">
+          <button id="backToCatalog" class="profile-back">←</button>
+          <div class="cart-title">КОРЗИНА</div>
+        </div>
+        <div class="cart-total">К оплате 0,00 руб</div>
       </div>
       <div style="text-align:center; padding: 40px;">Здесь будет содержимое вашей корзины.</div>
     </div>
 
     <div id="profile" class="tab-pane">
       <div class="profile-header">
-        <button id="backToCatalog2" class="profile-back">←</button>
-        <div class="profile-title">ПРОФИЛЬ</div>
+        <div style="display: flex; align-items: center;">
+          <button id="backToCatalog2" class="profile-back">←</button>
+          <div class="profile-title">ПРОФИЛЬ</div>
+        </div>
       </div>
 
       <div class="profile-info">
