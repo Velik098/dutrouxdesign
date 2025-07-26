@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: 'BATTLEFEST', sans-serif;
-  background-color: #0d1b2a; /* Тёмно-синий */
+  background-color: #0d1b2a;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -131,7 +131,7 @@ body {
   border-top: 1px solid #324a5f;
 }
 
-/* Кнопки меню: белый текст и иконка, но тусклые */
+/* Кнопки: текст и иконка белые, но тусклые у неактивных */
 .bottom-nav button {
   background: none;
   border: none;
@@ -140,28 +140,25 @@ body {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.5); /* полупрозрачный белый */
+  color: #ffffff80; /* тусклый белый */
   transition: color 0.3s;
 }
 
 .bottom-nav button img {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 4px;
   filter: brightness(0.5); /* тусклая иконка */
   transition: filter 0.3s;
 }
 
-/* Активная кнопка — ярко-белая */
+/* Активная кнопка — яркая */
 .bottom-nav button.active {
-  color: #ffffff;
+  color: #ffffff; /* яркий текст */
 }
 
 .bottom-nav button.active img {
-  filter: brightness(1);
-}
-
-.bottom-nav img {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 4px;
+  filter: brightness(1); /* яркая иконка */
 }
 
 .divider {
