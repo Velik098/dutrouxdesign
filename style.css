@@ -12,6 +12,12 @@ body {
 
 /* Заголовок */
 .header {
+  display: flex;
+  justify-content: center;     /* центр по горизонтали */
+  align-items: center;         /* центр по вертикали */
+  height: 60px;                /* регулируй высоту под нужный отступ */
+  padding-top: 10px;
+  box-sizing: border-box;
   text-align: center;
 }
 
