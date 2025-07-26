@@ -22,7 +22,6 @@
       align-items: center;
       height: 60px;
       padding-top: 10px;
-      box-sizing: border-box;
       text-align: center;
       user-select: none;
     }
@@ -30,7 +29,6 @@
     .header h1 {
       margin: 0;
       font-size: 24px;
-      color: #fff;
     }
 
     .divider-horizontal {
@@ -53,7 +51,6 @@
       gap: 12px;
       animation: scroll-left 20s linear infinite;
       width: max-content;
-      pointer-events: auto;
     }
 
     @keyframes scroll-left {
@@ -70,7 +67,6 @@
       cursor: pointer;
       font-size: 14px;
       white-space: nowrap;
-      user-select: none;
       transition: background-color 0.3s;
     }
 
@@ -103,7 +99,6 @@
       bottom: 0;
       width: 100%;
       border-top: 1px solid #324a5f;
-      user-select: none;
     }
 
     .bottom-nav button {
@@ -115,13 +110,11 @@
       align-items: center;
       cursor: pointer;
       opacity: 0.5;
-      transition: opacity 0.3s, color 0.3s;
       color: #fff;
     }
 
     .bottom-nav button.active {
       opacity: 1;
-      color: #fff;
     }
 
     .bottom-nav img {
@@ -137,14 +130,14 @@
       background-color: #324a5f;
     }
 
-    .cart-header {
+    .cart-header, .profile-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 16px;
     }
 
-    .cart-back {
+    .cart-back, .profile-back {
       background: none;
       border: none;
       color: #fff;
@@ -152,7 +145,7 @@
       cursor: pointer;
     }
 
-    .cart-title {
+    .cart-title, .profile-title {
       flex: 1;
       text-align: center;
       font-weight: bold;
@@ -169,28 +162,6 @@
       text-align: center;
       margin-top: 40px;
       font-size: 16px;
-    }
-
-    .profile-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 16px;
-    }
-
-    .profile-back {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    .profile-title {
-      flex: 1;
-      text-align: center;
-      font-weight: bold;
-      color: #fff;
     }
 
     .profile-info {
@@ -269,7 +240,6 @@
       border-radius: 8px;
       background-color: #1a2b3c;
       color: #fff;
-      outline: none;
       margin-top: 8px;
     }
 
@@ -282,6 +252,7 @@
       align-items: center;
       gap: 12px;
       margin-bottom: 16px;
+      cursor: pointer;
     }
 
     .product-card img {
@@ -299,7 +270,6 @@
     .product-title {
       font-weight: bold;
       font-size: 16px;
-      color: #ffffff;
     }
 
     .product-description {
@@ -335,10 +305,10 @@
         </div>
       </div>
       <div class="product-card">
-        <img src="preview2.png" alt="Превью 2">
+        <img src="preview2.png" alt="Приватка 1">
         <div class="product-info">
-          <div class="product-title">Превью</div>
-          <div class="product-description">Анимированное превью для Shorts или Reels</div>
+          <div class="product-title">Приватка</div>
+          <div class="product-description">Доступ к приватному контенту для подписчиков</div>
         </div>
       </div>
     </div>
@@ -349,9 +319,7 @@
         <div class="cart-title">КОРЗИНА</div>
         <div class="cart-total">К оплате 0,00 руб</div>
       </div>
-      <div class="cart-body">
-        Здесь будет содержимое вашей корзины.
-      </div>
+      <div class="cart-body">Здесь будет содержимое вашей корзины.</div>
     </div>
 
     <div id="profile" class="tab-pane">
