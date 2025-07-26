@@ -1,7 +1,7 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #0f172a; /* тёмно-синий фон */
+  font-family: 'Arial', sans-serif;
+  background-color: #0a1a2f; /* приятный тёмно-синий фон */
   color: white;
   display: flex;
   flex-direction: column;
@@ -9,31 +9,47 @@ body {
 }
 
 .content {
-  flex-grow: 1;
+  flex: 1;
   padding: 20px;
+  text-align: center;
 }
 
 .bottom-nav {
   display: flex;
-  justify-content: space-around;
-  background-color: #1e293b;
-  padding: 10px 0;
-  border-top: 1px solid #334155;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0d2a4a; /* чуть светлее тёмно-синий */
+  border-top: 1px solid #1a3c5f;
+  height: 60px;
 }
 
 .bottom-nav button {
+  flex: 1;
   background: none;
   border: none;
   color: white;
+  padding: 5px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 12px;
+  cursor: pointer;
+  position: relative;
 }
 
-.bottom-nav img {
+.bottom-nav button img {
   width: 24px;
   height: 24px;
   margin-bottom: 4px;
-  filter: brightness(100%);
+}
+
+/* Разделительные линии */
+.bottom-nav button:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background-color: #1a3c5f; /* тонкая светлая линия */
 }
