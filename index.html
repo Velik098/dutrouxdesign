@@ -8,7 +8,7 @@
     /* Основной фон и шрифт */
     body {
       margin: 0;
-      font-family: 'BATTLEFEST', sans-serif, sans-serif;
+      font-family: 'BATTLEFEST', sans-serif;
       background-color: #0d1b2a;
       color: #fff;
       display: flex;
@@ -99,13 +99,17 @@
     .bottom-nav button {
       background: none;
       border: none;
-      color: #fff;
       font-size: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
-      user-select: none;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+
+    .bottom-nav button.active {
+      opacity: 1;
     }
 
     .bottom-nav img {
@@ -139,32 +143,40 @@
       <button class="category">Превью 🚀</button>
       <button class="category">Приватка💸</button>
       <button class="category">Превью 🚀</button>
-
-      <!-- Дубликат для плавности анимации -->
-      <button class="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
-      <button class="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
       <button class="category">Приватка💸</button>
       <button class="category">Превью 🚀</button>
     </div>
   </div>
 
+  <!-- Пока контента нет, тут пусто -->
+
   <nav class="bottom-nav">
-    <button>
+    <button id="catalogBtn" class="active">
       <img src="home.svg" alt="" />
       <span>Каталог</span>
     </button>
     <div class="divider"></div>
-    <button>
+    <button id="cartBtn">
       <img src="cart.svg" alt="" />
       <span>Корзина</span>
     </button>
     <div class="divider"></div>
-    <button>
+    <button id="profileBtn">
       <img src="profile.svg" alt="" />
       <span>Профиль</span>
     </button>
   </nav>
+
+  <script>
+    const navButtons = document.querySelectorAll('.bottom-nav button');
+
+    navButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        button.
+          classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>
