@@ -11,13 +11,10 @@ body {
 }
 
 /* Заголовок */
-.header {
-  text-align: center;
-  padding: 15px 0;
-  font-family: 'Battlefest', sans-serif;
+.header h1 {
+  margin: 0;
   font-size: 24px;
-  color: white;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* вот это лишнее */
+  color: #fff;
 }
 
 .header h1 {
@@ -28,10 +25,13 @@ body {
 
 /* Горизонтальный скролл категорий */
 .category-marquee {
-  overflow: hidden;
-  background-color: #1b263b;
+  overflow-x: auto;
+  white-space: nowrap;
   padding: 10px 0;
-  position: relative;
+  background-color: #1a2b4c;
+  border-top: none; /* <-- убедись, что тут нет лишнего */
+  border-bottom: none; /* <-- и здесь */
+  box-shadow: none; /* <-- и здесь */
 }
 
 .category-track {
