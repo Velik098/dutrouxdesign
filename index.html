@@ -5,9 +5,274 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dutroux Sell🔥</title>
   <style>
-    /* Оставлены ВСЕ предыдущие стили — см. предыдущий ответ */
-    /* ...СТИЛИ ОТСЮДА ВЫРЕЗАНЫ ДЛЯ КРАТКОСТИ... */
-    
+    body {
+      margin: 0;
+      font-family: 'BATTLEFEST', sans-serif;
+      background-color: #0d1b2a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60px;
+      padding-top: 10px;
+      box-sizing: border-box;
+      text-align: center;
+      user-select: none;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #fff;
+    }
+
+    .divider-horizontal {
+      width: 100%;
+      height: 1px;
+      background-color: #ffffff22;
+      margin: 0 0 10px 0;
+    }
+
+    .category-marquee {
+      overflow: hidden;
+      padding: 10px 0;
+      background-color: #1a2b4c;
+      position: relative;
+      user-select: none;
+    }
+
+    .category-track {
+      display: flex;
+      gap: 12px;
+      animation: scroll-left 20s linear infinite;
+      width: max-content;
+      pointer-events: auto;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .category {
+      background-color: #415a77;
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      white-space: nowrap;
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+
+    .category:hover {
+      background-color: #5678a1;
+    }
+
+    .tab-content {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      margin-bottom: 60px;
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: #1b263b;
+      padding: 8px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      border-top: 1px solid #324a5f;
+      user-select: none;
+    }
+
+    .bottom-nav button {
+      background: none;
+      border: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.3s, color 0.3s;
+      color: #fff;
+    }
+
+    .bottom-nav button.active {
+      opacity: 1;
+      color: #fff;
+    }
+
+    .bottom-nav img {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 4px;
+      pointer-events: none;
+    }
+
+    .divider {
+      width: 1px;
+      height: 24px;
+      background-color: #324a5f;
+    }
+
+    .cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+    }
+
+    .cart-back {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .cart-title {
+      flex: 1;
+      text-align: center;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .cart-total {
+      color: #00ff80;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .cart-body {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 16px;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+    }
+
+    .profile-back {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .profile-title {
+      flex: 1;
+      text-align: center;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .profile-info img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 16px;
+    }
+
+    .profile-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .profile-text .username {
+      color: #ffffffcc;
+      font-size: 14px;
+    }
+
+    .profile-text .id {
+      color: #ffffff88;
+      font-size: 12px;
+    }
+
+    .dashed-line {
+      border-top: 1px dashed #ffffff44;
+      margin: 20px 0;
+    }
+
+    .balance-card, .promocode-card {
+      background-color: #0f2a42;
+      border: 1px solid #1b95e0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .balance-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .balance-header img {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) invert(1);
+    }
+
+    .balance-amount {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .top-up-button, .activate-button {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background-color: #1b95e0;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .promocode-card input {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+      background-color: #1a2b3c;
+      color: #fff;
+      outline: none;
+      margin-top: 8px;
+    }
+
     .product-card {
       background-color: #0f2a42;
       border: 1px solid #1b95e0;
@@ -34,6 +299,7 @@
     .product-title {
       font-weight: bold;
       font-size: 16px;
+      color: #ffffff;
     }
 
     .product-description {
@@ -56,47 +322,77 @@
       <button class="category">Превью 🚀</button>
       <button class="category">Приватка💸</button>
       <button class="category">Превью 🚀</button>
-      <button class="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
     </div>
   </div>
 
   <div class="tab-content">
     <div id="catalog" class="tab-pane active">
-      <!-- 🔽 Каталог товаров -->
       <div class="product-card">
-        <img src="preview1.png" alt="Товар 1">
+        <img src="preview1.png" alt="Превью 1">
         <div class="product-info">
           <div class="product-title">Превью</div>
           <div class="product-description">Красочное превью для Telegram канала</div>
         </div>
       </div>
-
       <div class="product-card">
-        <img src="preview2.png" alt="Товар 2">
+        <img src="preview2.png" alt="Превью 2">
         <div class="product-info">
           <div class="product-title">Превью</div>
           <div class="product-description">Анимированное превью для Shorts или Reels</div>
         </div>
       </div>
+    </div>
 
-      <div class="product-card">
-        <img src="preview3.png" alt="Товар 3">
-        <div class="product-info">
-          <div class="product-title">Превью</div>
-          <div class="product-description">3D стиль, идеально под видео «Toilet Agents»</div>
-        </div>
+    <div id="cart" class="tab-pane">
+      <div class="cart-header">
+        <button id="backToCatalog" class="cart-back">←</button>
+        <div class="cart-title">КОРЗИНА</div>
+        <div class="cart-total">К оплате 0,00 руб</div>
+      </div>
+      <div class="cart-body">
+        Здесь будет содержимое вашей корзины.
       </div>
     </div>
 
-    <!-- 🛒 Корзина и 👤 Профиль — без изменений (оставлены как есть) -->
-    <!-- ... -->
-    
-    <!-- ВСТАВЬ ТУТ КОД ИЗ ПРОШЛОГО ОТВЕТА ДЛЯ КОРЗИНЫ И ПРОФИЛЯ -->
+    <div id="profile" class="tab-pane">
+      <div class="profile-header">
+        <button id="backToCatalog2" class="profile-back">←</button>
+        <div class="profile-title">ПРОФИЛЬ</div>
+      </div>
 
+      <div class="profile-info">
+        <img src="avatar.png" alt="Avatar" />
+        <div class="profile-text">
+          <strong>Иван Иванов</strong>
+          <div class="username">@ivanuser</div>
+          <div class="id">ID: 123456789</div>
+        </div>
+      </div>
+
+      <div class="dashed-line"></div>
+
+      <div class="balance-card">
+        <div class="balance-header">
+          <img src="wallet.svg" alt="Wallet" />
+          <span>Баланс</span>
+        </div>
+        <div class="balance-amount">0,00 Р</div>
+        <button class="top-up-button">Пополнить баланс</button>
+      </div>
+
+      <div class="dashed-line"></div>
+
+      <div class="promocode-card">
+        <div class="balance-header">
+          <img src="promo-icon.svg" alt="Promo" />
+          <span>Промокод</span>
+        </div>
+        <input type="text" id="promo" placeholder="Введите промокод" />
+        <button class="activate-button">Активировать</button>
+      </div>
+    </div>
   </div>
 
-  <!-- 🔽 Нижнее меню -->
   <nav class="bottom-nav">
     <button id="catalogBtn" class="active" data-tab="catalog">
       <img src="home.svg" alt="Каталог" />
@@ -114,7 +410,6 @@
     </button>
   </nav>
 
-  <!-- 🔽 Скрипт переключения вкладок -->
   <script>
     const buttons = document.querySelectorAll('.bottom-nav button');
     const panes = document.querySelectorAll('.tab-pane');
@@ -123,24 +418,20 @@
       button.addEventListener('click', () => {
         buttons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
-
         panes.forEach(pane => pane.classList.remove('active'));
         const tabId = button.dataset.tab;
-        const activePane = document.getElementById(tabId);
-        if (activePane) {
-          activePane.classList.add('active');
-        }
+        document.getElementById(tabId).classList.add('active');
       });
     });
 
-    document.getElementById('backToCatalog')?.addEventListener('click', () => {
+    document.getElementById('backToCatalog').addEventListener('click', () => {
       document.getElementById('catalog').classList.add('active');
       document.getElementById('cart').classList.remove('active');
       document.getElementById('catalogBtn').classList.add('active');
       document.getElementById('cartBtn').classList.remove('active');
     });
 
-    document.getElementById('backToCatalog2')?.addEventListener('click', () => {
+    document.getElementById('backToCatalog2').addEventListener('click', () => {
       document.getElementById('catalog').classList.add('active');
       document.getElementById('profile').classList.remove('active');
       document.getElementById('catalogBtn').classList.add('active');
