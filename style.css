@@ -1,164 +1,141 @@
+/* Основной фон и шрифт */
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #0f172a; /* тёмно-синий фон */
-  color: white;
+  font-family: 'BATTLEFEST', sans-serif;
+  background-color: #0d1b2a; /* Тёмно-синий */
+  color: #fff;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
+/* Заголовок */
 .header {
+  background-color: #1b263b;
   padding: 16px;
   text-align: center;
-  background-color: #1e293b;
-  border-bottom: 1px solid #334155;
 }
 
 .header h1 {
   margin: 0;
   font-size: 24px;
-  font-weight: bold;
+  color: #fff;
 }
 
-.categories {
-  display: flex;
+/* Горизонтальный скролл категорий */
+.category-marquee {
   overflow-x: auto;
-  padding: 10px;
-  background-color: #1e293b;
-  border-bottom: 1px solid #334155;
+  white-space: nowrap;
+  background-color: #1b263b;
+  padding: 10px 0;
+}
+
+.category-track {
+  display: inline-flex;
+  gap: 12px;
+  padding: 0 12px;
 }
 
 .category {
-  background-color: #334155;
-  color: white;
+  background-color: #415a77;
   border: none;
-  border-radius: 20px;
+  color: #fff;
   padding: 8px 16px;
-  margin-right: 10px;
-  font-size: 14px;
+  border-radius: 20px;
   cursor: pointer;
+  font-size: 14px;
   white-space: nowrap;
 }
 
-.category.active {
-  background-color: #3b82f6;
-}
-
-.content {
-  flex-grow: 1;
+/* Блок с вертикальной полосой и карточкой */
+.preview-block {
+  display: flex;
   padding: 16px;
-  text-align: center;
-  font-size: 16px;
 }
 
+.preview-sidebar {
+  width: 80px;
+  background-color: #1b95e0;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.preview-content {
+  flex: 1;
+  padding-left: 16px;
+}
+
+.preview-card {
+  background-color: #13283f;
+  border: 2px solid #1b95e0;
+  border-radius: 16px;
+  padding: 16px;
+  max-width: 100%;
+}
+
+.preview-image {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto 12px;
+}
+
+.preview-description {
+  font-size: 14px;
+  color: #e0e0e0;
+  text-align: center;
+}
+
+/* Нижнее меню */
 .bottom-nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #1e293b;
-  border-top: 1px solid #334155;
+  background-color: #1b263b;
   padding: 8px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid #324a5f;
 }
 
 .bottom-nav button {
   background: none;
   border: none;
-  color: white;
-  text-align: center;
+  color: #fff;
   font-size: 12px;
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
 }
 
 .bottom-nav img {
   width: 24px;
   height: 24px;
-  display: block;
-  margin: 0 auto 4px;
-  filter: brightness(0) invert(1);
+  margin-bottom: 4px;
 }
 
 .divider {
   width: 1px;
   height: 24px;
-  background-color: #334155;
+  background-color: #324a5f;
 }
 
-.category-marquee {
-  overflow: hidden;
-  background-color: #1e293b;
-  border-bottom: 1px solid #334155;
-  height: 50px;
-  position: relative;
-}
-
-.category-track {
-  display: flex;
-  width: max-content;
-  animation: scroll-left 20s linear infinite;
-}
-
-.category {
-  background-color: #334155;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 16px;
-  margin: 8px 10px;
-  font-size: 14px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-@keyframes scroll-left {
-  0% {
-    transform: translateX(0%);
+/* Адаптив */
+@media (max-width: 480px) {
+  .preview-card {
+    padding: 12px;
   }
-  100% {
-    transform: translateX(-50%);
+  .preview-description {
+    font-size: 13px;
   }
-}
-
-/* Левая вертикальная панель */
-.sidebar {
-  position: absolute;
-  left: 0;
-  top: 60px;
-  height: 100%;
-  width: 10px;
-  background-color: #4fa3ff; /* светло-синий */
-  border-radius: 5px;
-}
-
-.sidebar h2 {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  text-align: center;
-  margin: 20px 0;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-/* Карточка товара */
-.item-card {
-  margin-left: 30px;
-  margin-top: 40px;
-  background-color: #1c3b65; /* чуть отличающийся от фона */
-  border: 2px solid #4fa3ff;
-  border-radius: 15px;
-  padding: 20px;
-  max-width: 300px;
-  color: white;
-}
-
-.item-image {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 10px;
-}
-
-.item-description {
-  font-size: 14px;
-  line-height: 1.4;
 }
