@@ -53,7 +53,7 @@ const YooKassa = require('@appigram/yookassa-node').YooKassa;
         type: 'redirect',
         return_url: WEBAPP_URL,
       },
-      description: Покупка товара: ${product} от ${username},
+      description: `Покупка товара: ${product} от ${username}`,
       metadata: {
         user_id,
         username,
