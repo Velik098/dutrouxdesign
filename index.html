@@ -15,6 +15,7 @@
       min-height: 100vh;
       box-sizing: border-box;
     }
+
     .header {
       display: flex;
       justify-content: center;
@@ -24,16 +25,19 @@
       text-align: center;
       user-select: none;
     }
+
     .header h1 {
       margin: 0;
       font-size: 24px;
     }
+
     .divider-horizontal {
       width: 100%;
       height: 1px;
       background-color: #ffffff22;
       margin: 0 0 10px 0;
     }
+
     .category-marquee {
       overflow: hidden;
       padding: 10px 0;
@@ -41,16 +45,19 @@
       position: relative;
       user-select: none;
     }
+
     .category-track {
       display: flex;
       gap: 12px;
       animation: scroll-left 20s linear infinite;
       width: max-content;
     }
+
     @keyframes scroll-left {
       0% { transform: translateX(0%); }
       100% { transform: translateX(-50%); }
     }
+
     .category {
       background-color: #415a77;
       border: none;
@@ -62,21 +69,26 @@
       white-space: nowrap;
       transition: background-color 0.3s;
     }
+
     .category:hover {
       background-color: #5678a1;
     }
+
     .tab-content {
       flex: 1;
       padding: 16px;
       overflow-y: auto;
       margin-bottom: 60px;
     }
+
     .tab-pane {
       display: none;
     }
+
     .tab-pane.active {
       display: block;
     }
+
     .bottom-nav {
       display: flex;
       justify-content: space-around;
@@ -88,6 +100,7 @@
       width: 100%;
       border-top: 1px solid #324a5f;
     }
+
     .bottom-nav button {
       background: none;
       border: none;
@@ -99,26 +112,31 @@
       opacity: 0.5;
       color: #fff;
     }
+
     .bottom-nav button.active {
       opacity: 1;
     }
+
     .bottom-nav img {
       width: 24px;
       height: 24px;
       margin-bottom: 4px;
       pointer-events: none;
     }
+
     .divider {
       width: 1px;
       height: 24px;
       background-color: #324a5f;
     }
+
     .cart-header, .profile-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 16px;
     }
+
     .cart-back, .profile-back {
       background: none;
       border: none;
@@ -126,49 +144,59 @@
       font-size: 18px;
       cursor: pointer;
     }
+
     .cart-title, .profile-title {
       flex: 1;
       text-align: center;
       font-weight: bold;
       color: #fff;
     }
+
     .cart-total {
       color: #00ff80;
       font-weight: bold;
       font-size: 14px;
     }
+
     .cart-body {
       text-align: center;
       margin-top: 40px;
       font-size: 16px;
     }
+
     .profile-info {
       display: flex;
       align-items: center;
       margin-top: 20px;
     }
+
     .profile-info img {
       width: 60px;
       height: 60px;
       border-radius: 50%;
       margin-right: 16px;
     }
+
     .profile-text {
       display: flex;
       flex-direction: column;
     }
+
     .profile-text .username {
       color: #ffffffcc;
       font-size: 14px;
     }
+
     .profile-text .id {
       color: #ffffff88;
       font-size: 12px;
     }
+
     .dashed-line {
       border-top: 1px dashed #ffffff44;
       margin: 20px 0;
     }
+
     .balance-card, .promocode-card {
       background-color: #0f2a42;
       border: 1px solid #1b95e0;
@@ -176,21 +204,25 @@
       padding: 16px;
       margin-bottom: 16px;
     }
+
     .balance-header {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 8px;
     }
+
     .balance-header img {
       width: 20px;
       height: 20px;
       filter: brightness(0) invert(1);
     }
+
     .balance-amount {
       font-size: 20px;
       font-weight: bold;
     }
+
     .top-up-button, .activate-button {
       margin-top: 8px;
       padding: 8px 12px;
@@ -200,6 +232,7 @@
       color: #fff;
       cursor: pointer;
     }
+
     .promocode-card input {
       width: 100%;
       padding: 8px;
@@ -209,35 +242,89 @@
       color: #fff;
       margin-top: 8px;
     }
+
     .product-card {
       background-color: #0f2a42;
       border: 1px solid #1b95e0;
       border-radius: 12px;
-      padding: 12px;
+      padding: 16px;
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 16px;
       cursor: pointer;
     }
+
     .product-card img {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       border-radius: 10px;
       object-fit: cover;
     }
+
     .product-info {
       display: flex;
       flex-direction: column;
     }
+
     .product-title {
       font-weight: bold;
       font-size: 16px;
     }
+
     .product-description {
       font-size: 13px;
       color: #ffffffaa;
       margin-top: 4px;
+    }
+
+    /* Модальное окно */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background-color: #13283f;
+      padding: 20px;
+      border-radius: 16px;
+      max-width: 400px;
+      width: 100%;
+      color: #fff;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+    }
+
+    .modal-content img {
+      width: 100%;
+      border-radius: 12px;
+      margin: 12px 0;
+    }
+
+    .modal-content p {
+      margin: 10px 0;
+    }
+
+    .close-modal {
+      margin-top: 12px;
+      background-color: #1b95e0;
+      border: none;
+      padding: 10px 16px;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
     }
   </style>
 </head>
@@ -254,16 +341,17 @@
       <button class="category">Превью 🚀</button>
     </div>
   </div>
+
   <div class="tab-content">
     <div id="catalog" class="tab-pane active">
-      <div class="product-card">
+      <div class="product-card" data-title="Превью" data-description="Красочное превью для Telegram канала." data-image="preview1.png">
         <img src="preview1.png" alt="Превью 1">
         <div class="product-info">
           <div class="product-title">Превью</div>
           <div class="product-description">Красочное превью для Telegram канала</div>
         </div>
       </div>
-      <div class="product-card">
+      <div class="product-card" data-title="Приватка" data-description="Доступ к приватному контенту для подписчиков." data-image="preview2.png">
         <img src="preview2.png" alt="Приватка 1">
         <div class="product-info">
           <div class="product-title">Приватка</div>
@@ -271,6 +359,7 @@
         </div>
       </div>
     </div>
+
     <div id="cart" class="tab-pane">
       <div class="cart-header">
         <button id="backToCatalog" class="cart-back">←</button>
@@ -279,6 +368,7 @@
       </div>
       <div class="cart-body">Здесь будет содержимое вашей корзины.</div>
     </div>
+
     <div id="profile" class="tab-pane">
       <div class="profile-header">
         <button id="backToCatalog2" class="profile-back">←</button>
@@ -312,6 +402,18 @@
       </div>
     </div>
   </div>
+
+  <!-- Модальное окно -->
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <h2 id="modalTitle"></h2>
+      <img id="modalImage" src="" alt="">
+      <p id="modalDesc"></p>
+      <p><strong>Отзывы:</strong> ★★★★★</p>
+      <button class="close-modal" onclick="document.getElementById('productModal').style.display='none'">Закрыть</button>
+    </div>
+  </div>
+
   <nav class="bottom-nav">
     <button id="catalogBtn" class="active" data-tab="catalog">
       <img src="home.svg" alt="Каталог" />
@@ -328,9 +430,11 @@
       <span>Профиль</span>
     </button>
   </nav>
+
   <script>
     const buttons = document.querySelectorAll('.bottom-nav button');
     const panes = document.querySelectorAll('.tab-pane');
+
     buttons.forEach(button => {
       button.addEventListener('click', () => {
         buttons.forEach(btn => btn.classList.remove('active'));
@@ -340,18 +444,33 @@
         document.getElementById(tabId).classList.add('active');
       });
     });
+
     document.getElementById('backToCatalog').addEventListener('click', () => {
       document.getElementById('catalog').classList.add('active');
       document.getElementById('cart').classList.remove('active');
       document.getElementById('catalogBtn').classList.add('active');
       document.getElementById('cartBtn').classList.remove('active');
     });
+
     document.getElementById('backToCatalog2').addEventListener('click', () => {
       document.getElementById('catalog').classList.add('active');
       document.getElementById('profile').classList.remove('active');
       document.getElementById('catalogBtn').classList.add('active');
       document.getElementById('profileBtn').classList.remove('active');
     });
+
+    // Открытие модального окна
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const title = card.dataset.title;
+        const description = card.dataset.description;
+        const image = card.dataset.image;
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalDesc').innerText = description;
+        document.getElementById('modalImage').src = image;
+        document.getElementById('productModal').style.display = 'flex';
+      });
+    });
   </script>
 </body>
-</html> 
+</html>
