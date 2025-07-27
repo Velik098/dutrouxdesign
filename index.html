@@ -148,20 +148,76 @@
   </div>
 
   <!-- МОДАЛЬНОЕ ОКНО ОФОРМЛЕНИЯ ЗАКАЗА -->
-  <div id="orderModal" class="modal hidden">
-    <div class="modal-content">
-      <span id="orderCloseBtn" class="close-btn">&times;</span>
-      <h2>Оформление заказа</h2>
-      <p>Инструкция по оплате:</p>
-      <p>Переведите сумму <strong id="orderAmount">0 ₽</strong> на любую из карт:</p>
-      <ul>
-        <li>Т-банк: 2200701969378618</li>
-        <li>Сбербанк: 2202208282306746</li>
-      </ul>
-      <p>После оплаты отправьте скриншот в Telegram <strong>@Velik09845</strong> для подтверждения.</p>
+  <!-- ВСТАВЬТЕ ВМЕСТО СТАРОГО #orderModal -->
+
+<!-- МОДАЛЬНОЕ ОКНО ОФОРМЛЕНИЯ ЗАКАЗА -->
+<div id="orderModal" class="modal hidden">
+  <div class="modal-content">
+    <span id="orderCloseBtn" class="close-btn">&times;</span>
+    <h2>Оформление заказа</h2>
+    <p>К оплате: <strong id="orderAmount">0 ₽</strong></p>
+    <p>Выберите карту для перевода:</p>
+    <ul>
+      <li>Тинькофф: <strong>2200701969378618</strong></li>
+      <li>Сбербанк: <strong>2202208282306746</strong></li>
+    </ul>
+    <p>После оплаты отправьте скриншот <strong>в Telegram</strong> на @Velik09845.</p>
+    <div style="margin-top: 20px;">
+      <button id="paidButton">Я оплатил</button>
       <button id="orderCloseButton">Закрыть</button>
     </div>
   </div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО ВВОДА USERNAME -->
+<div id="usernameModal" class="modal hidden">
+  <div class="modal-content">
+    <span id="usernameCloseBtn" class="close-btn">&times;</span>
+    <h3>Укажите ваш Telegram username</h3>
+    <p>Это нужно, чтобы мы могли найти ваш платёж и выслать товар.</p>
+    <input type="text" id="tgUsernameInput" placeholder="@username" style="width: 100%; padding: 8px; margin-top: 10px;">
+    <button id="submitUsername" style="margin-top: 15px;">ОК</button>
+  </div>
+</div>
+
+<script>
+  // Добавляем ссылки на элементы
+  const paidButton = document.getElementById('paidButton');
+  const usernameModal = document.getElementById('usernameModal');
+  const usernameCloseBtn = document.getElementById('usernameCloseBtn');
+  const submitUsername = document.getElementById('submitUsername');
+  const tgUsernameInput = document.getElementById('tgUsernameInput');
+
+  // Кнопка "Я оплатил"
+  paidButton.onclick = () => {
+    orderModal.classList.add('hidden');
+    usernameModal.classList.remove('hidden');
+  };
+
+  // Закрытие окна username
+  usernameCloseBtn.onclick = () => {
+    usernameModal.classList.add('hidden');
+  };
+
+  // Закрытие окна при клике вне
+  window.addEventListener('click', (e) => {
+    if (e.target === usernameModal) {
+      usernameModal.classList.add('hidden');
+    }
+  });
+
+  // Кнопка "ОК" после ввода username
+  submitUsername.onclick = () => {
+    const username = tgUsernameInput.value.trim();
+    if (!username || !username.startsWith('@')) {
+      alert('Пожалуйста, введите корректный username Telegram, начинающийся с "@"');
+      return;
+    }
+    usernameModal.classList.add('hidden');
+    alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
+    // Здесь можно добавить отправку username на сервер
+  };
+</script>
 
   <script>
     const navButtons = document.querySelectorAll('.bottom-nav button');
