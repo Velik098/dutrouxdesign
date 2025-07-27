@@ -1,3 +1,4 @@
+/* Общие стили */
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -9,15 +10,14 @@ body {
   box-sizing: border-box;
 }
 
-/* Заголовок */
+/* Шапка */
 .header {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 60px;
-  background-color: #0f2a42;
+  background: #0f2a42;
 }
-
 .header h1 {
   margin: 0;
   font-size: 24px;
@@ -28,15 +28,13 @@ body {
 .divider-horizontal {
   width: 100%;
   height: 1px;
-  background-color: #ffffff22;
+  background: #ffffff22;
 }
-
 .category-marquee {
   overflow: hidden;
   padding: 10px 0;
-  background-color: #1a2b4c;
+  background: #1a2b4c;
 }
-
 .category-track {
   display: flex;
   gap: 12px;
@@ -44,14 +42,12 @@ body {
   width: max-content;
   user-select: none;
 }
-
 @keyframes scroll-left {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
 }
-
 .category {
-  background-color: #415a77;
+  background: #415a77;
   border: none;
   color: #fff;
   padding: 8px 16px;
@@ -66,39 +62,32 @@ body {
   flex: 1;
   padding: 12px 0 80px;
 }
-
 .tab-pane {
   display: none;
 }
-
 .tab-pane.active {
   display: block;
 }
 
-/* Заголовок каталога */
+/* Каталог */
 .catalog-header {
   display: flex;
   align-items: center;
   margin: 16px;
 }
-
 .catalog-header .bar {
   width: 4px;
   height: 24px;
-  background-color: white;
+  background: #fff;
   margin-right: 10px;
   border-radius: 2px;
 }
-
 .catalog-header .title {
   font-size: 20px;
   font-weight: bold;
 }
-
-/* Карточки */
 .product-card {
-  background-color: #0c1624;
-  border: none;
+  background: #0c1624;
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -106,7 +95,6 @@ body {
   gap: 16px;
   margin: 20px 16px;
 }
-
 .product-card img {
   width: 120px;
   height: 120px;
@@ -114,114 +102,193 @@ body {
   border-radius: 12px;
   flex-shrink: 0;
 }
-
 .product-info {
   display: flex;
   flex-direction: column;
   flex: 1;
 }
-
 .product-title {
   font-weight: bold;
   font-size: 18px;
-  color: #ffffff;
+  color: #fff;
 }
-
 .product-description {
   font-size: 14px;
   color: #ffffffaa;
 }
-
 .product-price {
   color: #00ff80;
   font-weight: bold;
   margin: 6px 0;
 }
-
 .product-card button {
-  background: #00aa66;
   border: none;
-  color: white;
+  color: #fff;
   padding: 6px 12px;
   border-radius: 8px;
   cursor: pointer;
-  width: fit-content;
-  margin-top: 6px;
   font-weight: bold;
 }
-
+.product-card .add-btn {
+  background: #00aa66;
+  margin-top: 0;
+}
 .product-card .details-btn {
   background: #0077ff;
   margin-bottom: 6px;
 }
-
 .reviews {
   font-size: 12px;
   color: #ccc;
   margin-top: 6px;
 }
 
-/* Профиль */
-.profile-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 20px 16px;
-}
-
-.profile-info img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.balance-card, .promocode-card {
-  background: #13283f;
-  border: 2px solid #1b95e0;
-  border-radius: 12px;
-  padding: 12px;
-  margin: 12px 16px;
-}
-
-input {
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-  background: #1a2b3c;
-  color: white;
-  margin-top: 6px;
-}
-
 /* Корзина */
-.cart-body {
-  font-size: 16px;
-  padding: 16px;
-}
-
 .cart-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #0f2a42;
   padding: 12px 16px;
-  font-size: 16px;
 }
-
 .cart-header .back-btn {
   background: none;
   border: none;
-  color: white;
+  color: #fff;
   font-size: 16px;
   cursor: pointer;
 }
-
 .cart-header .title {
   font-weight: bold;
 }
-
 .cart-header .total {
   color: #00ff80;
+}
+.cart-body {
+  padding: 16px;
+}
+.cart-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.cart-controls button {
+  background: #0077ff;
+  border: none;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.checkout-btn {
+  display: block;
+  margin: 12px auto 80px;
+  padding: 10px 20px;
+  background: #00aa66;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Модалка */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal.hidden {
+  display: none;
+}
+.modal-content {
+  background: #0c1624;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 90%;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+.modal-content img {
+  max-width: 200px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.modal-content h2 {
+  margin: 10px 0;
+}
+.modal-content p {
+  margin: 10px;
+}
+.modal-price {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #00ff80;
+}
+#modal-add {
+  background: #00aa66;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+}
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #fff;
+}
+
+/* Профиль */
+.profile-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 16px;
+}
+.profile-info img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+.separator {
+  height: 1px;
+  border-top: 1px dashed #fff;
+  margin: 0 16px;
+}
+.styled-card {
+  background: #0c1624;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 12px 16px;
+}
+.styled-card button {
+  margin-top: 10px;
+  background: #0077ff;
+  border: none;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.styled-card input {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: #ffffff11;
+  color: #fff;
 }
 
 /* Нижняя навигация */
@@ -229,14 +296,13 @@ input {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #1b263b;
+  background: #1b263b;
   padding: 6px 0;
   position: fixed;
   bottom: 0;
   width: 100%;
   border-top: 1px solid #324a5f;
 }
-
 .bottom-nav button {
   background: none;
   border: none;
@@ -244,23 +310,19 @@ input {
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
   color: #ffffff80;
-  transition: color 0.3s;
+  transition: color .3s;
 }
-
+.bottom-nav button.active {
+  color: #fff;
+}
 .bottom-nav button img {
   width: 24px;
   height: 24px;
   margin-bottom: 4px;
-  filter: brightness(0.5);
-  transition: filter 0.3s;
+  filter: brightness(.5);
+  transition: filter .3s;
 }
-
-.bottom-nav button.active {
-  color: #ffffff;
-}
-
 .bottom-nav button.active img {
   filter: brightness(1);
 }
