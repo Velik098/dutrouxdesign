@@ -326,3 +326,9 @@ body {
 .bottom-nav button.active img {
   filter: brightness(1);
 }
+.promo-error {
+  margin-top: 8px;
+  font-size: 14px;
+  color: red;
+}
+
