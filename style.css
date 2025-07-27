@@ -76,6 +76,26 @@ body {
   display: block;
 }
 
+/* Заголовок каталога */
+.catalog-header {
+  display: flex;
+  align-items: center;
+  margin: 16px;
+}
+
+.catalog-header .bar {
+  width: 4px;
+  height: 24px;
+  background-color: white;
+  margin-right: 10px;
+  border-radius: 2px;
+}
+
+.catalog-header .title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
 /* Карточки */
 .product-card {
   background-color: #13283f;
@@ -130,6 +150,11 @@ body {
   margin-top: 6px;
 }
 
+.product-card .details-btn {
+  background: #0077ff;
+  margin-bottom: 6px;
+}
+
 .reviews {
   font-size: 12px;
   color: #ccc;
@@ -172,6 +197,31 @@ input {
 .cart-body {
   font-size: 16px;
   padding: 16px;
+}
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0f2a42;
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
+.cart-header .back-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-header .title {
+  font-weight: bold;
+}
+
+.cart-header .total {
+  color: #00ff80;
 }
 
 /* Нижняя навигация */
