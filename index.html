@@ -3,188 +3,126 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Магазин</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      background-color: #0e1a2b;
-      color: #fff;
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      padding: 12px;
-      background: #0f2a42;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .back-btn {
-      margin-right: 10px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .cart-total {
-      margin-left: auto;
-      color: #00ff88;
-      font-size: 16px;
-    }
-    .category-bar {
-      display: flex;
-      overflow-x: auto;
-      gap: 8px;
-      padding: 10px;
-      background: #1b263b;
-    }
-    .category-bar button {
-      background: #415a77;
-      border: none;
-      border-radius: 20px;
-      color: white;
-      padding: 6px 12px;
-      cursor: pointer;
-    }
-    .product-list {
-      padding: 16px;
-    }
-    .product-card {
-      background: #112b45;
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 16px;
-      border: 1px solid #1b95e0;
-    }
-    .product-card img {
-      width: 100%;
-      border-radius: 8px;
-    }
-    .product-title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 8px;
-    }
-    .product-description {
-      font-size: 14px;
-      color: #ccc;
-    }
-    .product-price {
-      color: #00ff80;
-      margin: 6px 0;
-      font-weight: bold;
-    }
-    .product-card button {
-      background: #0bbd78;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-    .reviews {
-      margin-top: 8px;
-      border-top: 1px dashed #888;
-      padding-top: 8px;
-      font-size: 13px;
-      color: #aaa;
-    }
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      background: #1b263b;
-      border-top: 1px solid #324a5f;
-    }
-    .bottom-nav button {
-      background: none;
-      border: none;
-      color: white;
-      opacity: 0.6;
-      padding: 10px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-    }
-    .bottom-nav button.active {
-      opacity: 1;
-    }
-    .bottom-nav svg {
-      width: 20px;
-      height: 20px;
-      margin-bottom: 4px;
-    }
-  </style>
+  <title>Dutroux Sell🔥</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="header">
-    <div class="back-btn" onclick="history.back()">← Назад</div>
-    <div class="cart-total" id="total">К оплате 0,00 ₽</div>
+    <h1>Dutroux Sell 🔥</h1>
   </div>
 
-  <div class="category-bar">
-    <button>Приватка 💸</button>
-    <button>Превью 🚀</button>
-    <button>Приватка 💸</button>
-    <button>Превью 🚀</button>
-  </div>
+  <div class="divider-horizontal"></div>
 
-  <div class="product-list" id="catalog">
-    <div class="product-card">
-      <img src="https://i.imgur.com/xkzE8fH.png" alt="Превью">
-      <div class="product-title">Превью</div>
-      <div class="product-description">Красочное превью для Telegram канала</div>
-      <div class="product-price">200 ₽</div>
-      <button onclick="addToCart(200)">Добавить в корзину</button>
-      <div class="reviews">
-        Пользователь: Всё отлично, качественно!<br>
-        Аноним: Быстрая доставка, рекомендую.
-      </div>
-    </div>
-
-    <div class="product-card">
-      <img src="https://i.imgur.com/R2VJrkl.png" alt="Приватка">
-      <div class="product-title">Приватка</div>
-      <div class="product-description">Доступ к приватному контенту для подписчиков</div>
-      <div class="product-price">300 ₽</div>
-      <button onclick="addToCart(300)">Добавить в корзину</button>
-      <div class="reviews">
-        Клиент: Контент 🔥, спасибо!<br>
-        Апон: Всё чётко, получил сразу!
-      </div>
+  <div class="category-marquee">
+    <div class="category-track">
+      <button class="category">Приватка 💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка 💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка 💸</button>
+      <button class="category">Превью 🚀</button>
+      <button class="category">Приватка 💸</button>
+      <button class="category">Превью 🚀</button>
     </div>
   </div>
 
+  <div class="tab-content">
+    <!-- КАТАЛОГ -->
+    <div id="catalog" class="tab-pane active">
+      <div class="product-card">
+        <img src="https://i.imgur.com/xkzE8fH.png" alt="Preview">
+        <div class="product-info">
+          <div class="product-title">Превью</div>
+          <div class="product-description">Красочное превью для Telegram канала</div>
+          <div class="product-price">200 ₽</div>
+          <button onclick="addToCart(200)">Добавить в корзину</button>
+          <div class="reviews">
+            <div class="review">Пользователь: Всё отлично, качественно!</div>
+            <div class="review">Аноним: Быстрая доставка, рекомендую.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="https://i.imgur.com/R2VJrkl.png" alt="Приватка">
+        <div class="product-info">
+          <div class="product-title">Приватка</div>
+          <div class="product-description">Доступ к приватному контенту для подписчиков</div>
+          <div class="product-price">300 ₽</div>
+          <button onclick="addToCart(300)">Добавить в корзину</button>
+          <div class="reviews">
+            <div class="review">Клиент: Контент 🔥, спасибо!</div>
+            <div class="review">Апон: Всё чётко, получил сразу!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- КОРЗИНА -->
+    <div id="cart" class="tab-pane">
+      <div class="cart-body">
+        <strong>Корзина</strong><br />
+        К оплате: <span id="total">0,00 ₽</span>
+      </div>
+    </div>
+
+    <!-- ПРОФИЛЬ -->
+    <div id="profile" class="tab-pane">
+      <div class="profile-info">
+        <img src="avatar.png" alt="Avatar">
+        <div>
+          <strong>Иван Иванов</strong><br>
+          @ivanuser<br>
+          ID: 123456789
+        </div>
+      </div>
+      <div class="balance-card">
+        <div>Баланс: <strong>0,00 ₽</strong></div>
+        <button>Пополнить баланс</button>
+      </div>
+      <div class="promocode-card">
+        <div>Промокод:</div>
+        <input type="text" placeholder="Введите промокод">
+        <button>Активировать</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- НИЖНЕЕ МЕНЮ -->
   <div class="bottom-nav">
-    <button class="active">
-      <svg fill="white" viewBox="0 0 24 24"><path d="M12 3l8 8h-5v7h-6v-7H4z"/></svg>
+    <button class="active" data-tab="catalog">
+      <img src="home.svg" alt="Каталог">
       Каталог
     </button>
-    <button>
-      <svg fill="white" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 
-      0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 
-      14h9.58c.89 0 1.66-.59 1.88-1.44l1.94-7.76A.993.993 0 
-      0 0 19.64 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.45C4.52 
-      14.37 5.48 16 7 16h12v-2H7.42l1.1-2z"/></svg>
+    <button data-tab="cart">
+      <img src="cart.svg" alt="Корзина">
       Корзина
     </button>
-    <button>
-      <svg fill="white" viewBox="0 0 24 24"><path d="M12 12c2.67 0 8 1.34 8 
-      4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a2 2 0 
-      1 0 0-4 2 2 0 0 0 0 4zm0-10C6.48 0 2 4.48 2 
-      10s4.48 10 10 10 10-4.48 10-10S17.52 0 12 0z"/></svg>
+    <button data-tab="profile">
+      <img src="profile.svg" alt="Профиль">
       Профиль
     </button>
   </div>
 
   <script>
+    const navButtons = document.querySelectorAll('.bottom-nav button');
+    const tabs = document.querySelectorAll('.tab-pane');
+    const totalText = document.getElementById('total');
     let total = 0;
-    function addToCart(price) {
-      total += price;
-      document.getElementById("total").innerText = "К оплате " + total.toFixed(2) + " ₽";
+
+    function addToCart(amount) {
+      total += amount;
+      totalText.textContent = total.toFixed(2) + " ₽";
     }
+
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        tabs.forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
   </script>
 </body>
 </html>
