@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      font-family: 'BATTLEFEST', sans-serif;
+      font-family: 'Arial', sans-serif;
       background-color: #0d1b2a;
       color: #fff;
       display: flex;
@@ -15,6 +15,7 @@
       min-height: 100vh;
       box-sizing: border-box;
     }
+
     .header {
       display: flex;
       justify-content: center;
@@ -24,16 +25,19 @@
       text-align: center;
       user-select: none;
     }
+
     .header h1 {
       margin: 0;
       font-size: 24px;
     }
+
     .divider-horizontal {
       width: 100%;
       height: 1px;
       background-color: #ffffff22;
       margin: 0 0 10px 0;
     }
+
     .category-marquee {
       overflow: hidden;
       padding: 10px 0;
@@ -41,16 +45,19 @@
       position: relative;
       user-select: none;
     }
+
     .category-track {
       display: flex;
       gap: 12px;
       animation: scroll-left 20s linear infinite;
       width: max-content;
     }
+
     @keyframes scroll-left {
       0% { transform: translateX(0%); }
       100% { transform: translateX(-50%); }
     }
+
     .category {
       background-color: #415a77;
       border: none;
@@ -62,21 +69,26 @@
       white-space: nowrap;
       transition: background-color 0.3s;
     }
+
     .category:hover {
       background-color: #5678a1;
     }
+
     .tab-content {
       flex: 1;
       padding: 16px;
       overflow-y: auto;
       margin-bottom: 60px;
     }
+
     .tab-pane {
       display: none;
     }
+
     .tab-pane.active {
       display: block;
     }
+
     .bottom-nav {
       display: flex;
       justify-content: space-around;
@@ -88,6 +100,7 @@
       width: 100%;
       border-top: 1px solid #324a5f;
     }
+
     .bottom-nav button {
       background: none;
       border: none;
@@ -99,206 +112,223 @@
       opacity: 0.5;
       color: #fff;
     }
+
     .bottom-nav button.active {
       opacity: 1;
     }
+
     .bottom-nav img {
       width: 24px;
       height: 24px;
       margin-bottom: 4px;
       pointer-events: none;
     }
-    .divider {
-      width: 1px;
-      height: 24px;
-      background-color: #324a5f;
-    }
+
     .product-card {
       background-color: #0f2a42;
       border: 1px solid #1b95e0;
       border-radius: 12px;
-      padding: 12px;
+      padding: 16px;
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 16px;
       cursor: pointer;
     }
+
     .product-card img {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       border-radius: 10px;
       object-fit: cover;
     }
+
     .product-info {
       display: flex;
       flex-direction: column;
     }
+
     .product-title {
       font-weight: bold;
       font-size: 16px;
     }
+
     .product-description {
       font-size: 13px;
       color: #ffffffaa;
       margin-top: 4px;
     }
 
-    /* Модальное окно */
     .modal {
       display: none;
       position: fixed;
-      z-index: 1000;
-      left: 0;
+      z-index: 999;
       top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.7);
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
+
     .modal-content {
       background-color: #13283f;
-      border: 2px solid #1b95e0;
-      border-radius: 16px;
-      max-width: 90%;
-      width: 400px;
       padding: 20px;
-      position: relative;
+      border-radius: 16px;
+      max-width: 400px;
+      width: 100%;
       color: #fff;
     }
-    .close-modal {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      background: none;
-      border: none;
-      font-size: 22px;
-      color: #fff;
-      cursor: pointer;
+
+    .modal-content h2 {
+      margin-top: 0;
     }
-    .modal img {
+
+    .modal-content img {
       width: 100%;
       border-radius: 12px;
-      margin-bottom: 12px;
+      margin: 12px 0;
     }
-    .modal .add-to-cart {
-      background-color: #1ed760;
+
+    .modal-content p {
+      margin: 10px 0;
+    }
+
+    .close-modal {
+      margin-top: 12px;
+      background-color: #1b95e0;
       border: none;
       padding: 10px 16px;
-      color: #fff;
-      font-weight: bold;
+      color: white;
       border-radius: 8px;
-      margin: 12px 0;
       cursor: pointer;
       width: 100%;
     }
-    .modal .reviews {
-      margin-top: 20px;
+
+    .add-to-cart {
+      background-color: #00c851;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin: 10px 0;
     }
-    .modal .reviews h4 {
-      margin: 0 0 10px;
+
+    .reviews {
+      margin-top: 16px;
     }
-    .modal .comment {
-      background-color: #1a2b3c;
-      padding: 10px;
+
+    .reviews ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .reviews li {
+      background-color: #1c3a5a;
+      padding: 8px;
       border-radius: 8px;
       margin-bottom: 8px;
       font-size: 14px;
     }
-    .modal textarea {
+
+    .reviews textarea {
       width: 100%;
       padding: 8px;
-      border-radius: 6px;
       border: none;
-      background-color: #0f1e33;
+      border-radius: 8px;
+      background-color: #0f2a42;
       color: #fff;
-      margin-top: 10px;
-      resize: none;
+      margin-top: 8px;
     }
-    .modal button.submit-comment {
-      margin-top: 6px;
+
+    .submit-review {
+      margin-top: 8px;
+      padding: 8px 12px;
       background-color: #1b95e0;
-      color: #fff;
       border: none;
-      padding: 6px 10px;
-      border-radius: 6px;
+      border-radius: 8px;
+      color: #fff;
       cursor: pointer;
+      width: 100%;
     }
   </style>
 </head>
 <body>
-  <header class="header"><h1>Dutroux Sell🔥</h1></header>
-  <div class="divider-horizontal"></div>
-  <div class="category-marquee">
-    <div class="category-track">
-      <button class="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
-      <button class="category">Приватка💸</button>
-      <button class="category">Превью 🚀</button>
-    </div>
-  </div>
+  <header class="header">
+    <h1>Dutroux Sell🔥</h1>
+  </header>
+
   <div class="tab-content">
     <div id="catalog" class="tab-pane active">
-      <div class="product-card" onclick="openModal('preview1.png', 'Превью', 'Красочное превью для Telegram канала')">
-        <img src="preview1.png" alt="Превью">
+      <div class="product-card" data-title="Превью" data-description="Красочное превью для Telegram канала." data-image="preview1.png">
+        <img src="preview1.png" alt="Превью 1">
         <div class="product-info">
           <div class="product-title">Превью</div>
           <div class="product-description">Красочное превью для Telegram канала</div>
         </div>
       </div>
-      <div class="product-card" onclick="openModal('preview2.png', 'Приватка', 'Доступ к приватному контенту для подписчиков')">
-        <img src="preview2.png" alt="Приватка">
+      <div class="product-card" data-title="Приватка" data-description="Доступ к приватному контенту для подписчиков." data-image="preview2.png">
+        <img src="preview2.png" alt="Приватка 1">
         <div class="product-info">
           <div class="product-title">Приватка</div>
           <div class="product-description">Доступ к приватному контенту для подписчиков</div>
         </div>
       </div>
     </div>
-    <!-- корзина и профиль (не изменялись) -->
   </div>
 
-  <!-- Модалка -->
-  <div id="productModal" class="modal">
+  <div class="modal" id="productModal">
     <div class="modal-content">
-      <button class="close-modal" onclick="closeModal()">×</button>
-      <img id="modalImg" src="" alt="">
-      <h3 id="modalTitle"></h3>
+      <h2 id="modalTitle"></h2>
+      <img id="modalImage" src="" alt="">
       <p id="modalDesc"></p>
-      <button class="add-to-cart">Добавить в корзину</button>
+      <button class="add-to-cart">🛒 Добавить в корзину</button>
       <div class="reviews">
-        <h4>Отзывы</h4>
-        <div id="commentList">
-          <div class="comment">Все хорошо, быстро и качественно</div>
-          <div class="comment">Спасибо! Очень понравилось</div>
-        </div>
-        <textarea id="commentInput" placeholder="Напишите отзыв..."></textarea>
-        <button class="submit-comment" onclick="addComment()">Оставить отзыв</button>
+        <strong>Отзывы:</strong>
+        <ul id="modalReviews">
+          <li>Всё хорошо, быстро и качественно!</li>
+          <li>Очень доволен покупкой</li>
+        </ul>
+        <textarea id="reviewInput" placeholder="Оставьте отзыв..."></textarea>
+        <button class="submit-review">Отправить отзыв</button>
       </div>
+      <button class="close-modal" onclick="document.getElementById('productModal').style.display='none'">Закрыть</button>
     </div>
   </div>
 
   <script>
-    function openModal(img, title, desc) {
-      document.getElementById('modalImg').src = img;
-      document.getElementById('modalTitle').innerText = title;
-      document.getElementById('modalDesc').innerText = desc;
-      document.getElementById('productModal').style.display = 'flex';
-    }
-    function closeModal() {
-      document.getElementById('productModal').style.display = 'none';
-    }
-    function addComment() {
-      const input = document.getElementById('commentInput');
-      const commentText = input.value.trim();
-      if (commentText) {
-        const commentDiv = document.createElement('div');
-        commentDiv.className = 'comment';
-        commentDiv.innerText = commentText;
-        document.getElementById('commentList').appendChild(commentDiv);
-        input.value = '';
+    const modal = document.getElementById('productModal');
+    const title = document.getElementById('modalTitle');
+    const desc = document.getElementById('modalDesc');
+    const img = document.getElementById('modalImage');
+    const reviewsList = document.getElementById('modalReviews');
+    const reviewInput = document.getElementById('reviewInput');
+    const submitReviewBtn = document.querySelector('.submit-review');
+
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.addEventListener('click', () => {
+        title.innerText = card.dataset.title;
+        desc.innerText = card.dataset.description;
+        img.src = card.dataset.image;
+        modal.style.display = 'flex';
+      });
+    });
+
+    submitReviewBtn.addEventListener('click', () => {
+      const reviewText = reviewInput.value.trim();
+      if (reviewText !== '') {
+        const li = document.createElement('li');
+        li.textContent = reviewText;
+        reviewsList.appendChild(li);
+        reviewInput.value = '';
       }
-    }
+    });
   </script>
 </body>
 </html>
