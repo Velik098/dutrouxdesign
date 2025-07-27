@@ -1,4 +1,4 @@
-<!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,169 +6,213 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dutroux Sell🔥</title>
   <style>
-    /* ...[весь CSS остается без изменений]... */
-    .product-price {
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #0d1b2a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header {
+      text-align: center;
+      padding: 12px;
+      font-size: 24px;
+    }
+    .divider-horizontal {
+      height: 1px;
+      background: #ffffff33;
+      margin: 0 16px;
+    }
+    .category-marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      background: #1b263b;
+      padding: 10px 0;
+      position: relative;
+    }
+    .category-track {
+      display: inline-flex;
+      animation: scroll-left 20s linear infinite;
+      gap: 12px;
+      padding-left: 100%;
+    }
+    .category {
+      background: #415a77;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
       font-size: 14px;
-      font-weight: bold;
-      color: #00ff80;
+      white-space: nowrap;
+    }
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    .tab-content {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      margin-bottom: 60px;
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      background: #1b263b;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      border-top: 1px solid #324a5f;
+    }
+    .bottom-nav button {
+      background: none;
+      border: none;
+      color: white;
+      opacity: 0.6;
+      font-size: 12px;
+      padding: 10px 0;
+      flex-direction: column;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .bottom-nav button.active { opacity: 1; }
+    .product-card {
+      background: #0f2a42;
+      border: 1px solid #1b95e0;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .product-title { font-weight: bold; font-size: 16px; }
+    .product-description { font-size: 13px; color: #ccc; margin: 6px 0; }
+    .product-price { color: #00ff80; font-weight: bold; margin: 6px 0; }
+    .product-card button {
+      background: #00aa66;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .reviews {
+      margin-top: 10px;
+      border-top: 1px dashed #ccc;
+      padding-top: 10px;
+    }
+    .review {
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .profile-info img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+    .balance-card, .promocode-card {
+      background: #0f2a42;
+      border: 1px solid #1b95e0;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      background: #1a2b3c;
+      color: white;
       margin-top: 6px;
     }
-    .modal-price {
-      font-weight: bold;
-      color: #00ff80;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
+    .cart-body { font-size: 14px; margin-top: 16px; }
   </style>
 </head>
 <body>
-  <header class="header">
-    <h1>Dutroux Sell🔥</h1>
-  </header>
+  <div class="header">Dutroux Sell 🔥</div>
   <div class="divider-horizontal"></div>
   <div class="category-marquee">
     <div class="category-track">
-      <button class="category">Приватка💸</button>
+      <button class="category">Приватка 💸</button>
       <button class="category">Превью 🚀</button>
-      <button class="category">Приватка💸</button>
+      <button class="category">Приватка 💸</button>
       <button class="category">Превью 🚀</button>
     </div>
   </div>
   <div class="tab-content">
     <div id="catalog" class="tab-pane active">
-      <div class="product-card" data-title="Превью" data-description="Красочное превью для Telegram канала." data-image="preview1.png" data-price="200">
-        <img src="preview1.png" alt="Превью 1">
-        <div class="product-info">
-          <div class="product-title">Превью</div>
-          <div class="product-description">Красочное превью для Telegram канала</div>
-          <div class="product-price">200 ₽</div>
+      <div class="product-card">
+        <div class="product-title">Превью</div>
+        <div class="product-description">Красочное превью для Telegram канала</div>
+        <div class="product-price">200 ₽</div>
+        <button>Добавить в корзину</button>
+        <div class="reviews">
+          <div class="review">Пользователь: Всё отлично, качественно!</div>
+          <div class="review">Аноним: Быстрая доставка, рекомендую.</div>
         </div>
       </div>
-      <div class="product-card" data-title="Приватка" data-description="Доступ к приватному контенту для подписчиков." data-image="preview2.png" data-price="300">
-        <img src="preview2.png" alt="Приватка 1">
-        <div class="product-info">
-          <div class="product-title">Приватка</div>
-          <div class="product-description">Доступ к приватному контенту для подписчиков</div>
-          <div class="product-price">300 ₽</div>
+      <div class="product-card">
+        <div class="product-title">Приватка</div>
+        <div class="product-description">Доступ к приватному контенту для подписчиков</div>
+        <div class="product-price">300 ₽</div>
+        <button>Добавить в корзину</button>
+        <div class="reviews">
+          <div class="review">Клиент: Контент 🔥, спасибо!</div>
+          <div class="review">Anon: Всё чётко, получил сразу!</div>
         </div>
       </div>
     </div>
-
-    <!-- Корзина -->
     <div id="cart" class="tab-pane">
-      <div class="cart-header">
-        <button id="backToCatalog" class="cart-back">←</button>
-        <div class="cart-title">КОРЗИНА</div>
-        <div class="cart-total">К оплате 0,00 руб</div>
-      </div>
       <div class="cart-body">Здесь будет содержимое вашей корзины.</div>
     </div>
-
-    <!-- Профиль -->
     <div id="profile" class="tab-pane">
-      <div class="profile-header">
-        <button id="backToCatalog2" class="profile-back">←</button>
-        <div class="profile-title">ПРОФИЛЬ</div>
-      </div>
       <div class="profile-info">
-        <img src="avatar.png" alt="Avatar" />
-        <div class="profile-text">
-          <strong>Иван Иванов</strong>
-          <div class="username">@ivanuser</div>
-          <div class="id">ID: 123456789</div>
+        <img src="avatar.png" alt="Avatar">
+        <div>
+          <strong>Иван Иванов</strong><br>
+          @ivanuser<br>
+          ID: 123456789
         </div>
       </div>
-      <div class="dashed-line"></div>
       <div class="balance-card">
-        <div class="balance-header">
-          <img src="wallet.svg" alt="Wallet" />
-          <span>Баланс</span>
-        </div>
-        <div class="balance-amount">0,00 Р</div>
-        <button class="top-up-button">Пополнить баланс</button>
+        <div>Баланс: <strong>0,00 ₽</strong></div>
+        <button>Пополнить баланс</button>
       </div>
-      <div class="dashed-line"></div>
       <div class="promocode-card">
-        <div class="balance-header">
-          <img src="promo-icon.svg" alt="Promo" />
-          <span>Промокод</span>
-        </div>
-        <input type="text" id="promo" placeholder="Введите промокод" />
-        <button class="activate-button">Активировать</button>
+        <div>Промокод:</div>
+        <input type="text" placeholder="Введите промокод">
+        <button>Активировать</button>
       </div>
     </div>
   </div>
-
-  <!-- Модальное окно -->
-  <div class="modal" id="productModal">
-    <div class="modal-content">
-      <h2 id="modalTitle"></h2>
-      <img id="modalImage" src="" alt="">
-      <p id="modalDesc"></p>
-      <div id="modalPrice" class="modal-price"></div>
-      <p><strong>Отзывы:</strong></p>
-      <p>«Все хорошо, быстро и качественно»</p>
-      <button class="close-modal" onclick="document.getElementById('productModal').style.display='none'">Закрыть</button>
-    </div>
+  <div class="bottom-nav">
+    <button class="active" data-tab="catalog">Каталог</button>
+    <button data-tab="cart">Корзина</button>
+    <button data-tab="profile">Профиль</button>
   </div>
-
-  <!-- Нижнее меню -->
-  <nav class="bottom-nav">
-    <button id="catalogBtn" class="active" data-tab="catalog">
-      <img src="home.svg" alt="Каталог" />
-      <span>Каталог</span>
-    </button>
-    <div class="divider"></div>
-    <button id="cartBtn" data-tab="cart">
-      <img src="cart.svg" alt="Корзина" />
-      <span>Корзина</span>
-    </button>
-    <div class="divider"></div>
-    <button id="profileBtn" data-tab="profile">
-      <img src="profile.svg" alt="Профиль" />
-      <span>Профиль</span>
-    </button>
-  </nav>
-
   <script>
-    const buttons = document.querySelectorAll('.bottom-nav button');
-    const panes = document.querySelectorAll('.tab-pane');
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        buttons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        panes.forEach(pane => pane.classList.remove('active'));
-        const tabId = button.dataset.tab;
-        document.getElementById(tabId).classList.add('active');
-      });
-    });
+    const navButtons = document.querySelectorAll('.bottom-nav button');
+    const tabs = document.querySelectorAll('.tab-pane');
 
-    document.getElementById('backToCatalog').addEventListener('click', () => {
-      document.getElementById('catalog').classList.add('active');
-      document.getElementById('cart').classList.remove('active');
-      document.getElementById('catalogBtn').classList.add('active');
-      document.getElementById('cartBtn').classList.remove('active');
-    });
-
-    document.getElementById('backToCatalog2').addEventListener('click', () => {
-      document.getElementById('catalog').classList.add('active');
-      document.getElementById('profile').classList.remove('active');
-      document.getElementById('catalogBtn').classList.add('active');
-      document.getElementById('profileBtn').classList.remove('active');
-    });
-
-    // Модальное окно товара
-    document.querySelectorAll('.product-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const title = card.dataset.title;
-        const description = card.dataset.description;
-        const image = card.dataset.image;
-        const price = card.dataset.price;
-        document.getElementById('modalTitle').innerText = title;
-        document.getElementById('modalDesc').innerText = description;
-        document.getElementById('modalImage').src = image;
-        document.getElementById('modalPrice').innerText = `Цена: ${price} ₽`;
-        document.getElementById('productModal').style.display = 'flex';
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        tabs.forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
       });
     });
   </script>
