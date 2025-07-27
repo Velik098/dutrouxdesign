@@ -37,7 +37,7 @@
           <div class="product-description">Красочное превью для Вашего канала</div>
           <div class="product-price">200 ₽</div>
           <button class="details-btn">Подробнее</button>
-          <button onclick="addToCart(200)">Добавить в корзину</button>
+          <button onclick="addToCart('Превью', 200, 'preview.png')">Добавить в корзину</button>
           <div class="reviews">
             <div class="review">Пользователь: Всё отлично, качественно!</div>
             <div class="review">Аноним: Быстрая доставка, рекомендую.</div>
@@ -52,7 +52,7 @@
           <div class="product-description">Доступ к приватному контенту для подписчиков</div>
           <div class="product-price">300 ₽</div>
           <button class="details-btn">Подробнее</button>
-          <button onclick="addToCart(300)">Добавить в корзину</button>
+          <button onclick="addToCart('Приватка', 300, 'privatka.png')">Добавить в корзину</button>
           <div class="reviews">
             <div class="review">Клиент: Контент 🔥, спасибо!</div>
             <div class="review">Апон: Всё чётко, получил сразу!</div>
@@ -68,7 +68,7 @@
         <div class="title">Корзина</div>
         <div class="total" id="total">0,00 ₽</div>
       </div>
-      <div class="cart-body">
+      <div class="cart-body" id="cart-body">
         Здесь будут ваши товары.
       </div>
     </div>
@@ -115,11 +115,52 @@
     const navButtons = document.querySelectorAll('.bottom-nav button');
     const tabs = document.querySelectorAll('.tab-pane');
     const totalText = document.getElementById('total');
-    let total = 0;
+    const cartBody = document.getElementById('cart-body');
 
-    function addToCart(amount) {
-      total += amount;
+    let total = 0;
+    let cart = {};
+
+    function updateCartDisplay() {
+      cartBody.innerHTML = '';
+      if (Object.keys(cart).length === 0) {
+        cartBody.textContent = 'Здесь будут ваши товары.';
+        return;
+      }
+
+      for (const key in cart) {
+        const item = cart[key];
+        const div = document.createElement('div');
+        div.className = 'product-card';
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="product-info">
+            <div class="product-title">${item.name}</div>
+            <div class="product-price">${item.price} ₽ × ${item.count}</div>
+            <button onclick="incrementItem('${item.name}')">+</button>
+          </div>
+        `;
+        cartBody.appendChild(div);
+      }
+
       totalText.textContent = total.toFixed(2) + " ₽";
+    }
+
+    function incrementItem(name) {
+      if (cart[name]) {
+        cart[name].count++;
+        total += cart[name].price;
+        updateCartDisplay();
+      }
+    }
+
+    function addToCart(name, price, image) {
+      if (!cart[name]) {
+        cart[name] = { name, price, image, count: 1 };
+      } else {
+        cart[name].count++;
+      }
+      total += price;
+      updateCartDisplay();
     }
 
     function goToTab(tabId) {
