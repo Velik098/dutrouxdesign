@@ -207,13 +207,17 @@
       message.style.color = 'red';
     };
 
-    // ЗАГРУЗКА ДАННЫХ ИЗ Telegram WebApp
+    // ЗАГРУЗКА ДАННЫХ ИЗ TELEGRAM
     window.Telegram.WebApp.ready();
-    const user = Telegram.WebApp.initDataUnsafe.user;
+    const user = Telegram.WebApp.initDataUnsafe?.user;
     if (user) {
-      document.getElementById('user-name').textContent = user.first_name + ' ' + (user.last_name || '');
-      document.getElementById('user-username').textContent = '@' + (user.username || 'без ника');
+      document.getElementById('user-name').textContent = `${user.first_name} ${user.last_name || ''}`.trim();
+      document.getElementById('user-username').textContent = user.username ? `@${user.username}` : 'без ника';
       document.getElementById('user-id').textContent = user.id;
+
+      // ОБНОВЛЯЕМ АВАТАР
+      const avatarUrl = `https://t.me/i/userpic/320/${user.username}.jpg`;
+      document.getElementById('user-avatar').src = avatarUrl;
     }
   </script>
 </body>
