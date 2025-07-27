@@ -15,7 +15,6 @@ body {
   justify-content: center;
   align-items: center;
   height: 60px;
-  text-align: center;
   background-color: #0f2a42;
 }
 
@@ -98,8 +97,8 @@ body {
 
 /* Карточки */
 .product-card {
-  background-color: #13283f;
-  border: 2px solid #1b95e0;
+  background-color: #0c1624;
+  border: none;
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -109,8 +108,8 @@ body {
 }
 
 .product-card img {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
   border-radius: 12px;
   flex-shrink: 0;
@@ -148,6 +147,7 @@ body {
   cursor: pointer;
   width: fit-content;
   margin-top: 6px;
+  font-weight: bold;
 }
 
 .product-card .details-btn {
