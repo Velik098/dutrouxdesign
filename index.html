@@ -7,12 +7,8 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="header">
-    <h1>Dutroux Sell 🔥</h1>
-  </div>
-
+  <div class="header"><h1>Dutroux Sell 🔥</h1></div>
   <div class="divider-horizontal"></div>
-
   <div class="category-marquee">
     <div class="category-track">
       <button class="category">Приватка 💸</button>
@@ -25,19 +21,16 @@
   <div class="tab-content">
     <!-- КАТАЛОГ -->
     <div id="catalog" class="tab-pane active">
-      <div class="catalog-header">
-        <div class="bar"></div>
-        <div class="title">Товары</div>
-      </div>
+      <div class="catalog-header"><div class="bar"></div><div class="title">Товары</div></div>
 
-      <div class="product-card">
+      <div class="product-card" data-name="Превью" data-price="200" data-image="preview.png" data-desc="Красочное превью для Вашего канала">
         <img src="preview.png" alt="Preview">
         <div class="product-info">
           <div class="product-title">Превью</div>
           <div class="product-description">Красочное превью для Вашего канала</div>
           <div class="product-price">200 ₽</div>
           <button class="details-btn">Подробнее</button>
-          <button onclick="addToCart('Превью', 200, 'preview.png')">Добавить в корзину</button>
+          <button class="add-btn">Добавить в корзину</button>
           <div class="reviews">
             <div class="review">Пользователь: Всё отлично, качественно!</div>
             <div class="review">Аноним: Быстрая доставка, рекомендую.</div>
@@ -45,19 +38,31 @@
         </div>
       </div>
 
-      <div class="product-card">
+      <div class="product-card" data-name="Приватка" data-price="300" data-image="privatka.png" data-desc="Доступ к приватному контенту для подписчиков">
         <img src="privatka.png" alt="Приватка">
         <div class="product-info">
           <div class="product-title">Приватка</div>
           <div class="product-description">Доступ к приватному контенту для подписчиков</div>
           <div class="product-price">300 ₽</div>
           <button class="details-btn">Подробнее</button>
-          <button onclick="addToCart('Приватка', 300, 'privatka.png')">Добавить в корзину</button>
+          <button class="add-btn">Добавить в корзину</button>
           <div class="reviews">
             <div class="review">Клиент: Контент 🔥, спасибо!</div>
             <div class="review">Апон: Всё чётко, получил сразу!</div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО -->
+    <div id="modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <img id="modal-img" src="" alt="">
+        <h2 id="modal-title"></h2>
+        <p id="modal-desc"></p>
+        <div class="modal-price" id="modal-price"></div>
+        <button id="modal-add">Добавить в корзину</button>
       </div>
     </div>
 
@@ -68,26 +73,23 @@
         <div class="title">Корзина</div>
         <div class="total" id="total">0,00 ₽</div>
       </div>
-      <div class="cart-body" id="cart-body">
-        Здесь будут ваши товары.
-      </div>
+      <div class="cart-body" id="cart-body">Здесь будут ваши товары.</div>
+      <button class="checkout-btn">Перейти к оформлению</button>
     </div>
 
     <!-- ПРОФИЛЬ -->
     <div id="profile" class="tab-pane">
       <div class="profile-info">
         <img src="avatar.png" alt="Avatar">
-        <div>
-          <strong>Иван Иванов</strong><br>
-          @ivanuser<br>
-          ID: 123456789
-        </div>
+        <div><strong>Иван Иванов</strong><br>@ivanuser<br>ID: 123456789</div>
       </div>
-      <div class="balance-card">
+      <div class="separator"></div>
+      <div class="balance-card styled-card">
         <div>Баланс: <strong>0,00 ₽</strong></div>
         <button>Пополнить баланс</button>
       </div>
-      <div class="promocode-card">
+      <div class="separator"></div>
+      <div class="promocode-card styled-card">
         <div>Промокод:</div>
         <input type="text" placeholder="Введите промокод">
         <button>Активировать</button>
@@ -95,20 +97,10 @@
     </div>
   </div>
 
-  <!-- НИЖНЕЕ МЕНЮ -->
   <div class="bottom-nav">
-    <button class="active" data-tab="catalog">
-      <img src="home.svg" alt="Каталог">
-      Каталог
-    </button>
-    <button data-tab="cart">
-      <img src="cart.svg" alt="Корзина">
-      Корзина
-    </button>
-    <button data-tab="profile">
-      <img src="profile.svg" alt="Профиль">
-      Профиль
-    </button>
+    <button class="active" data-tab="catalog"><img src="home.svg" alt=""><span>Каталог</span></button>
+    <button data-tab="cart"><img src="cart.svg" alt=""><span>Корзина</span></button>
+    <button data-tab="profile"><img src="profile.svg" alt=""><span>Профиль</span></button>
   </div>
 
   <script>
@@ -116,65 +108,80 @@
     const tabs = document.querySelectorAll('.tab-pane');
     const totalText = document.getElementById('total');
     const cartBody = document.getElementById('cart-body');
+    const modal = document.getElementById('modal');
+    let cart = {}, total = 0;
 
-    let total = 0;
-    let cart = {};
+    function goToTab(id) {
+      navButtons.forEach(b=>b.classList.remove('active'));
+      tabs.forEach(t=>t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
+    }
+
+    document.querySelectorAll('.add-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=> {
+        const card = btn.closest('.product-card');
+        addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
+      });
+    });
+
+    document.querySelectorAll('.details-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const card = btn.closest('.product-card');
+        document.getElementById('modal-img').src = card.dataset.image;
+        document.getElementById('modal-title').textContent = card.dataset.name;
+        document.getElementById('modal-desc').textContent = card.dataset.desc;
+        document.getElementById('modal-price').textContent = card.dataset.price + ' ₽';
+        modal.classList.remove('hidden');
+        document.getElementById('modal-add').onclick = ()=> {
+          addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
+          modal.classList.add('hidden');
+        };
+      });
+    });
+
+    document.querySelector('.close-btn').onclick = ()=> modal.classList.add('hidden');
+    window.onclick = e=> { if (e.target===modal) modal.classList.add('hidden'); };
 
     function updateCartDisplay() {
       cartBody.innerHTML = '';
-      if (Object.keys(cart).length === 0) {
+      if (!Object.keys(cart).length) {
         cartBody.textContent = 'Здесь будут ваши товары.';
+        totalText.textContent = '0,00 ₽';
         return;
       }
-
-      for (const key in cart) {
-        const item = cart[key];
-        const div = document.createElement('div');
+      Object.values(cart).forEach(item=>{
+        let div = document.createElement('div');
         div.className = 'product-card';
-        div.innerHTML = `
-          <img src="${item.image}" alt="${item.name}">
-          <div class="product-info">
+        div.innerHTML=`
+          <img src="${item.image}" alt=""><div class="product-info">
             <div class="product-title">${item.name}</div>
             <div class="product-price">${item.price} ₽ × ${item.count}</div>
-            <button onclick="incrementItem('${item.name}')">+</button>
-          </div>
-        `;
+            <div class="cart-controls">
+              <button onclick="decrementItem('${item.name}')">−</button>
+              <button onclick="incrementItem('${item.name}')">+</button>
+            </div>
+          </div>`;
         cartBody.appendChild(div);
-      }
-
-      totalText.textContent = total.toFixed(2) + " ₽";
-    }
-
-    function incrementItem(name) {
-      if (cart[name]) {
-        cart[name].count++;
-        total += cart[name].price;
-        updateCartDisplay();
-      }
+      });
+      totalText.textContent = total.toFixed(2)+' ₽';
     }
 
     function addToCart(name, price, image) {
-      if (!cart[name]) {
-        cart[name] = { name, price, image, count: 1 };
-      } else {
-        cart[name].count++;
-      }
+      if (!cart[name]) cart[name]={name, price, image, count:0};
+      cart[name].count++;
       total += price;
       updateCartDisplay();
     }
-
-    function goToTab(tabId) {
-      navButtons.forEach(b => b.classList.remove('active'));
-      tabs.forEach(t => t.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      document.querySelector(`[data-tab="${tabId}"]`)?.classList.add('active');
+    function incrementItem(name){cart[name].count++; total+= cart[name].price; updateCartDisplay();}
+    function decrementItem(name){
+      if (!cart[name]) return;
+      cart[name].count--; total-=cart[name].price;
+      if (cart[name].count<=0) delete cart[name];
+      updateCartDisplay();
     }
 
-    navButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        goToTab(btn.dataset.tab);
-      });
-    });
+    navButtons.forEach(btn=>btn.addEventListener('click',()=>goToTab(btn.dataset.tab)));
   </script>
 </body>
 </html>
