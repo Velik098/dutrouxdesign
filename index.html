@@ -19,22 +19,24 @@
       <button class="category">Превью 🚀</button>
       <button class="category">Приватка 💸</button>
       <button class="category">Превью 🚀</button>
-      <button class="category">Приватка 💸</button>
-      <button class="category">Превью 🚀</button>
-      <button class="category">Приватка 💸</button>
-      <button class="category">Превью 🚀</button>
     </div>
   </div>
 
   <div class="tab-content">
     <!-- КАТАЛОГ -->
     <div id="catalog" class="tab-pane active">
+      <div class="catalog-header">
+        <div class="bar"></div>
+        <div class="title">Товары</div>
+      </div>
+
       <div class="product-card">
         <img src="preview.png" alt="Preview">
         <div class="product-info">
           <div class="product-title">Превью</div>
           <div class="product-description">Красочное превью для Вашего канала</div>
           <div class="product-price">200 ₽</div>
+          <button class="details-btn">Подробнее</button>
           <button onclick="addToCart(200)">Добавить в корзину</button>
           <div class="reviews">
             <div class="review">Пользователь: Всё отлично, качественно!</div>
@@ -49,6 +51,7 @@
           <div class="product-title">Приватка</div>
           <div class="product-description">Доступ к приватному контенту для подписчиков</div>
           <div class="product-price">300 ₽</div>
+          <button class="details-btn">Подробнее</button>
           <button onclick="addToCart(300)">Добавить в корзину</button>
           <div class="reviews">
             <div class="review">Клиент: Контент 🔥, спасибо!</div>
@@ -60,9 +63,13 @@
 
     <!-- КОРЗИНА -->
     <div id="cart" class="tab-pane">
+      <div class="cart-header">
+        <button class="back-btn" onclick="goToTab('catalog')">← Назад</button>
+        <div class="title">Корзина</div>
+        <div class="total" id="total">0,00 ₽</div>
+      </div>
       <div class="cart-body">
-        <strong>Корзина</strong><br />
-        К оплате: <span id="total">0,00 ₽</span>
+        Здесь будут ваши товары.
       </div>
     </div>
 
@@ -115,12 +122,16 @@
       totalText.textContent = total.toFixed(2) + " ₽";
     }
 
+    function goToTab(tabId) {
+      navButtons.forEach(b => b.classList.remove('active'));
+      tabs.forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelector(`[data-tab="${tabId}"]`)?.classList.add('active');
+    }
+
     navButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        navButtons.forEach(b => b.classList.remove('active'));
-        tabs.forEach(t => t.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).classList.add('active');
+        goToTab(btn.dataset.tab);
       });
     });
   </script>
