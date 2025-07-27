@@ -208,17 +208,23 @@
     };
 
     // ЗАГРУЗКА ДАННЫХ ИЗ TELEGRAM
-    window.Telegram.WebApp.ready();
-    const user = Telegram.WebApp.initDataUnsafe?.user;
-    if (user) {
-      document.getElementById('user-name').textContent = `${user.first_name} ${user.last_name || ''}`.trim();
-      document.getElementById('user-username').textContent = user.username ? `@${user.username}` : 'без ника';
-      document.getElementById('user-id').textContent = user.id;
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.Telegram.WebApp) {
+        Telegram.WebApp.ready();
+        const user = Telegram.WebApp.initDataUnsafe?.user;
 
-      // ОБНОВЛЯЕМ АВАТАР
-      const avatarUrl = `https://t.me/i/userpic/320/${user.username}.jpg`;
-      document.getElementById('user-avatar').src = avatarUrl;
-    }
+        if (user) {
+          document.getElementById('user-name').textContent = `${user.first_name} ${user.last_name || ''}`.trim();
+          document.getElementById('user-username').textContent = user.username ? `@${user.username}` : 'без ника';
+          document.getElementById('user-id').textContent = user.id;
+
+          // ОБНОВЛЕНИЕ АВАТАРА
+          if (user.username) {
+            document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${user.username}.jpg`;
+          }
+        }
+      }
+    });
   </script>
 </body>
 </html>
