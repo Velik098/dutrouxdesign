@@ -17,10 +17,13 @@
       <button class="category">Превью 🚀</button>
     </div>
   </div>
+
   <div class="tab-content">
     <!-- КАТАЛОГ -->
     <div id="catalog" class="tab-pane active">
       <div class="catalog-header"><div class="bar"></div><div class="title">Товары</div></div>
+
+      <!-- ТОВАРЫ -->
       <div class="product-card" data-name="Превью" data-price="200" data-image="preview.png" data-desc="Красочное превью для Вашего канала">
         <img src="preview.png" alt="Preview">
         <div class="product-info">
@@ -35,6 +38,7 @@
           </div>
         </div>
       </div>
+
       <div class="product-card" data-name="Приватка" data-price="300" data-image="privatka.png" data-desc="Доступ к приватному контенту для подписчиков">
         <img src="privatka.png" alt="Приватка">
         <div class="product-info">
@@ -50,6 +54,7 @@
         </div>
       </div>
     </div>
+
     <!-- МОДАЛЬНОЕ ОКНО -->
     <div id="modal" class="modal hidden">
       <div class="modal-content">
@@ -61,6 +66,7 @@
         <button id="modal-add">Добавить в корзину</button>
       </div>
     </div>
+
     <!-- КОРЗИНА -->
     <div id="cart" class="tab-pane">
       <div class="cart-header">
@@ -69,13 +75,18 @@
         <div class="total" id="total">0,00 ₽</div>
       </div>
       <div class="cart-body" id="cart-body">Здесь будут ваши товары.</div>
-      <button class="checkout-btn">Перейти к оформлению</button>
+      <button class="checkout-btn" id="checkout-btn" style="display: none;">Перейти к оформлению</button>
     </div>
+
     <!-- ПРОФИЛЬ -->
     <div id="profile" class="tab-pane">
       <div class="profile-info">
-        <img src="avatar.png" alt="Avatar">
-        <div><strong>Иван Иванов</strong><br>@ivanuser<br>ID: 123456789</div>
+        <img src="avatar.png" alt="Avatar" id="user-avatar">
+        <div>
+          <strong id="user-name">Имя Фамилия</strong><br>
+          <span id="user-username">@username</span><br>
+          ID: <span id="user-id">123456</span>
+        </div>
       </div>
       <div class="separator"></div>
       <div class="balance-card styled-card">
@@ -85,62 +96,73 @@
       <div class="separator"></div>
       <div class="promocode-card styled-card">
         <div>Промокод:</div>
-        <input type="text" placeholder="Введите промокод">
-        <button>Активировать</button>
+        <input type="text" id="promo-input" placeholder="Введите промокод">
+        <button id="promo-btn">Активировать</button>
+        <div id="promo-message" class="promo-error"></div>
       </div>
     </div>
   </div>
+
   <div class="bottom-nav">
     <button class="active" data-tab="catalog"><img src="home.svg" alt=""><span>Каталог</span></button>
     <button data-tab="cart"><img src="cart.svg" alt=""><span>Корзина</span></button>
     <button data-tab="profile"><img src="profile.svg" alt=""><span>Профиль</span></button>
   </div>
+
   <script>
     const navButtons = document.querySelectorAll('.bottom-nav button');
     const tabs = document.querySelectorAll('.tab-pane');
     const totalText = document.getElementById('total');
     const cartBody = document.getElementById('cart-body');
     const modal = document.getElementById('modal');
+    const checkoutBtn = document.getElementById('checkout-btn');
     let cart = {}, total = 0;
+
     function goToTab(id) {
-      navButtons.forEach(b=>b.classList.remove('active'));
-      tabs.forEach(t=>t.classList.remove('active'));
+      navButtons.forEach(b => b.classList.remove('active'));
+      tabs.forEach(t => t.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
     }
-    document.querySelectorAll('.add-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=> {
+
+    document.querySelectorAll('.add-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
         const card = btn.closest('.product-card');
         addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
       });
     });
-    document.querySelectorAll('.details-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
+
+    document.querySelectorAll('.details-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
         const card = btn.closest('.product-card');
         document.getElementById('modal-img').src = card.dataset.image;
         document.getElementById('modal-title').textContent = card.dataset.name;
         document.getElementById('modal-desc').textContent = card.dataset.desc;
         document.getElementById('modal-price').textContent = card.dataset.price + ' ₽';
         modal.classList.remove('hidden');
-        document.getElementById('modal-add').onclick = ()=> {
+        document.getElementById('modal-add').onclick = () => {
           addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
           modal.classList.add('hidden');
         };
       });
     });
-    document.querySelector('.close-btn').onclick = ()=> modal.classList.add('hidden');
-    window.onclick = e=> { if (e.target===modal) modal.classList.add('hidden'); };
+
+    document.querySelector('.close-btn').onclick = () => modal.classList.add('hidden');
+    window.onclick = e => { if (e.target === modal) modal.classList.add('hidden'); };
+
     function updateCartDisplay() {
       cartBody.innerHTML = '';
       if (!Object.keys(cart).length) {
         cartBody.textContent = 'Здесь будут ваши товары.';
         totalText.textContent = '0,00 ₽';
+        checkoutBtn.style.display = 'none';
         return;
       }
-      Object.values(cart).forEach(item=>{
+
+      Object.values(cart).forEach(item => {
         let div = document.createElement('div');
         div.className = 'product-card';
-        div.innerHTML=`
+        div.innerHTML = `
           <img src="${item.image}" alt=""><div class="product-info">
             <div class="product-title">${item.name}</div>
             <div class="product-price">${item.price} ₽ × ${item.count}</div>
@@ -151,22 +173,48 @@
           </div>`;
         cartBody.appendChild(div);
       });
-      totalText.textContent = total.toFixed(2)+' ₽';
+      totalText.textContent = total.toFixed(2) + ' ₽';
+      checkoutBtn.style.display = 'block';
     }
+
     function addToCart(name, price, image) {
-      if (!cart[name]) cart[name]={name, price, image, count:0};
+      if (!cart[name]) cart[name] = { name, price, image, count: 0 };
       cart[name].count++;
       total += price;
       updateCartDisplay();
     }
-    function incrementItem(name){cart[name].count++; total+= cart[name].price; updateCartDisplay();}
-    function decrementItem(name){
-      if (!cart[name]) return;
-      cart[name].count--; total-=cart[name].price;
-      if (cart[name].count<=0) delete cart[name];
+
+    function incrementItem(name) {
+      cart[name].count++;
+      total += cart[name].price;
       updateCartDisplay();
     }
-    navButtons.forEach(btn=>btn.addEventListener('click',()=>goToTab(btn.dataset.tab)));
+
+    function decrementItem(name) {
+      if (!cart[name]) return;
+      cart[name].count--;
+      total -= cart[name].price;
+      if (cart[name].count <= 0) delete cart[name];
+      updateCartDisplay();
+    }
+
+    navButtons.forEach(btn => btn.addEventListener('click', () => goToTab(btn.dataset.tab)));
+
+    // ПРОМОКОД
+    document.getElementById('promo-btn').onclick = () => {
+      const message = document.getElementById('promo-message');
+      message.textContent = 'Такого промокода не существует';
+      message.style.color = 'red';
+    };
+
+    // ЗАГРУЗКА ДАННЫХ ИЗ Telegram WebApp
+    window.Telegram.WebApp.ready();
+    const user = Telegram.WebApp.initDataUnsafe.user;
+    if (user) {
+      document.getElementById('user-name').textContent = user.first_name + ' ' + (user.last_name || '');
+      document.getElementById('user-username').textContent = '@' + (user.username || 'без ника');
+      document.getElementById('user-id').textContent = user.id;
+    }
   </script>
 </body>
 </html>
