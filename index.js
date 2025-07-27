@@ -10,7 +10,7 @@ const WEBAPP_URL = 'https://dutroux-1.onrender.com'; // твой render-URL
 // Кнопка запуска WebApp
 bot.start((ctx) => {
   ctx.reply(
-    'Добро пожаловать! Нажмите кнопку ниже, чтобы открыть магазин:',
+    'Добро пожаловать в Dutroux Sell! Нажмите кнопку ниже, чтобы открыть магазин:',
     Markup.inlineKeyboard([
       Markup.button.webApp('🛒 Открыть магазин', `${WEBAPP_URL}/`)
     ])
