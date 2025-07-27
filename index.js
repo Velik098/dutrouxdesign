@@ -14,10 +14,10 @@ const YooKassa = require('@appigram/yookassa-node').YooKassa;
 
   // === ИНИЦИАЛИЗАЦИЯ lowdb ===
   const adapter = new JSONFile('db.json');
-  const db = new Low(adapter);
-  await db.read();
-  db.data ||= { orders: [], balance: 0 };
-  await db.write();
+ const db = new Low(adapter, { orders: [], balance: 0 }); // ← Указываем начальные данные
+ await db.read();
+ db.data ||= { orders: [], balance: 0 }; // ← Можно оставить на всякий случай
+ await db.write();
 
   // === ИНИЦИАЛИЗАЦИЯ YooKassa ===
   const yookassa = new YooKassa({
