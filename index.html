@@ -67,66 +67,14 @@
   </style>
 </head>
 <body>
-  <div class="header"><h1>Dutroux Sell 🔥</h1></div>
-  <div class="divider-horizontal"></div>
-
-  <!-- Бегущие категории -->
-  <div class="category-marquee">
-    <div class="category-track">
-      <button class="category">Приватка 💸</button>
-      <button class="category">Превью 🚀</button>
-      <button class="category">Приватка 💸</button>
-      <button class="category">Превью 🚀</button>
-    </div>
-  </div>
-
-  <!-- Основной контент -->
-  <div class="tab-content">
-    <!-- КАТАЛОГ -->
-    <div id="catalog" class="tab-pane active">
-      <div class="catalog-header">
-        <div class="bar"></div>
-        <div class="title">Товары</div>
-      </div>
-
-      <!-- ТОВАРЫ -->
-      <div class="product-card" data-name="Превью" data-price="200" data-image="preview.png" data-desc="Красочное превью для Вашего канала">
-        <img src="preview.png" alt="Preview">
-        <div class="product-info">
-          <div class="product-title">Превью</div>
-          <div class="product-description">Красочное превью для Вашего канала</div>
-          <div class="product-price">200 ₽</div>
-          <button class="details-btn">Подробнее</button>
-          <button class="add-btn">Добавить в корзину</button>
-          <div class="reviews">
-            <div class="review">Пользователь: Всё отлично, качественно!</div>
-            <div class="review">Аноним: Быстрая доставка, рекомендую.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-name="Приватка" data-price="300" data-image="privatka.png" data-desc="Доступ к приватному контенту для подписчиков">
-        <img src="privatka.png" alt="Приватка">
-        <div class="product-info">
-          <div class="product-title">Приватка</div>
-          <div class="product-description">Доступ к приватному контенту для подписчиков</div>
-          <div class="product-price">300 ₽</div>
-          <button class="details-btn">Подробнее</button>
-          <button class="add-btn">Добавить в корзину</button>
-          <div class="reviews">
-            <div class="review">Клиент: Контент 🔥, спасибо!</div>
-            <div class="review">Апон: Всё чётко, получил сразу!</div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- ⬇️ Вот сюда добавим Telegram expand -->
 <script>
-  // 🔥 ИНИЦИАЛИЗАЦИЯ Telegram WebApp — добавлено!
   if (window.Telegram && Telegram.WebApp) {
-    Telegram.WebApp.expand(); // раскрывает окно
-    Telegram.WebApp.ready();  // сообщает Telegram, что всё загружено
+    Telegram.WebApp.expand();
+    Telegram.WebApp.ready();
   }
-
+</script>
+<script>
   const navButtons = document.querySelectorAll('.bottom-nav button');
   const tabs = document.querySelectorAll('.tab-pane');
   const totalText = document.getElementById('total');
@@ -154,6 +102,7 @@
     document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
   }
 
+  // Добавление товара
   document.querySelectorAll('.add-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.product-card');
@@ -161,6 +110,7 @@
     });
   });
 
+  // Подробнее
   document.querySelectorAll('.details-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.product-card');
@@ -268,11 +218,12 @@
     alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
   };
 
+  // Загрузка Telegram WebApp данных
   window.addEventListener('DOMContentLoaded', () => {
     if (window.Telegram && Telegram.WebApp) {
       Telegram.WebApp.ready();
       const user = Telegram.WebApp.initDataUnsafe?.user;
-      console.log("TG USER:", user); // 🔍 Показывает в консоли, что Telegram передал
+      console.log("TG USER:", user);
 
       if (user) {
         document.getElementById('user-name').textContent = `${user.first_name} ${user.last_name || ''}`.trim();
