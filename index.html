@@ -6,45 +6,11 @@
   <title>Dutroux Sell🔥</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Добавил базовые стили для нового модального окна */
-    .modal-content {
-  background: #1e1e1e;
-  color: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-  font-family: 'Arial', sans-serif;
-}
-    .modal-content h2, .modal-content h3 {
-  margin-top: 0;
-  color: #ffcc00;
-}
-    .modal-content button {
-  background-color: #ffcc00;
-  color: #000;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
-    .modal-content button:hover {
-  background-color: #e6b800;
-}
-    .modal-content input {
-  background: #2e2e2e;
-  border: 1px solid #555;
-  color: #fff;
-  padding: 8px;
-  border-radius: 6px;
-}
     .modal {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -54,12 +20,38 @@
       display: none;
     }
     .modal-content {
-      background: white;
+      background: #1e1e1e;
+      color: #fff;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
       max-width: 400px;
       width: 90%;
+      font-family: 'Arial', sans-serif;
       position: relative;
+    }
+    .modal-content h2, .modal-content h3 {
+      margin-top: 0;
+      color: #ffcc00;
+    }
+    .modal-content button {
+      background-color: #ffcc00;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .modal-content button:hover {
+      background-color: #e6b800;
+    }
+    .modal-content input {
+      background: #2e2e2e;
+      border: 1px solid #555;
+      color: #fff;
+      padding: 8px;
+      border-radius: 6px;
     }
     .close-btn {
       position: absolute;
@@ -67,20 +59,18 @@
       right: 15px;
       font-size: 24px;
       cursor: pointer;
+      color: #fff;
     }
     #orderModal ul {
       padding-left: 20px;
-    }
-    #orderModal button {
-      margin-top: 15px;
-      padding: 8px 15px;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="header"><h1>Dutroux Sell 🔥</h1></div>
   <div class="divider-horizontal"></div>
+
+  <!-- Бегущие категории -->
   <div class="category-marquee">
     <div class="category-track">
       <button class="category">Приватка 💸</button>
@@ -90,10 +80,14 @@
     </div>
   </div>
 
+  <!-- Основной контент -->
   <div class="tab-content">
     <!-- КАТАЛОГ -->
     <div id="catalog" class="tab-pane active">
-      <div class="catalog-header"><div class="bar"></div><div class="title">Товары</div></div>
+      <div class="catalog-header">
+        <div class="bar"></div>
+        <div class="title">Товары</div>
+      </div>
 
       <!-- ТОВАРЫ -->
       <div class="product-card" data-name="Превью" data-price="200" data-image="preview.png" data-desc="Красочное превью для Вашего канала">
@@ -127,11 +121,11 @@
       </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ТОВАРА -->
+    <!-- МОДАЛКА "ПОДРОБНЕЕ" -->
     <div id="modal" class="modal hidden">
       <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <img id="modal-img" src="" alt="">
+        <span class="close-btn" id="detailsCloseBtn">&times;</span>
+        <img id="modal-img" src="" alt="" style="max-width: 100%; border-radius: 8px; margin-bottom: 10px;">
         <h2 id="modal-title"></h2>
         <p id="modal-desc"></p>
         <div class="modal-price" id="modal-price"></div>
@@ -161,8 +155,6 @@
         </div>
       </div>
 
-      <!-- УБРАЛ ПОДЕЛИТЕЛИ И БАЛАНС -->
-
       <div class="promocode-card styled-card">
         <div>Промокод:</div>
         <input type="text" id="promo-input" placeholder="Введите промокод">
@@ -172,52 +164,177 @@
     </div>
   </div>
 
+  <!-- НАВИГАЦИЯ -->
   <div class="bottom-nav">
     <button class="active" data-tab="catalog"><img src="home.svg" alt=""><span>Каталог</span></button>
     <button data-tab="cart"><img src="cart.svg" alt=""><span>Корзина</span></button>
     <button data-tab="profile"><img src="profile.svg" alt=""><span>Профиль</span></button>
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО ОФОРМЛЕНИЯ ЗАКАЗА -->
-  <!-- ВСТАВЬТЕ ВМЕСТО СТАРОГО #orderModal -->
-
-<!-- МОДАЛЬНОЕ ОКНО ОФОРМЛЕНИЯ ЗАКАЗА -->
-<div id="orderModal" class="modal hidden">
-  <div class="modal-content">
-    <span id="orderCloseBtn" class="close-btn">&times;</span>
-    <h2>Оформление заказа</h2>
-    <p>К оплате: <strong id="orderAmount">0 ₽</strong></p>
-    <p>Выберите карту для перевода:</p>
-    <ul>
-      <li>Тинькофф: <strong>2200701969378618</strong></li>
-      <li>Сбербанк: <strong>2202208282306746</strong></li>
-    </ul>
-    <p>После оплаты отправьте скриншот <strong>в Telegram</strong> на @Velik09845.</p>
-    <div style="margin-top: 20px;">
-      <button id="paidButton">Я оплатил</button>
-      <button id="orderCloseButton">Закрыть</button>
+  <!-- МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
+  <div id="orderModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="orderCloseBtn" class="close-btn">&times;</span>
+      <h2>Оформление заказа</h2>
+      <p>К оплате: <strong id="orderAmount">0 ₽</strong></p>
+      <p>Выберите карту для перевода:</p>
+      <ul>
+        <li>Тинькофф: <strong>2200701969378618</strong></li>
+        <li>Сбербанк: <strong>2202208282306746</strong></li>
+      </ul>
+      <p>После оплаты отправьте скриншот в Telegram на <strong>@Velik09845</strong></p>
+      <div style="margin-top: 20px;">
+        <button id="paidButton">Я оплатил</button>
+        <button id="orderCloseButton">Закрыть</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- МОДАЛЬНОЕ ОКНО ВВОДА USERNAME -->
-<div id="usernameModal" class="modal hidden">
-  <div class="modal-content">
-    <span id="usernameCloseBtn" class="close-btn">&times;</span>
-    <h3>Укажите ваш Telegram username</h3>
-    <p>Это нужно, чтобы мы могли найти ваш платёж и выслать товар.</p>
-    <input type="text" id="tgUsernameInput" placeholder="@username" style="width: 100%; padding: 8px; margin-top: 10px;">
-    <button id="submitUsername" style="margin-top: 15px;">ОК</button>
+  <!-- МОДАЛКА ВВОДА USERNAME -->
+  <div id="usernameModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="usernameCloseBtn" class="close-btn">&times;</span>
+      <h3>Укажите ваш Telegram username</h3>
+      <p>Это нужно, чтобы мы могли найти ваш платёж и выслать товар.</p>
+      <input type="text" id="tgUsernameInput" placeholder="@username" style="width: 100%; margin-top: 10px;">
+      <div style="margin-top: 15px;">
+        <button id="submitUsername">ОК</button>
+      </div>
+    </div>
   </div>
-</div>
-
 <script>
-  // Добавляем ссылки на элементы
+  const navButtons = document.querySelectorAll('.bottom-nav button');
+  const tabs = document.querySelectorAll('.tab-pane');
+  const totalText = document.getElementById('total');
+  const cartBody = document.getElementById('cart-body');
+  const modal = document.getElementById('modal');
+  const checkoutBtn = document.getElementById('checkout-btn');
+
+  const orderModal = document.getElementById('orderModal');
+  const orderCloseBtn = document.getElementById('orderCloseBtn');
+  const orderCloseButton = document.getElementById('orderCloseButton');
+  const orderAmount = document.getElementById('orderAmount');
+
   const paidButton = document.getElementById('paidButton');
   const usernameModal = document.getElementById('usernameModal');
   const usernameCloseBtn = document.getElementById('usernameCloseBtn');
   const submitUsername = document.getElementById('submitUsername');
   const tgUsernameInput = document.getElementById('tgUsernameInput');
+
+  let cart = {}, total = 0;
+
+  function goToTab(id) {
+    navButtons.forEach(b => b.classList.remove('active'));
+    tabs.forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
+  }
+
+  // Добавление товара
+  document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.product-card');
+      addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
+    });
+  });
+
+  // Подробнее
+  document.querySelectorAll('.details-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.product-card');
+      document.getElementById('modal-img').src = card.dataset.image;
+      document.getElementById('modal-title').textContent = card.dataset.name;
+      document.getElementById('modal-desc').textContent = card.dataset.desc;
+      document.getElementById('modal-price').textContent = card.dataset.price + ' ₽';
+      modal.classList.remove('hidden');
+      document.getElementById('modal-add').onclick = () => {
+        addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
+        modal.classList.add('hidden');
+      };
+    });
+  });
+
+  // Закрытие модального окна "Подробнее"
+  document.getElementById('detailsCloseBtn').onclick = () => modal.classList.add('hidden');
+
+  // Закрытие при клике вне окна
+  window.onclick = e => {
+    if (e.target === modal) modal.classList.add('hidden');
+    if (e.target === orderModal) orderModal.classList.add('hidden');
+    if (e.target === usernameModal) usernameModal.classList.add('hidden');
+  };
+
+  // Обновление корзины
+  function updateCartDisplay() {
+    cartBody.innerHTML = '';
+    if (!Object.keys(cart).length) {
+      cartBody.textContent = 'Здесь будут ваши товары.';
+      totalText.textContent = '0,00 ₽';
+      checkoutBtn.style.display = 'none';
+      return;
+    }
+
+    Object.values(cart).forEach(item => {
+      let div = document.createElement('div');
+      div.className = 'product-card';
+      div.innerHTML = `
+        <img src="${item.image}" alt="">
+        <div class="product-info">
+          <div class="product-title">${item.name}</div>
+          <div class="product-price">${item.price} ₽ × ${item.count}</div>
+          <div class="cart-controls">
+            <button onclick="decrementItem('${item.name}')">−</button>
+            <button onclick="incrementItem('${item.name}')">+</button>
+          </div>
+        </div>`;
+      cartBody.appendChild(div);
+    });
+
+    totalText.textContent = total.toFixed(2) + ' ₽';
+    checkoutBtn.style.display = 'block';
+  }
+
+  function addToCart(name, price, image) {
+    if (!cart[name]) cart[name] = { name, price, image, count: 0 };
+    cart[name].count++;
+    total += price;
+    updateCartDisplay();
+  }
+
+  function incrementItem(name) {
+    cart[name].count++;
+    total += cart[name].price;
+    updateCartDisplay();
+  }
+
+  function decrementItem(name) {
+    if (!cart[name]) return;
+    cart[name].count--;
+    total -= cart[name].price;
+    if (cart[name].count <= 0) delete cart[name];
+    updateCartDisplay();
+  }
+
+  // Переключение вкладок
+  navButtons.forEach(btn => btn.addEventListener('click', () => goToTab(btn.dataset.tab)));
+
+  // Промокод
+  document.getElementById('promo-btn').onclick = () => {
+    const message = document.getElementById('promo-message');
+    message.textContent = 'Такого промокода не существует';
+    message.style.color = 'red';
+  };
+
+  // Кнопка "Перейти к оформлению"
+  checkoutBtn.onclick = () => {
+    if (total === 0) return;
+    orderAmount.textContent = total.toFixed(2) + ' ₽';
+    orderModal.classList.remove('hidden');
+  };
+
+  // Закрытие модалки заказа
+  orderCloseBtn.onclick = () => orderModal.classList.add('hidden');
+  orderCloseButton.onclick = () => orderModal.classList.add('hidden');
 
   // Кнопка "Я оплатил"
   paidButton.onclick = () => {
@@ -225,19 +342,10 @@
     usernameModal.classList.remove('hidden');
   };
 
-  // Закрытие окна username
-  usernameCloseBtn.onclick = () => {
-    usernameModal.classList.add('hidden');
-  };
+  // Закрытие username окна
+  usernameCloseBtn.onclick = () => usernameModal.classList.add('hidden');
 
-  // Закрытие окна при клике вне
-  window.addEventListener('click', (e) => {
-    if (e.target === usernameModal) {
-      usernameModal.classList.add('hidden');
-    }
-  });
-
-  // Кнопка "ОК" после ввода username
+  // Кнопка ОК (username)
   submitUsername.onclick = () => {
     const username = tgUsernameInput.value.trim();
     if (!username || !username.startsWith('@')) {
@@ -246,178 +354,28 @@
     }
     usernameModal.classList.add('hidden');
     alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
-    // Здесь можно добавить отправку username на сервер
+    // Здесь можно отправить username на сервер
   };
-</script>
 
-  <script>
-    const navButtons = document.querySelectorAll('.bottom-nav button');
-    const tabs = document.querySelectorAll('.tab-pane');
-    const totalText = document.getElementById('total');
-    const cartBody = document.getElementById('cart-body');
-    const modal = document.getElementById('modal');
-    const checkoutBtn = document.getElementById('checkout-btn');
+  // Загрузка Telegram WebApp данных
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      const user = Telegram.WebApp.initDataUnsafe?.user;
 
-    const orderModal = document.getElementById('orderModal');
-    const orderCloseBtn = document.getElementById('orderCloseBtn');
-    const orderCloseButton = document.getElementById('orderCloseButton');
-    const orderAmount = document.getElementById('orderAmount');
+      if (user) {
+        document.getElementById('user-name').textContent = `${user.first_name} ${user.last_name || ''}`.trim();
+        document.getElementById('user-username').textContent = user.username ? `@${user.username}` : 'без ника';
+        document.getElementById('user-id').textContent = user.id;
 
-    let cart = {}, total = 0;
-
-    function goToTab(id) {
-      navButtons.forEach(b => b.classList.remove('active'));
-      tabs.forEach(t => t.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
-    }
-
-    document.querySelectorAll('.add-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const card = btn.closest('.product-card');
-        addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
-      });
-    });
-
-    document.querySelectorAll('.details-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const card = btn.closest('.product-card');
-        document.getElementById('modal-img').src = card.dataset.image;
-        document.getElementById('modal-title').textContent = card.dataset.name;
-        document.getElementById('modal-desc').textContent = card.dataset.desc;
-        document.getElementById('modal-price').textContent = card.dataset.price + ' ₽';
-        modal.classList.remove('hidden');
-        document.getElementById('modal-add').onclick = () => {
-          addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
-          modal.classList.add('hidden');
-        };
-      });
-    });
-
-    document.querySelector('.close-btn').onclick = () => modal.classList.add('hidden');
-    window.onclick = e => {
-      if (e.target === modal) modal.classList.add('hidden');
-      if (e.target === orderModal) orderModal.classList.add('hidden');
-    };
-
-    function updateCartDisplay() {
-      cartBody.innerHTML = '';
-      if (!Object.keys(cart).length) {
-        cartBody.textContent = 'Здесь будут ваши товары.';
-        totalText.textContent = '0,00 ₽';
-        checkoutBtn.style.display = 'none';
-        return;
-      }
-
-      Object.values(cart).forEach(item => {
-        let div = document.createElement('div');
-        div.className = 'product-card';
-        div.innerHTML = `
-          <img src="${item.image}" alt=""><div class="product-info">
-            <div class="product-title">${item.name}</div>
-            <div class="product-price">${item.price} ₽ × ${item.count}</div>
-            <div class="cart-controls">
-              <button onclick="decrementItem('${item.name}')">−</button>
-              <button onclick="incrementItem('${item.name}')">+</button>
-            </div>
-          </div>`;
-        cartBody.appendChild(div);
-      });
-      totalText.textContent = total.toFixed(2) + ' ₽';
-      checkoutBtn.style.display = 'block';
-    }
-
-    function addToCart(name, price, image) {
-      if (!cart[name]) cart[name] = { name, price, image, count: 0 };
-      cart[name].count++;
-      total += price;
-      updateCartDisplay();
-    }
-
-    function incrementItem(name) {
-      cart[name].count++;
-      total += cart[name].price;
-      updateCartDisplay();
-    }
-
-    function decrementItem(name) {
-      if (!cart[name]) return;
-      cart[name].count--;
-      total -= cart[name].price;
-      if (cart[name].count <= 0) delete cart[name];
-      updateCartDisplay();
-    }
-
-    navButtons.forEach(btn => btn.addEventListener('click', () => goToTab(btn.dataset.tab)));
-
-    // ПРОМОКОД
-    document.getElementById('promo-btn').onclick = () => {
-      const message = document.getElementById('promo-message');
-      message.textContent = 'Такого промокода не существует';
-      message.style.color = 'red';
-    };
-
-    // КНОПКА "ПЕРЕЙТИ К ОФОРМЛЕНИЮ"
-    checkoutBtn.onclick = () => {
-      if (total === 0) return;
-      orderAmount.textContent = total.toFixed(2) + ' ₽';
-      orderModal.classList.remove('hidden');
-    };
-
-    // ЗАКРЫТИЕ ОКНА ОФОРМЛЕНИЯ
-    orderCloseBtn.onclick = () => orderModal.classList.add('hidden');
-    orderCloseButton.onclick = () => orderModal.classList.add('hidden');
-
-    // ЗАГРУЗКА ДАННЫХ ИЗ TELEGRAM
-    window.addEventListener('DOMContentLoaded', () => {
-      if (window.Telegram && window.Telegram.WebApp) {
-        Telegram.WebApp.ready();
-        const user = Telegram.WebApp.initDataUnsafe?.user;
-
-        if (user) {
-          document.getElementById('user-name').textContent = `${user.first_name} ${user.last_name || ''}`.trim();
-          document.getElementById('user-username').textContent = user.username ? `@${user.username}` : 'без ника';
-          document.getElementById('user-id').textContent = user.id;
-
-          if (user.username) {
-            document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${user.username}.jpg`;
-          }
+        if (user.username) {
+          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${user.username}.jpg`;
         }
       }
+    }
 
-      updateCartDisplay();
-    });
-  </script>
-  <!-- МОДАЛЬНОЕ ОКНО ОФОРМЛЕНИЯ ЗАКАЗА -->
-<div id="orderModal" class="modal hidden">
-  <div class="modal-content">
-    <span id="orderCloseBtn" class="close-btn">&times;</span>
-    <h2>Оформление заказа</h2>
-    <p>К оплате: <strong id="orderAmount">0 ₽</strong></p>
-    <p>Выберите карту для перевода:</p>
-    <ul>
-      <li><strong>Тинькофф:</strong> 2200701969378618</li>
-      <li><strong>Сбербанк:</strong> 2202208282306746</li>
-    </ul>
-    <p>После оплаты отправьте скриншот в <strong>Telegram</strong> на <strong>@Velik09845</strong></p>
-    <div style="margin-top: 20px;">
-      <button id="paidButton">Я оплатил</button>
-      <button id="orderCloseButton" style="margin-left: 10px;">Закрыть</button>
-    </div>
-  </div>
-</div>
-
-<!-- МОДАЛЬНОЕ ОКНО ВВОДА USERNAME -->
-<div id="usernameModal" class="modal hidden">
-  <div class="modal-content">
-    <span id="usernameCloseBtn" class="close-btn">&times;</span>
-    <h3>Укажите ваш Telegram username</h3>
-    <p>Это нужно, чтобы мы могли найти ваш платёж и выслать товар.</p>
-    <input type="text" id="tgUsernameInput" placeholder="@username" style="width: 100%; margin-top: 10px;">
-    <div style="margin-top: 15px;">
-      <button id="submitUsername">ОК</button>
-    </div>
-  </div>
-</div>
+    updateCartDisplay();
+  });
+</script>
 </body>
 </html>
