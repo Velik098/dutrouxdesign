@@ -7,6 +7,37 @@
   <link rel="stylesheet" href="style.css" />
   <style>
     /* Добавил базовые стили для нового модального окна */
+    .modal-content {
+  background: #1e1e1e;
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  font-family: 'Arial', sans-serif;
+}
+    .modal-content h2, .modal-content h3 {
+  margin-top: 0;
+  color: #ffcc00;
+}
+    .modal-content button {
+  background-color: #ffcc00;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+    .modal-content button:hover {
+  background-color: #e6b800;
+}
+    .modal-content input {
+  background: #2e2e2e;
+  border: 1px solid #555;
+  color: #fff;
+  padding: 8px;
+  border-radius: 6px;
+}
     .modal {
       position: fixed;
       top: 0;
@@ -357,5 +388,36 @@
       updateCartDisplay();
     });
   </script>
+  <!-- МОДАЛЬНОЕ ОКНО ОФОРМЛЕНИЯ ЗАКАЗА -->
+<div id="orderModal" class="modal hidden">
+  <div class="modal-content">
+    <span id="orderCloseBtn" class="close-btn">&times;</span>
+    <h2>Оформление заказа</h2>
+    <p>К оплате: <strong id="orderAmount">0 ₽</strong></p>
+    <p>Выберите карту для перевода:</p>
+    <ul>
+      <li><strong>Тинькофф:</strong> 2200701969378618</li>
+      <li><strong>Сбербанк:</strong> 2202208282306746</li>
+    </ul>
+    <p>После оплаты отправьте скриншот в <strong>Telegram</strong> на <strong>@Velik09845</strong></p>
+    <div style="margin-top: 20px;">
+      <button id="paidButton">Я оплатил</button>
+      <button id="orderCloseButton" style="margin-left: 10px;">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО ВВОДА USERNAME -->
+<div id="usernameModal" class="modal hidden">
+  <div class="modal-content">
+    <span id="usernameCloseBtn" class="close-btn">&times;</span>
+    <h3>Укажите ваш Telegram username</h3>
+    <p>Это нужно, чтобы мы могли найти ваш платёж и выслать товар.</p>
+    <input type="text" id="tgUsernameInput" placeholder="@username" style="width: 100%; margin-top: 10px;">
+    <div style="margin-top: 15px;">
+      <button id="submitUsername">ОК</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
