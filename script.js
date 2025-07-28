@@ -3,6 +3,7 @@ tg.expand();
 
 const sendOrder = async (productName, productPrice) => {
   const user = tg.initDataUnsafe.user;
+
   const res = await fetch("/order", {
     method: "POST",
     headers: {
@@ -21,14 +22,13 @@ const sendOrder = async (productName, productPrice) => {
 
   const data = await res.json();
   if (data.success) {
-    alert("✅ Заказ оформлен!");
+    alert("✅ Заказ оформлен! Владелец уведомлен.");
     document.getElementById("access").classList.remove("hidden");
   } else {
-    alert("❌ Ошибка при заказе");
+    alert("❌ Ошибка при оформлении заказа.");
   }
 };
 
-// Обработчики для кнопок
 document.getElementById("previewBtn").addEventListener("click", () => {
   sendOrder("Превью", 200);
 });
