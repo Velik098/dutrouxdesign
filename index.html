@@ -46,12 +46,13 @@
     .modal-content button:hover {
       background-color: #e6b800;
     }
-    .modal-content input {
+    .modal-content input, .modal-content textarea {
       background: #2e2e2e;
       border: 1px solid #555;
       color: #fff;
       padding: 8px;
       border-radius: 6px;
+      width: 100%;
     }
     .close-btn {
       position: absolute;
@@ -64,8 +65,18 @@
     #orderModal ul {
       padding-left: 20px;
     }
+    .review-item {
+      margin-top: 10px;
+      border-top: 1px dashed #444;
+      padding-top: 8px;
+      font-size: 14px;
+    }
+    .review-author {
+      color: #ffcc00;
+      font-weight: bold;
+    }
   </style>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script> <!-- ВАЖНО для Telegram WebApp -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
   <div class="header"><h1>Dutroux Sell 🔥</h1></div>
@@ -80,7 +91,8 @@
       <button class="category">Превью 🚀</button>
     </div>
   </div>
- <!-- Основной контент -->
+
+  <!-- Основной контент -->
   <div class="tab-content">
     <!-- КАТАЛОГ -->
     <div id="catalog" class="tab-pane active">
@@ -98,10 +110,6 @@
           <div class="product-price">200 ₽</div>
           <button class="details-btn">Подробнее</button>
           <button class="add-btn">Добавить в корзину</button>
-          <div class="reviews">
-            <div class="review">Пользователь: Всё отлично, качественно!</div>
-            <div class="review">Аноним: Быстрая доставка, рекомендую.</div>
-          </div>
         </div>
       </div>
 
@@ -113,10 +121,6 @@
           <div class="product-price">300 ₽</div>
           <button class="details-btn">Подробнее</button>
           <button class="add-btn">Добавить в корзину</button>
-          <div class="reviews">
-            <div class="review">Клиент: Контент 🔥, спасибо!</div>
-            <div class="review">Апон: Всё чётко, получил сразу!</div>
-          </div>
         </div>
       </div>
     </div>
@@ -130,6 +134,13 @@
         <p id="modal-desc"></p>
         <div class="modal-price" id="modal-price"></div>
         <button id="modal-add">Добавить в корзину</button>
+
+        <div id="reviews-container">
+          <h3>Отзывы:</h3>
+          <div id="modal-reviews"></div>
+          <textarea id="reviewInput" rows="3" placeholder="Напишите ваш отзыв..." style="margin-top: 10px;"></textarea>
+          <button id="submitReview" style="margin-top: 10px;">Оставить отзыв</button>
+        </div>
       </div>
     </div>
 
@@ -163,7 +174,8 @@
       </div>
     </div>
   </div>
- <!-- НАВИГАЦИЯ -->
+
+  <!-- НАВИГАЦИЯ -->
   <div class="bottom-nav">
     <button class="active" data-tab="catalog"><img src="home.svg" alt=""><span>Каталог</span></button>
     <button data-tab="cart"><img src="cart.svg" alt=""><span>Корзина</span></button>
@@ -201,168 +213,196 @@
       </div>
     </div>
   </div>
+<script>
+  const navButtons = document.querySelectorAll('.bottom-nav button');
+  const tabs = document.querySelectorAll('.tab-pane');
+  const totalText = document.getElementById('total');
+  const cartBody = document.getElementById('cart-body');
+  const modal = document.getElementById('modal');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const modalReviews = document.getElementById('modal-reviews');
+  const reviewInput = document.getElementById('reviewInput');
+  const submitReview = document.getElementById('submitReview');
 
-  <script>
-    const navButtons = document.querySelectorAll('.bottom-nav button');
-    const tabs = document.querySelectorAll('.tab-pane');
-    const totalText = document.getElementById('total');
-    const cartBody = document.getElementById('cart-body');
-    const modal = document.getElementById('modal');
-    const checkoutBtn = document.getElementById('checkout-btn');
+  let currentProduct = "";
+  let telegramUser = null;
+  let cart = {}, total = 0;
 
-    const orderModal = document.getElementById('orderModal');
-    const orderCloseBtn = document.getElementById('orderCloseBtn');
-    const orderCloseButton = document.getElementById('orderCloseButton');
-    const orderAmount = document.getElementById('orderAmount');
+  function goToTab(id) {
+    navButtons.forEach(b => b.classList.remove('active'));
+    tabs.forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
+  }
 
-    const paidButton = document.getElementById('paidButton');
-    const usernameModal = document.getElementById('usernameModal');
-    const usernameCloseBtn = document.getElementById('usernameCloseBtn');
-    const submitUsername = document.getElementById('submitUsername');
-    const tgUsernameInput = document.getElementById('tgUsernameInput');
+  function addToCart(name, price, image) {
+    if (!cart[name]) cart[name] = { name, price, image, count: 0 };
+    cart[name].count++;
+    total += price;
+    updateCartDisplay();
+  }
 
-    let cart = {}, total = 0;
-
-    function goToTab(id) {
-      navButtons.forEach(b => b.classList.remove('active'));
-      tabs.forEach(t => t.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
+  function updateCartDisplay() {
+    cartBody.innerHTML = '';
+    if (!Object.keys(cart).length) {
+      cartBody.textContent = 'Здесь будут ваши товары.';
+      totalText.textContent = '0,00 ₽';
+      checkoutBtn.style.display = 'none';
+      return;
     }
 
-    document.querySelectorAll('.add-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const card = btn.closest('.product-card');
+    Object.values(cart).forEach(item => {
+      let div = document.createElement('div');
+      div.className = 'product-card';
+      div.innerHTML = `
+        <img src="${item.image}" alt="">
+        <div class="product-info">
+          <div class="product-title">${item.name}</div>
+          <div class="product-price">${item.price} ₽ × ${item.count}</div>
+          <div class="cart-controls">
+            <button onclick="decrementItem('${item.name}')">−</button>
+            <button onclick="incrementItem('${item.name}')">+</button>
+          </div>
+        </div>`;
+      cartBody.appendChild(div);
+    });
+
+    totalText.textContent = total.toFixed(2) + ' ₽';
+    checkoutBtn.style.display = 'block';
+  }
+
+  function incrementItem(name) {
+    cart[name].count++;
+    total += cart[name].price;
+    updateCartDisplay();
+  }
+
+  function decrementItem(name) {
+    if (!cart[name]) return;
+    cart[name].count--;
+    total -= cart[name].price;
+    if (cart[name].count <= 0) delete cart[name];
+    updateCartDisplay();
+  }
+
+  navButtons.forEach(btn => btn.addEventListener('click', () => goToTab(btn.dataset.tab)));
+
+  document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.product-card');
+      addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
+    });
+  });
+
+  document.querySelectorAll('.details-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.product-card');
+      document.getElementById('modal-img').src = card.dataset.image;
+      document.getElementById('modal-title').textContent = card.dataset.name;
+      document.getElementById('modal-desc').textContent = card.dataset.desc;
+      document.getElementById('modal-price').textContent = card.dataset.price + ' ₽';
+      modal.classList.remove('hidden');
+
+      currentProduct = card.dataset.name;
+      loadReviews();
+
+      document.getElementById('modal-add').onclick = () => {
         addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
-      });
+        modal.classList.add('hidden');
+      };
     });
+  });
 
-    document.querySelectorAll('.details-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const card = btn.closest('.product-card');
-        document.getElementById('modal-img').src = card.dataset.image;
-        document.getElementById('modal-title').textContent = card.dataset.name;
-        document.getElementById('modal-desc').textContent = card.dataset.desc;
-        document.getElementById('modal-price').textContent = card.dataset.price + ' ₽';
-        modal.classList.remove('hidden');
-        document.getElementById('modal-add').onclick = () => {
-          addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
-          modal.classList.add('hidden');
-        };
-      });
-    });
+  document.getElementById('detailsCloseBtn').onclick = () => modal.classList.add('hidden');
 
-    document.getElementById('detailsCloseBtn').onclick = () => modal.classList.add('hidden');
+  window.onclick = e => {
+    if (e.target === modal) modal.classList.add('hidden');
+    if (e.target === document.getElementById('orderModal')) document.getElementById('orderModal').classList.add('hidden');
+    if (e.target === document.getElementById('usernameModal')) document.getElementById('usernameModal').classList.add('hidden');
+  };
 
-    window.onclick = e => {
-      if (e.target === modal) modal.classList.add('hidden');
-      if (e.target === orderModal) orderModal.classList.add('hidden');
-      if (e.target === usernameModal) usernameModal.classList.add('hidden');
-    };
+  document.getElementById('promo-btn').onclick = () => {
+    const message = document.getElementById('promo-message');
+    message.textContent = 'Такого промокода не существует';
+    message.style.color = 'red';
+  };
 
-    function updateCartDisplay() {
-      cartBody.innerHTML = '';
-      if (!Object.keys(cart).length) {
-        cartBody.textContent = 'Здесь будут ваши товары.';
-        totalText.textContent = '0,00 ₽';
-        checkoutBtn.style.display = 'none';
-        return;
-      }
+  document.getElementById('checkout-btn').onclick = () => {
+    if (total === 0) return;
+    document.getElementById('orderAmount').textContent = total.toFixed(2) + ' ₽';
+    document.getElementById('orderModal').classList.remove('hidden');
+  };
 
-      Object.values(cart).forEach(item => {
-        let div = document.createElement('div');
-        div.className = 'product-card';
-        div.innerHTML = `
-          <img src="${item.image}" alt="">
-          <div class="product-info">
-            <div class="product-title">${item.name}</div>
-            <div class="product-price">${item.price} ₽ × ${item.count}</div>
-            <div class="cart-controls">
-              <button onclick="decrementItem('${item.name}')">−</button>
-              <button onclick="incrementItem('${item.name}')">+</button>
-            </div>
-          </div>`;
-        cartBody.appendChild(div);
-      });
+  document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
+  document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
-      totalText.textContent = total.toFixed(2) + ' ₽';
-      checkoutBtn.style.display = 'block';
+  document.getElementById('paidButton').onclick = () => {
+    document.getElementById('orderModal').classList.add('hidden');
+    document.getElementById('usernameModal').classList.remove('hidden');
+  };
+
+  document.getElementById('usernameCloseBtn').onclick = () => document.getElementById('usernameModal').classList.add('hidden');
+
+  document.getElementById('submitUsername').onclick = () => {
+    const username = document.getElementById('tgUsernameInput').value.trim();
+    if (!username || !username.startsWith('@')) {
+      alert('Пожалуйста, введите корректный username Telegram, начинающийся с "@"');
+      return;
     }
+    document.getElementById('usernameModal').classList.add('hidden');
+    alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
+  };
 
-    function addToCart(name, price, image) {
-      if (!cart[name]) cart[name] = { name, price, image, count: 0 };
-      cart[name].count++;
-      total += price;
-      updateCartDisplay();
-    }
+  // Telegram WebApp init
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
-    function incrementItem(name) {
-      cart[name].count++;
-      total += cart[name].price;
-      updateCartDisplay();
-    }
-
-    function decrementItem(name) {
-      if (!cart[name]) return;
-      cart[name].count--;
-      total -= cart[name].price;
-      if (cart[name].count <= 0) delete cart[name];
-      updateCartDisplay();
-    }
-
-    navButtons.forEach(btn => btn.addEventListener('click', () => goToTab(btn.dataset.tab)));
-
-    document.getElementById('promo-btn').onclick = () => {
-      const message = document.getElementById('promo-message');
-      message.textContent = 'Такого промокода не существует';
-      message.style.color = 'red';
-    };
-
-    checkoutBtn.onclick = () => {
-      if (total === 0) return;
-      orderAmount.textContent = total.toFixed(2) + ' ₽';
-      orderModal.classList.remove('hidden');
-    };
-
-    orderCloseBtn.onclick = () => orderModal.classList.add('hidden');
-    orderCloseButton.onclick = () => orderModal.classList.add('hidden');
-
-    paidButton.onclick = () => {
-      orderModal.classList.add('hidden');
-      usernameModal.classList.remove('hidden');
-    };
-
-    usernameCloseBtn.onclick = () => usernameModal.classList.add('hidden');
-
-    submitUsername.onclick = () => {
-      const username = tgUsernameInput.value.trim();
-      if (!username || !username.startsWith('@')) {
-        alert('Пожалуйста, введите корректный username Telegram, начинающийся с "@"');
-        return;
-      }
-      usernameModal.classList.add('hidden');
-      alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
-    };
-
-    // WebApp профиль
-    window.addEventListener('DOMContentLoaded', () => {
-      if (window.Telegram && Telegram.WebApp) {
-        Telegram.WebApp.ready();
-        const user = Telegram.WebApp.initDataUnsafe?.user;
-
-        if (user) {
-          document.getElementById('user-name').textContent = `${user.first_name} ${user.last_name || ''}`.trim();
-          document.getElementById('user-username').textContent = user.username ? `@${user.username}` : 'без ника';
-          document.getElementById('user-id').textContent = user.id;
-
-          if (user.username) {
-            document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${user.username}.jpg`;
-          }
+      if (telegramUser) {
+        document.getElementById('user-name').textContent = `${telegramUser.first_name} ${telegramUser.last_name || ''}`.trim();
+        document.getElementById('user-username').textContent = telegramUser.username ? `@${telegramUser.username}` : 'без ника';
+        document.getElementById('user-id').textContent = telegramUser.id;
+        if (telegramUser.username) {
+          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
         }
       }
+    }
 
-      updateCartDisplay();
-    });
-  </script>
+    updateCartDisplay();
+  });
+
+  // ==== Отзывы ====
+  function loadReviews() {
+    const reviews = JSON.parse(localStorage.getItem(`reviews_${currentProduct}`) || '[]');
+    modalReviews.innerHTML = '';
+    if (!reviews.length) {
+      modalReviews.innerHTML = '<p>Отзывов пока нет.</p>';
+    } else {
+      reviews.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'review-item';
+        div.innerHTML = `<span class="review-author">${r.name}</span>: ${r.text}`;
+        modalReviews.appendChild(div);
+      });
+    }
+  }
+
+  submitReview.onclick = () => {
+    const text = reviewInput.value.trim();
+    if (!text) return alert('Напишите отзыв!');
+    const name = telegramUser
+      ? `${telegramUser.first_name} ${telegramUser.last_name || ''}`.trim()
+      : 'Аноним';
+
+    const reviews = JSON.parse(localStorage.getItem(`reviews_${currentProduct}`) || '[]');
+    reviews.push({ name, text });
+    localStorage.setItem(`reviews_${currentProduct}`, JSON.stringify(reviews));
+    reviewInput.value = '';
+    loadReviews();
+  };
+</script>
 </body>
 </html>
+
+
