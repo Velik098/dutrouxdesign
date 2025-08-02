@@ -75,21 +75,6 @@
       color: #ffcc00;
       font-weight: bold;
     }
-    #reviews-container h3 {
-      text-align: center;
-      margin-top: 25px;
-      margin-bottom: 10px;
-    }
-    #submitReview {
-      margin-top: 10px;
-      display: block;
-      width: 100%;
-      text-align: center;
-    }
-    #reviewInput {
-      margin-top: 10px;
-      resize: vertical;
-    }
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -108,7 +93,6 @@
   </div>
 
   <!-- Основной контент -->
-
   <div class="tab-content">
     <!-- КАТАЛОГ -->
     <div id="catalog" class="tab-pane active">
@@ -141,28 +125,6 @@
       </div>
     </div>
 
-    <div class="product-card" data-name="Оформление YouTube" data-price="500" data-image="youtube.png" data-desc="Полное оформление для вашего YouTube-канала: баннер, аватар, обложки видео">
-  <img src="youtube.png" alt="Оформление YouTube">
-  <div class="product-info">
-    <div class="product-title">Оформление YouTube</div>
-    <div class="product-description">Полное оформление для вашего YouTube-канала</div>
-    <div class="product-price">500 ₽</div>
-    <button class="details-btn">Подробнее</button>
-    <button class="add-btn">Добавить в корзину</button>
-  </div>
-</div>
-
-<div class="product-card" data-name="3 Превью по цене 2" data-price="400" data-image="3preview.png" data-desc="Набор из трёх превью для ваших видео по цене двух! Отличное предложение.">
-  <img src="3preview.png" alt="3 Превью по цене 2">
-  <div class="product-info">
-    <div class="product-title">3 Превью по цене 2</div>
-    <div class="product-description">Набор из трёх превью по цене двух!</div>
-    <div class="product-price">400 ₽</div>
-    <button class="details-btn">Подробнее</button>
-    <button class="add-btn">Добавить в корзину</button>
-  </div>
-</div>
-
     <!-- МОДАЛКА "ПОДРОБНЕЕ" -->
     <div id="modal" class="modal hidden">
       <div class="modal-content">
@@ -176,8 +138,8 @@
         <div id="reviews-container">
           <h3>Отзывы:</h3>
           <div id="modal-reviews"></div>
-          <textarea id="reviewInput" rows="3" placeholder="Напишите ваш отзыв..."></textarea>
-          <button id="submitReview">Оставить отзыв</button>
+          <textarea id="reviewInput" rows="3" placeholder="Напишите ваш отзыв..." style="margin-top: 10px;"></textarea>
+          <button id="submitReview" style="margin-top: 10px;">Оставить отзыв</button>
         </div>
       </div>
     </div>
@@ -219,6 +181,7 @@
     <button data-tab="cart"><img src="cart.svg" alt=""><span>Корзина</span></button>
     <button data-tab="profile"><img src="profile.svg" alt=""><span>Профиль</span></button>
   </div>
+
   <!-- МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
   <div id="orderModal" class="modal hidden">
     <div class="modal-content">
@@ -250,7 +213,6 @@
       </div>
     </div>
   </div>
-
 <script>
   const navButtons = document.querySelectorAll('.bottom-nav button');
   const tabs = document.querySelectorAll('.tab-pane');
