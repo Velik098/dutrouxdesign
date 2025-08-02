@@ -361,11 +361,11 @@
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-        document.getElementById('user-name').textContent = ${telegramUser.first_name} ${telegramUser.last_name || ''}.trim();
-        document.getElementById('user-username').textContent = telegramUser.username ? @${telegramUser.username} : 'без ника';
+        document.getElementById('user-name').textContent = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
+        document.getElementById('user-username').textContent = telegramUser.username ? `@${telegramUser.username}` : 'без ника';
         document.getElementById('user-id').textContent = telegramUser.id;
         if (telegramUser.username) {
-          document.getElementById('user-avatar').src = https://t.me/i/userpic/320/${telegramUser.username}.jpg;
+        document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
         }
       }
     }
