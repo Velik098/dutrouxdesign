@@ -250,7 +250,7 @@
     navButtons.forEach(b => b.classList.remove('active'));
     tabs.forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
+    document.querySelector([data-tab="${id}"])?.classList.add('active');
   }
 
   function addToCart(name, price, image) {
@@ -272,7 +272,7 @@
     Object.values(cart).forEach(item => {
       let div = document.createElement('div');
       div.className = 'product-card';
-      div.innerHTML = `
+      div.innerHTML = 
         <img src="${item.image}" alt="">
         <div class="product-info">
           <div class="product-title">${item.name}</div>
@@ -281,7 +281,7 @@
             <button onclick="decrementItem('${item.name}')">−</button>
             <button onclick="incrementItem('${item.name}')">+</button>
           </div>
-        </div>`;
+        </div>;
       cartBody.appendChild(div);
     });
 
@@ -378,11 +378,11 @@
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-        document.getElementById('user-name').textContent = `${telegramUser.first_name} ${telegramUser.last_name || ''}`.trim();
-        document.getElementById('user-username').textContent = telegramUser.username ? `@${telegramUser.username}` : 'без ника';
+        document.getElementById('user-name').textContent = ${telegramUser.first_name} ${telegramUser.last_name || ''}.trim();
+        document.getElementById('user-username').textContent = telegramUser.username ? @${telegramUser.username} : 'без ника';
         document.getElementById('user-id').textContent = telegramUser.id;
         if (telegramUser.username) {
-          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+          document.getElementById('user-avatar').src = https://t.me/i/userpic/320/${telegramUser.username}.jpg;
         }
       }
     }
@@ -392,7 +392,7 @@
 
   // ==== Отзывы ====
   function loadReviews() {
-    const reviews = JSON.parse(localStorage.getItem(`reviews_${currentProduct}`) || '[]');
+    const reviews = JSON.parse(localStorage.getItem(reviews_${currentProduct}) || '[]');
     modalReviews.innerHTML = '';
     if (!reviews.length) {
       modalReviews.innerHTML = '<p>Отзывов пока нет.</p>';
@@ -400,7 +400,7 @@
       reviews.forEach(r => {
         const div = document.createElement('div');
         div.className = 'review-item';
-        div.innerHTML = `<span class="review-author">${r.name}</span>: ${r.text}`;
+        div.innerHTML = <span class="review-author">${r.name}</span>: ${r.text};
         modalReviews.appendChild(div);
       });
     }
@@ -410,8 +410,15 @@
     const text = reviewInput.value.trim();
     if (!text) return alert('Напишите отзыв!');
     const name = telegramUser
-      ? `${telegramUser.first_name} ${telegramUser.last_name || ''}`.trim()
+      ? ${telegramUser.first_name} ${telegramUser.last_name || ''}.trim()
       : 'Аноним';
+
+    const reviews = JSON.parse(localStorage.getItem(reviews_${currentProduct}) || '[]');
+    reviews.push({ name, text });
+    localStorage.setItem(reviews_${currentProduct}, JSON.stringify(reviews));
+    reviewInput.value = '';
+    loadReviews();
+  };
 </script>
 </body>
 </html>
