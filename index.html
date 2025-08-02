@@ -412,13 +412,6 @@
     const name = telegramUser
       ? `${telegramUser.first_name} ${telegramUser.last_name || ''}`.trim()
       : 'Аноним';
-
-    const reviews = JSON.parse(localStorage.getItem(`reviews_${currentProduct}`) || '[]');
-    reviews.push({ name, text });
-    localStorage.setItem(`reviews_${currentProduct}`, JSON.stringify(reviews));
-    reviewInput.value = '';
-    loadReviews();
-  };
 </script>
 </body>
 </html>
