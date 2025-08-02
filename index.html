@@ -75,6 +75,21 @@
       color: #ffcc00;
       font-weight: bold;
     }
+    #reviews-container h3 {
+      text-align: center;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+    #submitReview {
+      margin-top: 10px;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+    #reviewInput {
+      margin-top: 10px;
+      resize: vertical;
+    }
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -93,6 +108,7 @@
   </div>
 
   <!-- Основной контент -->
+
   <div class="tab-content">
     <!-- КАТАЛОГ -->
     <div id="catalog" class="tab-pane active">
@@ -138,8 +154,8 @@
         <div id="reviews-container">
           <h3>Отзывы:</h3>
           <div id="modal-reviews"></div>
-          <textarea id="reviewInput" rows="3" placeholder="Напишите ваш отзыв..." style="margin-top: 10px;"></textarea>
-          <button id="submitReview" style="margin-top: 10px;">Оставить отзыв</button>
+          <textarea id="reviewInput" rows="3" placeholder="Напишите ваш отзыв..."></textarea>
+          <button id="submitReview">Оставить отзыв</button>
         </div>
       </div>
     </div>
@@ -181,7 +197,6 @@
     <button data-tab="cart"><img src="cart.svg" alt=""><span>Корзина</span></button>
     <button data-tab="profile"><img src="profile.svg" alt=""><span>Профиль</span></button>
   </div>
-
   <!-- МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
   <div id="orderModal" class="modal hidden">
     <div class="modal-content">
@@ -213,6 +228,7 @@
       </div>
     </div>
   </div>
+
 <script>
   const navButtons = document.querySelectorAll('.bottom-nav button');
   const tabs = document.querySelectorAll('.tab-pane');
@@ -404,5 +420,3 @@
 </script>
 </body>
 </html>
-
-
