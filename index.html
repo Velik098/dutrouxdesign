@@ -252,20 +252,21 @@
     }
 
     Object.values(cart).forEach(item => {
-      let div = document.createElement('div');
-      div.className = 'product-card';
-      div.innerHTML = 
-        <img src="${item.image}" alt="">
-        <div class="product-info">
-          <div class="product-title">${item.name}</div>
-          <div class="product-price">${item.price} ₽ × ${item.count}</div>
-          <div class="cart-controls">
-            <button onclick="decrementItem('${item.name}')">−</button>
-            <button onclick="incrementItem('${item.name}')">+</button>
-          </div>
-        </div>;
-      cartBody.appendChild(div);
-    });
+  let div = document.createElement('div');
+  div.className = 'product-card';
+  div.innerHTML = `
+    <img src="${item.image}" alt="">
+    <div class="product-info">
+      <div class="product-title">${item.name}</div>
+      <div class="product-price">${item.price} ₽ × ${item.count}</div>
+      <div class="cart-controls">
+        <button onclick="decrementItem('${item.name}')">−</button>
+        <button onclick="incrementItem('${item.name}')">+</button>
+      </div>
+    </div>
+  `;
+  cartBody.appendChild(div);
+});
 
     totalText.textContent = total.toFixed(2) + ' ₽';
     checkoutBtn.style.display = 'block';
