@@ -252,21 +252,21 @@
     }
 
     Object.values(cart).forEach(item => {
-  let div = document.createElement('div');
-  div.className = 'product-card';
-  div.innerHTML = `
-    <img src="${item.image}" alt="">
-    <div class="product-info">
-      <div class="product-title">${item.name}</div>
-      <div class="product-price">${item.price} ₽ × ${item.count}</div>
-      <div class="cart-controls">
-        <button onclick="decrementItem('${item.name}')">−</button>
-        <button onclick="incrementItem('${item.name}')">+</button>
-      </div>
-    </div>
-  `;
-  cartBody.appendChild(div);
-});
+      let div = document.createElement('div');
+      div.className = 'product-card';
+      div.innerHTML = `
+        <img src="${item.image}" alt="">
+        <div class="product-info">
+          <div class="product-title">${item.name}</div>
+          <div class="product-price">${item.price} ₽ × ${item.count}</div>
+          <div class="cart-controls">
+            <button onclick="decrementItem('${item.name}')">−</button>
+            <button onclick="incrementItem('${item.name}')">+</button>
+          </div>
+        </div>
+      `;
+      cartBody.appendChild(div);
+    });
 
     totalText.textContent = total.toFixed(2) + ' ₽';
     checkoutBtn.style.display = 'block';
@@ -365,7 +365,7 @@
         document.getElementById('user-username').textContent = telegramUser.username ? `@${telegramUser.username}` : 'без ника';
         document.getElementById('user-id').textContent = telegramUser.id;
         if (telegramUser.username) {
-        document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
         }
       }
     }
@@ -375,7 +375,8 @@
 
   // ==== Отзывы ====
   function loadReviews() {
-    const reviews = JSON.parse(localStorage.getItem(reviews_${currentProduct}) || '[]');
+    const key = `reviews_${currentProduct}`;
+    const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     modalReviews.innerHTML = '';
     if (!reviews.length) {
       modalReviews.innerHTML = '<p>Отзывов пока нет.</p>';
@@ -383,7 +384,7 @@
       reviews.forEach(r => {
         const div = document.createElement('div');
         div.className = 'review-item';
-        div.innerHTML = <span class="review-author">${r.name}</span>: ${r.text};
+        div.innerHTML = `<span class="review-author">${r.name}</span>: ${r.text}`;
         modalReviews.appendChild(div);
       });
     }
@@ -393,15 +394,14 @@
     const text = reviewInput.value.trim();
     if (!text) return alert('Напишите отзыв!');
     const name = telegramUser
-      ? ${telegramUser.first_name} ${telegramUser.last_name || ''}.trim()
+      ? `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`
       : 'Аноним';
 
-    const reviews = JSON.parse(localStorage.getItem(reviews_${currentProduct}) || '[]');
+    const key = `reviews_${currentProduct}`;
+    const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     reviews.push({ name, text });
-    localStorage.setItem(reviews_${currentProduct}, JSON.stringify(reviews));
+    localStorage.setItem(key, JSON.stringify(reviews));
     reviewInput.value = '';
     loadReviews();
   };
 </script>
-</body>
-</html>
