@@ -217,6 +217,35 @@
     </div>
   </div>
 
+  <div class="profile-info">
+  <div style="position: relative;">
+    <img src="avatar.png" alt="Avatar" id="user-avatar" style="width: 80px; height: 80px; border-radius: 50%;">
+    <span id="edit-avatar-btn" style="position: absolute; bottom: 0; right: 0; cursor: pointer; font-size: 20px; background: #ffcc00; border-radius: 50%; padding: 2px 6px;">✎</span>
+  </div>
+  <div>
+    <strong id="user-name">Имя Фамилия</strong><br>
+    <span id="user-username">@username</span><br>
+    ID: <span id="user-id">123456</span>
+  </div>
+</div>
+
+  <div id="avatarModal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-btn" onclick="document.getElementById('avatarModal').classList.add('hidden')">&times;</span>
+    <h3>Выберите аватар</h3>
+    <p>Можно загрузить свой (1000x1000 PNG/JPG):</p>
+    <input type="file" id="avatarUpload" accept="image/png, image/jpeg" />
+    <hr style="margin: 15px 0;">
+    <p>Или выбрать из готовых:</p>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <img src="blue.png" class="preset-avatar" alt="blue" width="60">
+      <img src="green.png" class="preset-avatar" alt="green" width="60">
+      <img src="purple.png" class="preset-avatar" alt="purple" width="60">
+      <img src="red.png" class="preset-avatar" alt="red" width="60">
+    </div>
+  </div>
+</div>
+
   <!-- НАВИГАЦИЯ -->
   <div class="bottom-nav">
     <button class="active" data-tab="catalog"><img src="home.svg" alt=""><span>Каталог</span></button>
@@ -446,6 +475,44 @@
     reviewInput.value = '';
     loadReviews();
   };
+
+  document.getElementById('edit-avatar-btn').onclick = () => {
+  document.getElementById('avatarModal').classList.remove('hidden');
+};
+
+// Выбор готового аватара
+document.querySelectorAll('.preset-avatar').forEach(img => {
+  img.onclick = () => {
+    const src = img.getAttribute('src');
+    localStorage.setItem('customAvatar', src);
+    document.getElementById('user-avatar').src = src;
+    document.getElementById('avatarModal').classList.add('hidden');
+  };
+});
+
+// Загрузка своего изображения
+document.getElementById('avatarUpload').addEventListener('change', function () {
+  const file = this.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    localStorage.setItem('customAvatar', e.target.result);
+    document.getElementById('user-avatar').src = e.target.result;
+    document.getElementById('avatarModal').classList.add('hidden');
+  };
+  reader.readAsDataURL(file);
+});
+
+// При загрузке страницы — подставляем кастомный аватар, если есть
+window.addEventListener('DOMContentLoaded', () => {
+  const savedAvatar = localStorage.getItem('customAvatar');
+  if (savedAvatar) {
+    document.getElementById('user-avatar').src = savedAvatar;
+  }
+});
+
+  
 </script>
 
 </body>
