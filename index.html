@@ -27,6 +27,8 @@
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
       max-width: 400px;
       width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
       font-family: 'Arial', sans-serif;
       position: relative;
     }
@@ -499,6 +501,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const savedAvatar = localStorage.getItem('customAvatar');
   if (savedAvatar) {
     document.getElementById('user-avatar').src = savedAvatar;
+  }
+});
+  
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') {
+    modal.classList.add('hidden');
   }
 });
 
