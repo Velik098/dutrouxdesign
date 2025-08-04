@@ -286,13 +286,12 @@
   const modalReviews = document.getElementById('modal-reviews');
   const reviewInput = document.getElementById('reviewInput');
   const submitReview = document.getElementById('submitReview');
-  const toast = document.getElementById('toast');
 
   let currentProduct = "";
   let telegramUser = null;
   let cart = {}, total = 0;
 
-  // Добавим CSS-анимации через JS
+  // Добавим CSS-анимации и стили для тоста
   const style = document.createElement('style');
   style.innerHTML = `
     @keyframes pulse {
@@ -303,11 +302,33 @@
     .pulse-animate {
       animation: pulse 0.4s ease;
     }
+
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 9999;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
     #toast.show {
-      opacity: 1 !important;
+      opacity: 1;
     }
   `;
   document.head.appendChild(style);
+
+  // Создание самого toast-элемента
+  const toast = document.createElement('div');
+  toast.id = 'toast';
+  document.body.appendChild(toast);
 
   function goToTab(id) {
     navButtons.forEach(b => b.classList.remove('active'));
@@ -319,10 +340,10 @@
   function showToast(message) {
     toast.textContent = message;
     toast.classList.add('show');
-
-    setTimeout(() => {
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
       toast.classList.remove('show');
-    }, 2000);
+    }, 2500);
   }
 
   function addToCart(name, price, image) {
@@ -330,7 +351,7 @@
     cart[name].count++;
     total += price;
     updateCartDisplay();
-    showToast(`🛒 «${name}» добавлено в корзину`);
+    showToast(`🛒 «${name}» добавлен в корзину`);
   }
 
   function updateCartDisplay() {
@@ -384,7 +405,7 @@
       const card = btn.closest('.product-card');
       addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
 
-      // 🔥 Анимация нажатия
+      // 🔥 Анимация кнопки
       btn.disabled = true;
       const originalText = btn.textContent;
       btn.textContent = "✅ Добавлено!";
@@ -546,8 +567,6 @@
     }
   });
 </script>
-
-
 
     <div id="toast" style="
   position: fixed;
