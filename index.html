@@ -286,6 +286,7 @@
   const modalReviews = document.getElementById('modal-reviews');
   const reviewInput = document.getElementById('reviewInput');
   const submitReview = document.getElementById('submitReview');
+  const toast = document.getElementById('toast');
 
   let currentProduct = "";
   let telegramUser = null;
@@ -298,11 +299,20 @@
     document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
   }
 
+  function showToast(message) {
+    toast.textContent = message;
+    toast.style.opacity = 1;
+    setTimeout(() => {
+      toast.style.opacity = 0;
+    }, 2000);
+  }
+
   function addToCart(name, price, image) {
     if (!cart[name]) cart[name] = { name, price, image, count: 0 };
     cart[name].count++;
     total += price;
     updateCartDisplay();
+    showToast(`🛒 «${name}» добавлено в корзину`);
   }
 
   function updateCartDisplay() {
@@ -355,6 +365,18 @@
     btn.addEventListener('click', () => {
       const card = btn.closest('.product-card');
       addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
+
+      // 🔄 Анимация кнопки
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = "✅ Добавлено!";
+      btn.style.backgroundColor = "#4CAF50";
+
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.backgroundColor = "";
+        btn.disabled = false;
+      }, 1500);
     });
   });
 
@@ -469,49 +491,64 @@
   };
 
   document.getElementById('edit-avatar-btn').onclick = () => {
-  document.getElementById('avatarModal').classList.remove('hidden');
-};
-
-// Выбор готового аватара
-document.querySelectorAll('.preset-avatar').forEach(img => {
-  img.onclick = () => {
-    const src = img.getAttribute('src');
-    localStorage.setItem('customAvatar', src);
-    document.getElementById('user-avatar').src = src;
-    document.getElementById('avatarModal').classList.add('hidden');
+    document.getElementById('avatarModal').classList.remove('hidden');
   };
-});
 
-// Загрузка своего изображения
-document.getElementById('avatarUpload').addEventListener('change', function () {
-  const file = this.files[0];
-  if (!file) return;
+  // Выбор готового аватара
+  document.querySelectorAll('.preset-avatar').forEach(img => {
+    img.onclick = () => {
+      const src = img.getAttribute('src');
+      localStorage.setItem('customAvatar', src);
+      document.getElementById('user-avatar').src = src;
+      document.getElementById('avatarModal').classList.add('hidden');
+    };
+  });
 
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    localStorage.setItem('customAvatar', e.target.result);
-    document.getElementById('user-avatar').src = e.target.result;
-    document.getElementById('avatarModal').classList.add('hidden');
-  };
-  reader.readAsDataURL(file);
-});
+  // Загрузка своего изображения
+  document.getElementById('avatarUpload').addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
 
-// При загрузке страницы — подставляем кастомный аватар, если есть
-window.addEventListener('DOMContentLoaded', () => {
-  const savedAvatar = localStorage.getItem('customAvatar');
-  if (savedAvatar) {
-    document.getElementById('user-avatar').src = savedAvatar;
-  }
-});
-  
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape') {
-    modal.classList.add('hidden');
-  }
-});
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      localStorage.setItem('customAvatar', e.target.result);
+      document.getElementById('user-avatar').src = e.target.result;
+      document.getElementById('avatarModal').classList.add('hidden');
+    };
+    reader.readAsDataURL(file);
+  });
 
-  
+  // При загрузке страницы — подставляем кастомный аватар, если есть
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedAvatar = localStorage.getItem('customAvatar');
+    if (savedAvatar) {
+      document.getElementById('user-avatar').src = savedAvatar;
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      modal.classList.add('hidden');
+    }
+  });
 </script>
+
+
+    <div id="toast" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #333;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+  pointer-events: none;
+"></div>
+
 
 </body>
 </html>
