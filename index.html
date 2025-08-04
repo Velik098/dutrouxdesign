@@ -292,6 +292,23 @@
   let telegramUser = null;
   let cart = {}, total = 0;
 
+  // Добавим CSS-анимации через JS
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .pulse-animate {
+      animation: pulse 0.4s ease;
+    }
+    #toast.show {
+      opacity: 1 !important;
+    }
+  `;
+  document.head.appendChild(style);
+
   function goToTab(id) {
     navButtons.forEach(b => b.classList.remove('active'));
     tabs.forEach(t => t.classList.remove('active'));
@@ -301,9 +318,10 @@
 
   function showToast(message) {
     toast.textContent = message;
-    toast.style.opacity = 1;
+    toast.classList.add('show');
+
     setTimeout(() => {
-      toast.style.opacity = 0;
+      toast.classList.remove('show');
     }, 2000);
   }
 
@@ -366,15 +384,17 @@
       const card = btn.closest('.product-card');
       addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
 
-      // 🔄 Анимация кнопки
+      // 🔥 Анимация нажатия
       btn.disabled = true;
       const originalText = btn.textContent;
       btn.textContent = "✅ Добавлено!";
       btn.style.backgroundColor = "#4CAF50";
+      btn.classList.add("pulse-animate");
 
       setTimeout(() => {
         btn.textContent = originalText;
         btn.style.backgroundColor = "";
+        btn.classList.remove("pulse-animate");
         btn.disabled = false;
       }, 1500);
     });
@@ -439,7 +459,6 @@
     alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
   };
 
-  // Telegram WebApp init
   window.addEventListener('DOMContentLoaded', () => {
     if (window.Telegram && Telegram.WebApp) {
       Telegram.WebApp.ready();
@@ -456,6 +475,11 @@
     }
 
     updateCartDisplay();
+
+    const savedAvatar = localStorage.getItem('customAvatar');
+    if (savedAvatar) {
+      document.getElementById('user-avatar').src = savedAvatar;
+    }
   });
 
   // ==== Отзывы ====
@@ -494,7 +518,6 @@
     document.getElementById('avatarModal').classList.remove('hidden');
   };
 
-  // Выбор готового аватара
   document.querySelectorAll('.preset-avatar').forEach(img => {
     img.onclick = () => {
       const src = img.getAttribute('src');
@@ -504,7 +527,6 @@
     };
   });
 
-  // Загрузка своего изображения
   document.getElementById('avatarUpload').addEventListener('change', function () {
     const file = this.files[0];
     if (!file) return;
@@ -518,20 +540,13 @@
     reader.readAsDataURL(file);
   });
 
-  // При загрузке страницы — подставляем кастомный аватар, если есть
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedAvatar = localStorage.getItem('customAvatar');
-    if (savedAvatar) {
-      document.getElementById('user-avatar').src = savedAvatar;
-    }
-  });
-
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       modal.classList.add('hidden');
     }
   });
 </script>
+
 
 
     <div id="toast" style="
