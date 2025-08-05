@@ -302,13 +302,19 @@
   <div class="profile-card styled-card">
     <div class="profile-header" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
   <div style="flex-shrink: 0;">
-    <img id="user-avatar" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="Avatar"
-         style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 10px rgba(0,0,0,0.4); cursor: pointer;" 
-         onclick="document.getElementById('avatarModal').classList.remove('hidden')" />
+    <div style="position: relative; width: 70px; height: 70px; cursor: pointer;" onclick="document.getElementById('avatarModal').classList.remove('hidden')">
+  <img id="user-avatar" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="Avatar"
+       style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 10px rgba(0,0,0,0.4);" />
+  <img src="https://cdn-icons-png.flaticon.com/512/84/84380.png" alt="Edit" title="Изменить аватар"
+       style="position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; padding: 2px;" />
+  </div>
   </div>
   <div style="text-align: right;">
-    <div id="profile-username" style="font-size: 18px; font-weight: bold;">Имя пользователя</div>
-    <div id="profile-id" style="font-size: 14px; color: #ccc;">ID: 123456</div>
+   <div style="text-align: right;">
+  <div id="profile-username" style="font-size: 18px; font-weight: bold;">Имя пользователя</div>
+    <div id="profile-tg" style="font-size: 14px; color: #ccc;">@username</div>
+    <div id="profile-id" style="font-size: 14px; color: #888;">ID: 123456</div>
+  </div>
   </div>
 </div>
   </div>
@@ -605,12 +611,17 @@
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-        document.getElementById('profile-username').textContent = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
-        document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
-        if (telegramUser.username) {
-          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
-        }
-      }
+  const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
+  document.getElementById('profile-username').textContent = fullName;
+  document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
+
+  if (telegramUser.username) {
+    document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
+    document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+  } else {
+    document.getElementById('profile-tg').textContent = `@неизвестен`;
+  }
+}
     }
 
     updateCartDisplay();
