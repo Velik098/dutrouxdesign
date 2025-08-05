@@ -315,29 +315,29 @@
     </div>
 
     <!-- ПРОФИЛЬ -->
-<div id="profile" class="tab-pane">
-  <div class="profile-info">
-    <div style="position: relative;">
-      <img src="avatar.png" alt="Avatar" id="user-avatar" style="width: 80px; height: 80px; border-radius: 50%;">
-      <span id="edit-avatar-btn" style="position: absolute; bottom: 0; right: 0; cursor: pointer; font-size: 20px; background: #ffcc00; border-radius: 50%; padding: 2px 6px;">✎</span>
-    </div>
-    <div>
-      <strong id="user-name">Имя Фамилия</strong><br>
-      <span id="user-username">@username</span><br>
-      ID: <span id="user-id">123456</span>
+<!-- Профиль -->
+<div id="profile" class="tab-content">
+  <div class="profile-card styled-card">
+    <div class="profile-header">
+      <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="Avatar">
+      <div>
+        <div id="profile-username">Имя пользователя</div>
+        <div id="profile-id">ID: 123456</div>
+      </div>
     </div>
   </div>
 
-<!-- БАЛАНС -->
-<div class="balance-card styled-card">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div>Ваш баланс:</div>
-    <div id="balance-amount" style="font-weight: bold; font-size: 18px;">0 ₽</div>
+  <!-- БАЛАНС -->
+  <div class="balance-card styled-card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>Ваш баланс:</div>
+      <div id="balance-amount" style="font-weight: bold; font-size: 18px;">0 ₽</div>
+    </div>
   </div>
-</div>
 
-<hr style="margin: 18px 0; border-color: #333;">
+  <hr style="margin: 18px 0; border-color: #333;">
 
+  <!-- ПРОМОКОД -->
   <div class="promocode-card styled-card">
     <div>Промокод:</div>
     <input type="text" id="promo-input" placeholder="Введите промокод" style="width: 95%; box-sizing: border-box; margin-top: 8px;">
