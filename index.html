@@ -92,6 +92,50 @@
       margin-top: 10px;
       resize: vertical;
     }
+    #splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 99999;
+  transition: opacity 0.6s ease;
+}
+
+#splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-content {
+  text-align: center;
+  animation: splash-bounce 1.2s infinite;
+}
+
+.splash-logo {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+  border-radius: 20%;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.splash-title {
+  color: #ffcc00;
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  text-shadow: 0 0 5px #000;
+}
+
+@keyframes splash-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
