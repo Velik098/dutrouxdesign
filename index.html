@@ -398,9 +398,8 @@
   let telegramUser = null;
   let cart = {}, total = 0;
 
-  // CSS для анимаций
   const style = document.createElement('style');
-  style.innerHTML = 
+  style.innerHTML = `
     .tab-pane {
       opacity: 0;
       transform: translateY(10px);
@@ -412,7 +411,6 @@
       transform: translateY(0);
       pointer-events: auto;
     }
-
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.1); }
@@ -421,7 +419,6 @@
     .pulse-animate {
       animation: pulse 0.4s ease;
     }
-
     #toast {
       position: fixed;
       bottom: 20px;
@@ -441,20 +438,19 @@
     #toast.show {
       opacity: 1;
     }
-  ;
+  `;
   document.head.appendChild(style);
 
   const toast = document.createElement('div');
   toast.id = 'toast';
   document.body.appendChild(toast);
 
-  // 💡 Плавное переключение вкладок
   function goToTab(id) {
     tabs.forEach(t => t.classList.remove('active'));
     document.getElementById(id)?.classList.add('active');
 
     navButtons.forEach(b => b.classList.remove('active'));
-    document.querySelector([data-tab="${id}"])?.classList.add('active');
+    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
   }
 
   function showToast(message) {
@@ -471,7 +467,7 @@
     cart[name].count++;
     total += price;
     updateCartDisplay();
-    showToast(🛒 «${name}» добавлен в корзину);
+    showToast(`🛒 «${name}» добавлен в корзину`);
   }
 
   function updateCartDisplay() {
@@ -486,7 +482,7 @@
     Object.values(cart).forEach(item => {
       let div = document.createElement('div');
       div.className = 'product-card';
-      div.innerHTML = 
+      div.innerHTML = `
         <img src="${item.image}" alt="">
         <div class="product-info">
           <div class="product-title">${item.name}</div>
@@ -496,7 +492,7 @@
             <button onclick="incrementItem('${item.name}')">+</button>
           </div>
         </div>
-      ;
+      `;
       cartBody.appendChild(div);
     });
 
@@ -605,11 +601,10 @@
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-        document.getElementById('user-name').textContent = ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()};
-        document.getElementById('user-username').textContent = telegramUser.username ? @${telegramUser.username} : 'без ника';
-        document.getElementById('user-id').textContent = telegramUser.id;
+        document.getElementById('profile-username').textContent = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
+        document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
         if (telegramUser.username) {
-          document.getElementById('user-avatar').src = https://t.me/i/userpic/320/${telegramUser.username}.jpg;
+          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
         }
       }
     }
@@ -623,7 +618,7 @@
   });
 
   function loadReviews() {
-    const key = reviews_${currentProduct};
+    const key = `reviews_${currentProduct}`;
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     modalReviews.innerHTML = '';
     if (!reviews.length) {
@@ -632,7 +627,7 @@
       reviews.forEach(r => {
         const div = document.createElement('div');
         div.className = 'review-item';
-        div.innerHTML = <span class="review-author">${r.name}</span>: ${r.text};
+        div.innerHTML = `<span class="review-author">${r.name}</span>: ${r.text}`;
         modalReviews.appendChild(div);
       });
     }
@@ -642,10 +637,10 @@
     const text = reviewInput.value.trim();
     if (!text) return alert('Напишите отзыв!');
     const name = telegramUser
-      ? ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}
+      ? `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`
       : 'Аноним';
 
-    const key = reviews_${currentProduct};
+    const key = `reviews_${currentProduct}`;
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     reviews.push({ name, text });
     localStorage.setItem(key, JSON.stringify(reviews));
@@ -653,9 +648,9 @@
     loadReviews();
   };
 
-  document.getElementById('edit-avatar-btn').onclick = () => {
+  document.getElementById('edit-avatar-btn')?.addEventListener('click', () => {
     document.getElementById('avatarModal').classList.remove('hidden');
-  };
+  });
 
   document.querySelectorAll('.preset-avatar').forEach(img => {
     img.onclick = () => {
@@ -666,7 +661,7 @@
     };
   });
 
-  document.getElementById('avatarUpload').addEventListener('change', function () {
+  document.getElementById('avatarUpload')?.addEventListener('change', function () {
     const file = this.files[0];
     if (!file) return;
 
@@ -684,15 +679,17 @@
       modal.classList.add('hidden');
     }
   });
+
+  // ✅ Убираем splash-экран
   window.addEventListener('load', () => {
-  const splash = document.getElementById('splash-screen');
-  setTimeout(() => {
-    splash.classList.add('fade-out');
+    const splash = document.getElementById('splash-screen');
     setTimeout(() => {
-      splash.style.display = 'none';
-    }, 600);
-  }, 1600);
-});
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 600);
+    }, 1600);
+  });
 </script>
 
     <div id="toast" style="
