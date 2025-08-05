@@ -628,6 +628,12 @@
       modal.classList.add('hidden');
     }
   });
+  window.addEventListener('load', () => {
+  const splash = document.getElementById('splash-screen');
+  setTimeout(() => {
+    splash.classList.add('fade-out');
+  }, 1600); // 1.6 секунды
+});
 </script>
 
     <div id="toast" style="
