@@ -77,6 +77,17 @@
       color: #ffcc00;
       font-weight: bold;
     }
+    .tab-pane {
+      opacity: 0;
+      transform: translateX(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      display: none;
+    }
+     .tab-pane.active {
+      opacity: 1;
+      transform: translateX(0);
+      display: block;
+    }
     #reviews-container h3 {
       text-align: center;
       margin-top: 25px;
