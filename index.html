@@ -302,9 +302,21 @@
   let telegramUser = null;
   let cart = {}, total = 0;
 
-  // CSS для анимаций и тоста
+  // CSS для анимаций
   const style = document.createElement('style');
   style.innerHTML = `
+    .tab-pane {
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .tab-pane.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.1); }
@@ -312,24 +324,6 @@
     }
     .pulse-animate {
       animation: pulse 0.4s ease;
-    }
-
-    .fade-in {
-      animation: fadeIn 0.3s ease forwards;
-    }
-
-    .fade-out {
-      animation: fadeOut 0.3s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeOut {
-      from { opacity: 1; transform: translateY(0); }
-      to { opacity: 0; transform: translateY(10px); }
     }
 
     #toast {
@@ -358,29 +352,13 @@
   toast.id = 'toast';
   document.body.appendChild(toast);
 
-  // 👇 Вкладки с анимацией
-  let currentTab = document.querySelector('.tab-pane.active');
-
+  // 💡 Плавное переключение вкладок
   function goToTab(id) {
-    if (currentTab.id === id) return;
+    tabs.forEach(t => t.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
 
     navButtons.forEach(b => b.classList.remove('active'));
     document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
-
-    const newTab = document.getElementById(id);
-
-    currentTab.classList.remove('active');
-    currentTab.classList.add('fade-out');
-
-    newTab.classList.add('fade-in');
-
-    setTimeout(() => {
-      currentTab.classList.remove('fade-out');
-      currentTab = newTab;
-      tabs.forEach(t => t.classList.remove('active'));
-      newTab.classList.add('active');
-      newTab.classList.remove('fade-in');
-    }, 300); // таймер должен совпадать с длительностью .fadeOut
   }
 
   function showToast(message) {
@@ -611,7 +589,6 @@
     }
   });
 </script>
-
 
     <div id="toast" style="
   position: fixed;
