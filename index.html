@@ -98,7 +98,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+  background: linear-gradient(135deg, #0a0f2c, #1d3b72); /* Синие тона */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,27 +114,86 @@
 
 .splash-content {
   text-align: center;
-  animation: splash-bounce 1.2s infinite;
+  animation: splash-fade 1.5s ease-in-out infinite;
 }
 
 .splash-logo {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   margin-bottom: 20px;
-  border-radius: 20%;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0, 174, 255, 0.5);
+  animation: pulse 1.2s ease-in-out infinite;
 }
 
 .splash-title {
-  color: #ffcc00;
+  color: #cce8ff;
   font-family: 'Arial', sans-serif;
-  font-size: 24px;
-  text-shadow: 0 0 5px #000;
+  font-size: 22px;
+  font-weight: 500;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes splash-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+с
+
+@keyframes splash-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+#splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0f2c, #1d3b72); /* Синие тона */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 99999;
+  transition: opacity 0.6s ease;
+}
+
+#splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-content {
+  text-align: center;
+  animation: splash-fade 1.5s ease-in-out infinite;
+}
+
+.splash-logo {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0, 174, 255, 0.5);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.splash-title {
+  color: #cce8ff;
+  font-family: 'Arial', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes splash-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
 }
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
