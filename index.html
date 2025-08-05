@@ -300,19 +300,15 @@
 <!-- Профиль -->
 <div id="profile" class="tab-pane">
   <div class="profile-card styled-card">
-   <div class="profile-header" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-  <img id="user-avatar" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png"
-       alt="Avatar"
-       style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 12px rgba(0,0,0,0.3); cursor: pointer;"
-       onclick="document.getElementById('avatarModal').classList.remove('hidden')">
-  <div style="flex-grow: 1;">
-    <div id="profile-username" style="font-size: 18px; font-weight: bold;">Имя пользователя</div>
-    <div id="profile-id" style="color: #ccc; font-size: 14px;">ID: 123456</div>
+    <div class="profile-header">
+      <img id="user-avatar" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="Avatar" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 12px;">
+      <div>
+        <div id="profile-username">Имя пользователя</div>
+        <div id="profile-id">ID: 123456</div>
+      </div>
+    </div>
   </div>
-</div>
 
-   <button id="edit-avatar-btn" style="margin-top: 10px;">Изменить аватар</button>
- 
   <!-- БАЛАНС -->
   <div class="balance-card styled-card">
     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -403,7 +399,7 @@
   let cart = {}, total = 0;
 
   const style = document.createElement('style');
-  style.innerHTML = `
+  style.innerHTML = 
     .tab-pane {
       opacity: 0;
       transform: translateY(10px);
@@ -442,7 +438,7 @@
     #toast.show {
       opacity: 1;
     }
-  `;
+  ;
   document.head.appendChild(style);
 
   const toast = document.createElement('div');
@@ -454,7 +450,7 @@
     document.getElementById(id)?.classList.add('active');
 
     navButtons.forEach(b => b.classList.remove('active'));
-    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
+    document.querySelector([data-tab="${id}"])?.classList.add('active');
   }
 
   function showToast(message) {
@@ -471,7 +467,7 @@
     cart[name].count++;
     total += price;
     updateCartDisplay();
-    showToast(`🛒 «${name}» добавлен в корзину`);
+    showToast(🛒 «${name}» добавлен в корзину);
   }
 
   function updateCartDisplay() {
@@ -486,7 +482,7 @@
     Object.values(cart).forEach(item => {
       let div = document.createElement('div');
       div.className = 'product-card';
-      div.innerHTML = `
+      div.innerHTML = 
         <img src="${item.image}" alt="">
         <div class="product-info">
           <div class="product-title">${item.name}</div>
@@ -496,7 +492,7 @@
             <button onclick="incrementItem('${item.name}')">+</button>
           </div>
         </div>
-      `;
+      ;
       cartBody.appendChild(div);
     });
 
@@ -605,10 +601,10 @@
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-        document.getElementById('profile-username').textContent = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
-        document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
+        document.getElementById('profile-username').textContent = ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()};
+        document.getElementById('profile-id').textContent = ID: ${telegramUser.id};
         if (telegramUser.username) {
-          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+          document.getElementById('user-avatar').src = https://t.me/i/userpic/320/${telegramUser.username}.jpg;
         }
       }
     }
@@ -622,7 +618,7 @@
   });
 
   function loadReviews() {
-    const key = `reviews_${currentProduct}`;
+    const key = reviews_${currentProduct};
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     modalReviews.innerHTML = '';
     if (!reviews.length) {
@@ -631,7 +627,7 @@
       reviews.forEach(r => {
         const div = document.createElement('div');
         div.className = 'review-item';
-        div.innerHTML = `<span class="review-author">${r.name}</span>: ${r.text}`;
+        div.innerHTML = <span class="review-author">${r.name}</span>: ${r.text};
         modalReviews.appendChild(div);
       });
     }
@@ -641,10 +637,10 @@
     const text = reviewInput.value.trim();
     if (!text) return alert('Напишите отзыв!');
     const name = telegramUser
-      ? `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`
+      ? ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}
       : 'Аноним';
 
-    const key = `reviews_${currentProduct}`;
+    const key = reviews_${currentProduct};
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     reviews.push({ name, text });
     localStorage.setItem(key, JSON.stringify(reviews));
