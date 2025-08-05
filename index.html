@@ -330,6 +330,12 @@
 
   <hr style="margin: 18px 0; border-color: #333;">
 
+<!-- ПРОШЛЫЕ ЗАКАЗЫ -->
+<div class="orders-card styled-card">
+  <div style="font-weight: bold; margin-bottom: 10px;">Прошлые заказы:</div>
+  <div id="order-history">Загрузить заказы...</div>
+</div>
+
   <!-- ПРОМОКОД -->
   <div class="promocode-card styled-card">
     <div>Промокод:</div>
@@ -589,10 +595,28 @@
   document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
   document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
-  document.getElementById('paidButton').onclick = () => {
-    document.getElementById('orderModal').classList.add('hidden');
-    document.getElementById('usernameModal').classList.remove('hidden');
+ document.getElementById('paidButton').onclick = () => {
+  const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+  const orderDate = new Date().toLocaleString('ru-RU');
+  const order = {
+    id: orderId,
+    date: orderDate,
+    total: total.toFixed(2),
+    items: Object.values(cart).map(item => `${item.name} × ${item.count}`)
   };
+
+  const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+  orders.push(order);
+  localStorage.setItem('orderHistory', JSON.stringify(orders));
+
+  document.getElementById('orderModal').classList.add('hidden');
+  document.getElementById('usernameModal').classList.remove('hidden');
+
+  cart = {};
+  total = 0;
+  updateCartDisplay();
+  loadOrders();
+};
 
   document.getElementById('usernameCloseBtn').onclick = () => document.getElementById('usernameModal').classList.add('hidden');
 
@@ -626,6 +650,7 @@
     }
 
     updateCartDisplay();
+    loadOrders();
 
     const savedAvatar = localStorage.getItem('customAvatar');
     if (savedAvatar) {
@@ -710,6 +735,29 @@
 document.getElementById('topup-btn').onclick = () => {
   alert('Для пополнения обратитесь к @Velik09845');
 };
+
+function loadOrders() {
+  const historyContainer = document.getElementById('order-history');
+  const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+
+  if (!orders.length) {
+    historyContainer.innerHTML = '<p style="color: #888;">Нет заказов.</p>';
+    return;
+  }
+
+  historyContainer.innerHTML = '';
+  orders.reverse().forEach(order => {
+    const div = document.createElement('div');
+    div.className = 'order-entry';
+    div.innerHTML = `
+      <span class="order-code">Код заказа: ${order.id}</span>
+      <span>Сумма: ${order.total} ₽</span>
+      <span>Товары: ${order.items.join(', ')}</span>
+      <span class="order-date">${order.date}</span>
+    `;
+    historyContainer.appendChild(div);
+  });
+}
 </script>
 
     <div id="toast" style="
