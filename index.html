@@ -688,7 +688,10 @@
   const splash = document.getElementById('splash-screen');
   setTimeout(() => {
     splash.classList.add('fade-out');
-  }, 1600); // 1.6 секунды
+    setTimeout(() => {
+      splash.style.display = 'none';
+    }, 600);
+  }, 1600);
 });
 </script>
 
