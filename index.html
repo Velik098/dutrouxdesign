@@ -291,7 +291,7 @@
   let telegramUser = null;
   let cart = {}, total = 0;
 
-  // Добавим CSS-анимации и стили для тоста
+  // CSS для анимаций и тоста
   const style = document.createElement('style');
   style.innerHTML = `
     @keyframes pulse {
@@ -301,6 +301,24 @@
     }
     .pulse-animate {
       animation: pulse 0.4s ease;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    .fade-out {
+      animation: fadeOut 0.3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(10px); }
     }
 
     #toast {
@@ -325,16 +343,33 @@
   `;
   document.head.appendChild(style);
 
-  // Создание самого toast-элемента
   const toast = document.createElement('div');
   toast.id = 'toast';
   document.body.appendChild(toast);
 
+  // 👇 Вкладки с анимацией
+  let currentTab = document.querySelector('.tab-pane.active');
+
   function goToTab(id) {
+    if (currentTab.id === id) return;
+
     navButtons.forEach(b => b.classList.remove('active'));
-    tabs.forEach(t => t.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
     document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
+
+    const newTab = document.getElementById(id);
+
+    currentTab.classList.remove('active');
+    currentTab.classList.add('fade-out');
+
+    newTab.classList.add('fade-in');
+
+    setTimeout(() => {
+      currentTab.classList.remove('fade-out');
+      currentTab = newTab;
+      tabs.forEach(t => t.classList.remove('active'));
+      newTab.classList.add('active');
+      newTab.classList.remove('fade-in');
+    }, 300); // таймер должен совпадать с длительностью .fadeOut
   }
 
   function showToast(message) {
@@ -405,7 +440,6 @@
       const card = btn.closest('.product-card');
       addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
 
-      // 🔥 Анимация кнопки
       btn.disabled = true;
       const originalText = btn.textContent;
       btn.textContent = "✅ Добавлено!";
@@ -503,7 +537,6 @@
     }
   });
 
-  // ==== Отзывы ====
   function loadReviews() {
     const key = `reviews_${currentProduct}`;
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
@@ -567,6 +600,7 @@
     }
   });
 </script>
+
 
     <div id="toast" style="
   position: fixed;
