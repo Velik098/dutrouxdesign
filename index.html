@@ -145,27 +145,6 @@
   50% { opacity: 0.85; }
 }
 
-  
-#splash-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(135deg, #0a0f2c, #1d3b72); /* Синие тона */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 99999;
-  transition: opacity 0.6s ease;
-}
-
-#splash-screen.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
-
 .splash-content {
   text-align: center;
   animation: splash-fade 1.5s ease-in-out infinite;
