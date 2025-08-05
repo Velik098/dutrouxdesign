@@ -751,12 +751,13 @@ function loadOrders() {
   orders.reverse().forEach(order => {
     const div = document.createElement('div');
     div.className = 'order-entry';
-    div.innerHTML = `
-      <span class="order-code">Код заказа: ${order.id}</span>
-      <span>Сумма: ${order.total} ₽</span>
-      <span>Товары: ${order.items.join(', ')}</span>
-      <span class="order-date">${order.date}</span>
-    `;
+   div.innerHTML = `
+  <div><strong>Код заказа:</strong> ${order.id}</div>
+  <div><strong>Дата:</strong> ${order.date}</div>
+  <div><strong>Сумма:</strong> ${order.total} ₽</div>
+  <div><strong>Товары:</strong> ${order.items.join(', ')}</div>
+  <hr style="border-color: #333; margin: 10px 0;">
+`;
     historyContainer.appendChild(div);
   });
 }
