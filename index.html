@@ -315,29 +315,29 @@
     </div>
 
     <!-- ПРОФИЛЬ -->
-<!-- Профиль -->
-<div id="profile" class="tab-content">
-  <div class="profile-card styled-card">
-    <div class="profile-header">
-      <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="Avatar">
-      <div>
-        <div id="profile-username">Имя пользователя</div>
-        <div id="profile-id">ID: 123456</div>
-      </div>
+<div id="profile" class="tab-pane">
+  <div class="profile-info">
+    <div style="position: relative;">
+      <img src="avatar.png" alt="Avatar" id="user-avatar" style="width: 80px; height: 80px; border-radius: 50%;">
+      <span id="edit-avatar-btn" style="position: absolute; bottom: 0; right: 0; cursor: pointer; font-size: 20px; background: #ffcc00; border-radius: 50%; padding: 2px 6px;">✎</span>
+    </div>
+    <div>
+      <strong id="user-name">Имя Фамилия</strong><br>
+      <span id="user-username">@username</span><br>
+      ID: <span id="user-id">123456</span>
     </div>
   </div>
 
-  <!-- БАЛАНС -->
-  <div class="balance-card styled-card">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <div>Ваш баланс:</div>
-      <div id="balance-amount" style="font-weight: bold; font-size: 18px;">0 ₽</div>
-    </div>
+<!-- БАЛАНС -->
+<div class="balance-card styled-card">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>Ваш баланс:</div>
+    <div id="balance-amount" style="font-weight: bold; font-size: 18px;">0 ₽</div>
   </div>
+</div>
 
-  <hr style="margin: 18px 0; border-color: #333;">
+<hr style="margin: 18px 0; border-color: #333;">
 
-  <!-- ПРОМОКОД -->
   <div class="promocode-card styled-card">
     <div>Промокод:</div>
     <input type="text" id="promo-input" placeholder="Введите промокод" style="width: 95%; box-sizing: border-box; margin-top: 8px;">
@@ -418,7 +418,7 @@
 
   // CSS для анимаций
   const style = document.createElement('style');
-  style.innerHTML = `
+  style.innerHTML = 
     .tab-pane {
       opacity: 0;
       transform: translateY(10px);
@@ -459,7 +459,7 @@
     #toast.show {
       opacity: 1;
     }
-  `;
+  ;
   document.head.appendChild(style);
 
   const toast = document.createElement('div');
@@ -472,7 +472,7 @@
     document.getElementById(id)?.classList.add('active');
 
     navButtons.forEach(b => b.classList.remove('active'));
-    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
+    document.querySelector([data-tab="${id}"])?.classList.add('active');
   }
 
   function showToast(message) {
@@ -489,7 +489,7 @@
     cart[name].count++;
     total += price;
     updateCartDisplay();
-    showToast(`🛒 «${name}» добавлен в корзину`);
+    showToast(🛒 «${name}» добавлен в корзину);
   }
 
   function updateCartDisplay() {
@@ -504,7 +504,7 @@
     Object.values(cart).forEach(item => {
       let div = document.createElement('div');
       div.className = 'product-card';
-      div.innerHTML = `
+      div.innerHTML = 
         <img src="${item.image}" alt="">
         <div class="product-info">
           <div class="product-title">${item.name}</div>
@@ -514,7 +514,7 @@
             <button onclick="incrementItem('${item.name}')">+</button>
           </div>
         </div>
-      `;
+      ;
       cartBody.appendChild(div);
     });
 
@@ -623,11 +623,11 @@
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-        document.getElementById('user-name').textContent = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
-        document.getElementById('user-username').textContent = telegramUser.username ? `@${telegramUser.username}` : 'без ника';
+        document.getElementById('user-name').textContent = ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()};
+        document.getElementById('user-username').textContent = telegramUser.username ? @${telegramUser.username} : 'без ника';
         document.getElementById('user-id').textContent = telegramUser.id;
         if (telegramUser.username) {
-          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+          document.getElementById('user-avatar').src = https://t.me/i/userpic/320/${telegramUser.username}.jpg;
         }
       }
     }
@@ -641,7 +641,7 @@
   });
 
   function loadReviews() {
-    const key = `reviews_${currentProduct}`;
+    const key = reviews_${currentProduct};
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     modalReviews.innerHTML = '';
     if (!reviews.length) {
@@ -650,7 +650,7 @@
       reviews.forEach(r => {
         const div = document.createElement('div');
         div.className = 'review-item';
-        div.innerHTML = `<span class="review-author">${r.name}</span>: ${r.text}`;
+        div.innerHTML = <span class="review-author">${r.name}</span>: ${r.text};
         modalReviews.appendChild(div);
       });
     }
@@ -660,10 +660,10 @@
     const text = reviewInput.value.trim();
     if (!text) return alert('Напишите отзыв!');
     const name = telegramUser
-      ? `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`
+      ? ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}
       : 'Аноним';
 
-    const key = `reviews_${currentProduct}`;
+    const key = reviews_${currentProduct};
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     reviews.push({ name, text });
     localStorage.setItem(key, JSON.stringify(reviews));
