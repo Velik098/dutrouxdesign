@@ -321,11 +321,12 @@
 
   <!-- БАЛАНС -->
   <div class="balance-card styled-card">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <div>Ваш баланс:</div>
-      <div id="balance-amount" style="font-weight: bold; font-size: 18px;">0 ₽</div>
-    </div>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>Ваш баланс:</div>
+    <div id="balance-amount" style="font-weight: bold; font-size: 18px;">0 ₽</div>
   </div>
+  <button id="topup-btn" style="margin-top: 10px;">Пополнить баланс</button>
+</div>
 
   <hr style="margin: 18px 0; border-color: #333;">
 
@@ -705,6 +706,10 @@
       }, 600);
     }, 1600);
   });
+
+document.getElementById('topup-btn').onclick = () => {
+  alert('Для пополнения обратитесь к @Velik09845');
+};
 </script>
 
     <div id="toast" style="
