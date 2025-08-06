@@ -592,8 +592,6 @@ document.getElementById('promo-btn')?.addEventListener('click', () => {
 document.getElementById('orderCloseBtn')?.addEventListener('click', () => document.getElementById('orderModal').classList.add('hidden'));
 document.getElementById('orderCloseButton')?.addEventListener('click', () => document.getElementById('orderModal').classList.add('hidden'));
 
-// ✅ БЫЛО: paidButton ❌
-// ✅ СТАЛО: payButton ✅
 document.getElementById('payButton')?.addEventListener('click', () => {
   const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
   const orderDate = new Date().toLocaleString('ru-RU');
@@ -723,17 +721,22 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-window.addEventListener('load', () => {
+// ✅ Надежное скрытие splash-screen
+function hideSplashScreen() {
   const splash = document.getElementById('splash-screen');
-  if (splash) {
+  if (splash && !splash.classList.contains('fade-out')) {
+    splash.classList.add('fade-out');
     setTimeout(() => {
-      splash.classList.add('fade-out');
-      setTimeout(() => {
-        splash.style.display = 'none';
-      }, 600);
-    }, 1600);
+      splash.style.display = 'none';
+    }, 600);
   }
+}
+
+window.addEventListener('load', () => {
+  setTimeout(hideSplashScreen, 1000);
 });
+
+setTimeout(hideSplashScreen, 5000); // резервный таймер
 
 document.getElementById('topup-btn')?.addEventListener('click', () => {
   alert('Для пополнения обратитесь к @Velik09845');
