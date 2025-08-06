@@ -589,10 +589,10 @@
   };
 
   document.getElementById('checkout-btn').onclick = () => {
-    if (total === 0) return;
-    document.getElementById('orderAmount').textContent = total.toFixed(2) + ' ₽';
-    document.getElementById('orderModal').classList.remove('hidden');
-  };
+  if (total === 0) return;
+  document.getElementById('finalAmount').textContent = total.toFixed(2) + ' ₽';
+  document.getElementById('paymentModal').classList.remove('hidden');
+};
 
   document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
   document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
