@@ -789,20 +789,5 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-<div id="paymentModal" class="modal hidden">
-  <div class="modal-content" style="background: linear-gradient(135deg, #0a0f2c, #1d3b72); color: #fff;">
-    <span class="close-btn" onclick="document.getElementById('paymentModal').classList.add('hidden')">&times;</span>
-    <h2 style="color: #cce8ff;">К оплате: <span id="paymentTotal">0 ₽</span></h2>
-
-    <div id="paymentItems" style="margin: 15px 0;"></div>
-
-    <div class="promocode-section" style="margin-top: 15px;">
-      <label for="promoInput" style="display: block; margin-bottom: 5px;">Промокод:</label>
-      <input type="text" id="paymentPromoInput" placeholder="Введите промокод">
-      <button id="paymentPromoBtn" style="margin-top: 10px;">Активировать</button>
-      <div id="paymentPromoMessage" style="margin-top: 8px; font-size: 14px;"></div>
-    </div>
-
-    <button id="payButton" style="margin-top: 25px; width: 100%; background-color: #0099ff; color: white; font-weight: bold;">Оплатить</button>
   </div>
 </div>
