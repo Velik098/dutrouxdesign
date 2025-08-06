@@ -370,52 +370,6 @@
     <button data-tab="cart"><img src="cart.svg" alt=""><span>Корзина</span></button>
     <button data-tab="profile"><img src="profile.svg" alt=""><span>Профиль</span></button>
   </div>
-  <!-- МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
-  <div id="orderModal" class="modal hidden">
-    <div class="modal-content">
-      <span id="orderCloseBtn" class="close-btn">&times;</span>
-      <h2>Оформление заказа</h2>
-
-<!-- Продублированные товары -->
-<div id="order-items-preview" style="margin-top: 10px; font-size: 14px;"></div>
-
-<!-- Сумма -->
-<p style="margin-top: 10px;">К оплате: <strong id="orderAmount">0 ₽</strong></p>
-
-<!-- Промокод -->
-<div style="margin: 15px 0;">
-  <input type="text" id="orderPromoInput" placeholder="Промокод" style="width: 100%; padding: 8px; border-radius: 6px; border: none; background: #20335b; color: #fff;" />
-  <button id="applyOrderPromoBtn" style="margin-top: 8px; background-color: #3390ff; color: white; padding: 8px 16px; border: none; border-radius: 6px;">Применить</button>
-  <div id="orderPromoMessage" style="font-size: 13px; color: #ff8888; margin-top: 6px;"></div>
-</div>
-
-<!-- Карты -->
-<p>Выберите карту для перевода:</p>
-<ul>
-  <li>Тинькофф: <strong>2200701969378618</strong></li>
-  <li>Сбербанк: <strong>2202208282306746</strong></li>
-</ul>
-<button id="paidButton" style="background: #3390ff; color: white;">Я оплатил</button>
-      <p>После оплаты отправьте скриншот в Telegram на <strong>@Velik09845</strong></p>
-      <div style="margin-top: 20px;">
-        <button id="paidButton">Я оплатил</button>
-        <button id="orderCloseButton">Закрыть</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- МОДАЛКА ВВОДА USERNAME -->
-  <div id="usernameModal" class="modal hidden">
-    <div class="modal-content">
-      <span id="usernameCloseBtn" class="close-btn">&times;</span>
-      <h3>Укажите ваш Telegram username</h3>
-      <p>Это нужно, чтобы мы могли найти ваш платёж и выслать товар.</p>
-      <input type="text" id="tgUsernameInput" placeholder="@username" style="width: 100%; margin-top: 10px;">
-      <div style="margin-top: 15px;">
-        <button id="submitUsername">ОК</button>
-      </div>
-    </div>
-  </div>
 
 <script>
 const navButtons = document.querySelectorAll('.bottom-nav button');
