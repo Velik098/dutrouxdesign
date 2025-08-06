@@ -622,6 +622,22 @@ document.getElementById('checkout-btn').onclick = () => {
   modal.classList.remove('hidden');
 };
 
+document.getElementById('applyOrderPromoBtn').onclick = () => {
+  const code = document.getElementById('orderPromoInput').value.trim().toLowerCase();
+  const msg = document.getElementById('orderPromoMessage');
+
+  if (code === 'dutroux10') {
+    const discount = total * 0.10;
+    total -= discount;
+    msg.style.color = '#88ff88';
+    msg.textContent = `Промокод применён! Скидка 10% (-${discount.toFixed(2)} ₽)`;
+    document.getElementById('orderAmount').textContent = total.toFixed(2) + ' ₽';
+  } else {
+    msg.style.color = '#ff8888';
+    msg.textContent = 'Неверный промокод';
+  }
+};
+
 document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
