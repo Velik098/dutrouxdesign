@@ -381,7 +381,13 @@ const checkoutBtn = document.getElementById('checkout-btn');
 const modalReviews = document.getElementById('modal-reviews');
 const reviewInput = document.getElementById('review-input');
 
-// ✅ Добавлено: открытие модалки оформления заказа
+let cart = {};
+let total = 0;
+let finalTotal = total;
+let currentProduct = "";
+let telegramUser = null;
+
+// ✅ Модалка оформления заказа
 checkoutBtn.onclick = () => {
   document.getElementById('orderModal').classList.remove('hidden');
   updateOrderModal();
@@ -390,12 +396,10 @@ checkoutBtn.onclick = () => {
 function updateOrderModal() {
   const orderItems = document.getElementById('order-items');
   const orderTotal = document.getElementById('orderTotal');
-
   let html = '';
   Object.values(cart).forEach(item => {
     html += `<div>${item.name} × ${item.count}</div>`;
   });
-
   orderItems.innerHTML = html;
   orderTotal.textContent = total.toFixed(2) + ' ₽';
 }
@@ -403,27 +407,21 @@ function updateOrderModal() {
 document.getElementById('applyOrderPromoBtn').onclick = () => {
   const code = document.getElementById('orderPromoInput').value.trim().toLowerCase();
   const msg = document.getElementById('orderPromoMessage');
-
   if (code === 'dutroux10') {
-  const discount = total * 0.1;
-  finalTotal = total - discount;
-  document.getElementById('orderTotal').textContent = finalTotal.toFixed(2) + ' ₽';
-  msg.textContent = `Скидка 10% применена!`;
-  msg.style.color = 'green';
-} else {
-  finalTotal = total;
-  document.getElementById('orderTotal').textContent = finalTotal.toFixed(2) + ' ₽';
-  msg.textContent = 'Неверный промокод.';
-  msg.style.color = 'red';
+    const discount = total * 0.1;
+    finalTotal = total - discount;
+    document.getElementById('orderTotal').textContent = finalTotal.toFixed(2) + ' ₽';
+    msg.textContent = `Скидка 10% применена!`;
+    msg.style.color = 'green';
+  } else {
+    finalTotal = total;
+    document.getElementById('orderTotal').textContent = finalTotal.toFixed(2) + ' ₽';
+    msg.textContent = 'Неверный промокод.';
+    msg.style.color = 'red';
   }
 };
 
-let finalTotal = total; // изначально равна общей сумме
-let currentProduct = "";
-let telegramUser = null;
-let cart = {}, total = 0;
-
-// --- TOAST + STYLE ---
+// --- STYLE + TOAST ---
 const style = document.createElement('style');
 style.innerHTML = `
   .tab-pane {
@@ -594,13 +592,15 @@ document.getElementById('promo-btn')?.addEventListener('click', () => {
 document.getElementById('orderCloseBtn')?.addEventListener('click', () => document.getElementById('orderModal').classList.add('hidden'));
 document.getElementById('orderCloseButton')?.addEventListener('click', () => document.getElementById('orderModal').classList.add('hidden'));
 
-document.getElementById('paidButton')?.addEventListener('click', () => {
+// ✅ БЫЛО: paidButton ❌
+// ✅ СТАЛО: payButton ✅
+document.getElementById('payButton')?.addEventListener('click', () => {
   const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
   const orderDate = new Date().toLocaleString('ru-RU');
   const order = {
     id: orderId,
     date: orderDate,
-    total: total.toFixed(2),
+    total: finalTotal.toFixed(2),
     items: Object.values(cart).map(item => `${item.name} × ${item.count}`)
   };
 
@@ -613,6 +613,7 @@ document.getElementById('paidButton')?.addEventListener('click', () => {
 
   cart = {};
   total = 0;
+  finalTotal = 0;
   updateCartDisplay();
   loadOrders();
 });
@@ -677,7 +678,7 @@ function loadReviews() {
   }
 }
 
-submitReview?.addEventListener('click', () => {
+document.getElementById('submitReview')?.addEventListener('click', () => {
   const text = reviewInput.value.trim();
   if (!text) return alert('Напишите отзыв!');
   const name = telegramUser ? `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}` : 'Аноним';
