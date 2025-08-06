@@ -594,6 +594,12 @@
   document.getElementById('paymentModal').classList.remove('hidden');
 };
 
+document.getElementById('payNowBtn').onclick = () => {
+  const amountToPay = appliedPromo !== null ? appliedPromo : total;
+  alert(`Открытие оплаты через Т-Бизнес на сумму ${amountToPay.toFixed(2)} ₽ (реализация далее)...`);
+  // Здесь будет реальная интеграция с Т-Бизнес API
+};
+
   document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
   document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
