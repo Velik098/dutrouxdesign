@@ -379,8 +379,13 @@ const cartBody = document.getElementById('cart-body');
 const modal = document.getElementById('modal');
 const checkoutBtn = document.getElementById('checkout-btn');
 const modalReviews = document.getElementById('modal-reviews');
-const reviewInput = document.getElementById('reviewInput');
-const submitReview = document.getElementById('submitReview');
+const reviewInput = document.getElementById('review-input');
+
+// ✅ Добавлено: открытие модалки оформления заказа
+checkoutBtn.onclick = () => {
+  document.getElementById('orderModal').classList.remove('hidden');
+  updateOrderModal();
+};
 
 let currentProduct = "";
 let telegramUser = null;
