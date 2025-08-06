@@ -737,15 +737,20 @@
     }
   });
 
-  window.addEventListener('load', () => {
+window.addEventListener('load', hideSplash);
+document.addEventListener('DOMContentLoaded', hideSplash); // на всякий случай
+
+function hideSplash() {
   const splash = document.getElementById('splash-screen');
+  if (!splash || splash.classList.contains('fade-out')) return; // уже скрыт
+
   setTimeout(() => {
     splash.classList.add('fade-out');
     setTimeout(() => {
       splash.style.display = 'none';
     }, 600);
-  }, 1600);
-});
+  }, 800); // можно чуть быстрее
+}
 
   document.getElementById('topup-btn').onclick = () => {
     alert('Для пополнения обратитесь к @Velik09845');
