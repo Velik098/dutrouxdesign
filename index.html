@@ -416,7 +416,13 @@
   let currentProduct = "";
   let telegramUser = null;
   let cart = {}, total = 0;
+  let appliedPromo = null;
 
+  // Удалим второй toast (если есть)
+  const duplicateToast = document.querySelectorAll('#toast');
+  if (duplicateToast.length > 1) duplicateToast[1].remove();
+
+  // Стили и тост
   const style = document.createElement('style');
   style.innerHTML = `
     .tab-pane {
@@ -467,7 +473,6 @@
   function goToTab(id) {
     tabs.forEach(t => t.classList.remove('active'));
     document.getElementById(id)?.classList.add('active');
-
     navButtons.forEach(b => b.classList.remove('active'));
     document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
   }
@@ -589,42 +594,45 @@
   };
 
   document.getElementById('checkout-btn').onclick = () => {
-  if (total === 0) return;
-  document.getElementById('finalAmount').textContent = total.toFixed(2) + ' ₽';
-  document.getElementById('paymentModal').classList.remove('hidden');
-};
+    if (total === 0) return;
+    document.getElementById('finalAmount').textContent = total.toFixed(2) + ' ₽';
+    appliedPromo = null;
+    document.getElementById('paymentPromoInput').value = '';
+    document.getElementById('promoFeedback').textContent = '';
+    document.getElementById('paymentModal').classList.remove('hidden');
+  };
 
-document.getElementById('payNowBtn').onclick = () => {
-  const amountToPay = appliedPromo !== null ? appliedPromo : total;
-  alert(`Открытие оплаты через Т-Бизнес на сумму ${amountToPay.toFixed(2)} ₽ (реализация далее)...`);
-  // Здесь будет реальная интеграция с Т-Бизнес API
-};
+  document.getElementById('payNowBtn').onclick = () => {
+    const amountToPay = appliedPromo !== null ? appliedPromo : total;
+    alert(`Открытие оплаты через Т-Бизнес на сумму ${amountToPay.toFixed(2)} ₽ (реализация далее)...`);
+  };
 
   document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
   document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
- document.getElementById('paidButton').onclick = () => {
-  const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
-  const orderDate = new Date().toLocaleString('ru-RU');
-  const order = {
-    id: orderId,
-    date: orderDate,
-    total: total.toFixed(2),
-    items: Object.values(cart).map(item => `${item.name} × ${item.count}`)
+  document.getElementById('paidButton').onclick = () => {
+    const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+    const orderDate = new Date().toLocaleString('ru-RU');
+    const order = {
+      id: orderId,
+      date: orderDate,
+      total: total.toFixed(2),
+      items: Object.values(cart).map(item => `${item.name} × ${item.count}`)
+    };
+
+    const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+    orders.push(order);
+    localStorage.setItem('orderHistory', JSON.stringify(orders));
+
+    document.getElementById('orderModal').classList.add('hidden');
+    document.getElementById('usernameModal').classList.remove('hidden');
+
+    cart = {};
+    total = 0;
+    appliedPromo = null;
+    updateCartDisplay();
+    loadOrders();
   };
-
-  const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-  orders.push(order);
-  localStorage.setItem('orderHistory', JSON.stringify(orders));
-
-  document.getElementById('orderModal').classList.add('hidden');
-  document.getElementById('usernameModal').classList.remove('hidden');
-
-  cart = {};
-  total = 0;
-  updateCartDisplay();
-  loadOrders();
-};
 
   document.getElementById('usernameCloseBtn').onclick = () => document.getElementById('usernameModal').classList.add('hidden');
 
@@ -644,17 +652,17 @@ document.getElementById('payNowBtn').onclick = () => {
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-  const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
-  document.getElementById('profile-username').textContent = fullName;
-  document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
+        const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
+        document.getElementById('profile-username').textContent = fullName;
+        document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
 
-  if (telegramUser.username) {
-    document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
-    document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
-  } else {
-    document.getElementById('profile-tg').textContent = `@неизвестен`;
-  }
-}
+        if (telegramUser.username) {
+          document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
+          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+        } else {
+          document.getElementById('profile-tg').textContent = `@неизвестен`;
+        }
+      }
     }
 
     updateCartDisplay();
@@ -729,7 +737,6 @@ document.getElementById('payNowBtn').onclick = () => {
     }
   });
 
-  // ✅ Убираем splash-экран
   window.addEventListener('load', () => {
     const splash = document.getElementById('splash-screen');
     setTimeout(() => {
@@ -740,53 +747,51 @@ document.getElementById('payNowBtn').onclick = () => {
     }, 1600);
   });
 
-document.getElementById('topup-btn').onclick = () => {
-  alert('Для пополнения обратитесь к @Velik09845');
-};
+  document.getElementById('topup-btn').onclick = () => {
+    alert('Для пополнения обратитесь к @Velik09845');
+  };
 
-function loadOrders() {
-  const historyContainer = document.getElementById('order-history');
-  const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+  function loadOrders() {
+    const historyContainer = document.getElementById('order-history');
+    const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
 
-  if (!orders.length) {
-    historyContainer.innerHTML = '<p style="color: #888;">Нет заказов.</p>';
-    return;
+    if (!orders.length) {
+      historyContainer.innerHTML = '<p style="color: #888;">Нет заказов.</p>';
+      return;
+    }
+
+    historyContainer.innerHTML = '';
+    orders.reverse().forEach(order => {
+      const div = document.createElement('div');
+      div.className = 'order-entry';
+      div.innerHTML = `
+        <div><strong>Код заказа:</strong> ${order.id}</div>
+        <div><strong>Дата:</strong> ${order.date}</div>
+        <div><strong>Сумма:</strong> ${order.total} ₽</div>
+        <div><strong>Товары:</strong> ${order.items.join(', ')}</div>
+        <hr style="border-color: #333; margin: 10px 0;">
+      `;
+      historyContainer.appendChild(div);
+    });
   }
 
-  historyContainer.innerHTML = '';
-  orders.reverse().forEach(order => {
-    const div = document.createElement('div');
-    div.className = 'order-entry';
-   div.innerHTML = `
-  <div><strong>Код заказа:</strong> ${order.id}</div>
-  <div><strong>Дата:</strong> ${order.date}</div>
-  <div><strong>Сумма:</strong> ${order.total} ₽</div>
-  <div><strong>Товары:</strong> ${order.items.join(', ')}</div>
-  <hr style="border-color: #333; margin: 10px 0;">
-`;
-    historyContainer.appendChild(div);
-  });
-}
+  function applyPromoCode() {
+    const input = document.getElementById('paymentPromoInput');
+    const feedback = document.getElementById('promoFeedback');
+    const code = input.value.trim().toLowerCase();
 
-let appliedPromo = null;
-
-function applyPromoCode() {
-  const input = document.getElementById('paymentPromoInput');
-  const feedback = document.getElementById('promoFeedback');
-  const code = input.value.trim().toLowerCase();
-
-  if (code === "sale50") {
-    const discounted = total * 0.5;
-    document.getElementById('finalAmount').textContent = discounted.toFixed(2) + ' ₽';
-    appliedPromo = discounted;
-    feedback.textContent = '✅ Промокод применён! Скидка 50%';
-    feedback.style.color = '#4fa3ff';
-  } else {
-    feedback.textContent = '❌ Промокод недействителен';
-    feedback.style.color = 'red';
-    appliedPromo = null;
+    if (code === "sale50") {
+      const discounted = total * 0.5;
+      document.getElementById('finalAmount').textContent = discounted.toFixed(2) + ' ₽';
+      appliedPromo = discounted;
+      feedback.textContent = '✅ Промокод применён! Скидка 50%';
+      feedback.style.color = '#4fa3ff';
+    } else {
+      feedback.textContent = '❌ Промокод недействителен';
+      feedback.style.color = 'red';
+      appliedPromo = null;
+    }
   }
-}
 </script>
 
     <div id="toast" style="
