@@ -387,6 +387,35 @@ checkoutBtn.onclick = () => {
   updateOrderModal();
 };
 
+function updateOrderModal() {
+  const orderItems = document.getElementById('order-items');
+  const orderTotal = document.getElementById('orderTotal');
+
+  let html = '';
+  Object.values(cart).forEach(item => {
+    html += `<div>${item.name} × ${item.count}</div>`;
+  });
+
+  orderItems.innerHTML = html;
+  orderTotal.textContent = total.toFixed(2) + ' ₽';
+}
+
+document.getElementById('applyOrderPromoBtn').onclick = () => {
+  const code = document.getElementById('orderPromoInput').value.trim().toLowerCase();
+  const msg = document.getElementById('orderPromoMessage');
+
+  if (code === 'dutrouxsale') {
+    const discount = total * 0.1;
+    const discountedTotal = total - discount;
+    document.getElementById('orderTotal').textContent = discountedTotal.toFixed(2) + ' ₽';
+    msg.textContent = `Скидка 10% применена!`;
+    msg.style.color = 'green';
+  } else {
+    msg.textContent = 'Неверный промокод.';
+    msg.style.color = 'red';
+  }
+};
+
 let currentProduct = "";
 let telegramUser = null;
 let cart = {}, total = 0;
