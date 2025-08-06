@@ -386,6 +386,7 @@ let currentProduct = "";
 let telegramUser = null;
 let cart = {}, total = 0;
 
+// --- TOAST + STYLE ---
 const style = document.createElement('style');
 style.innerHTML = `
   .tab-pane {
@@ -433,10 +434,10 @@ const toast = document.createElement('div');
 toast.id = 'toast';
 document.body.appendChild(toast);
 
+// --- FUNCTIONS ---
 function goToTab(id) {
   tabs.forEach(t => t.classList.remove('active'));
   document.getElementById(id)?.classList.add('active');
-
   navButtons.forEach(b => b.classList.remove('active'));
   document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
 }
@@ -468,7 +469,7 @@ function updateCartDisplay() {
   }
 
   Object.values(cart).forEach(item => {
-    let div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'product-card';
     div.innerHTML = `
       <img src="${item.image}" alt="">
@@ -508,13 +509,11 @@ document.querySelectorAll('.add-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const card = btn.closest('.product-card');
     addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
-
     btn.disabled = true;
     const originalText = btn.textContent;
     btn.textContent = "✅ Добавлено!";
     btn.style.backgroundColor = "#4CAF50";
     btn.classList.add("pulse-animate");
-
     setTimeout(() => {
       btn.textContent = originalText;
       btn.style.backgroundColor = "";
@@ -532,10 +531,8 @@ document.querySelectorAll('.details-btn').forEach(btn => {
     document.getElementById('modal-desc').textContent = card.dataset.desc;
     document.getElementById('modal-price').textContent = card.dataset.price + ' ₽';
     modal.classList.remove('hidden');
-
     currentProduct = card.dataset.name;
     loadReviews();
-
     document.getElementById('modal-add').onclick = () => {
       addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
       modal.classList.add('hidden');
@@ -543,7 +540,7 @@ document.querySelectorAll('.details-btn').forEach(btn => {
   });
 });
 
-document.getElementById('detailsCloseBtn').onclick = () => modal.classList.add('hidden');
+document.getElementById('detailsCloseBtn')?.addEventListener('click', () => modal.classList.add('hidden'));
 
 window.onclick = e => {
   if (e.target === modal) modal.classList.add('hidden');
@@ -551,16 +548,16 @@ window.onclick = e => {
   if (e.target === document.getElementById('usernameModal')) document.getElementById('usernameModal').classList.add('hidden');
 };
 
-document.getElementById('promo-btn').onclick = () => {
+document.getElementById('promo-btn')?.addEventListener('click', () => {
   const message = document.getElementById('promo-message');
   message.textContent = 'Такого промокода не существует';
   message.style.color = 'red';
-};
+});
 
-document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
-document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
+document.getElementById('orderCloseBtn')?.addEventListener('click', () => document.getElementById('orderModal').classList.add('hidden'));
+document.getElementById('orderCloseButton')?.addEventListener('click', () => document.getElementById('orderModal').classList.add('hidden'));
 
-document.getElementById('paidButton').onclick = () => {
+document.getElementById('paidButton')?.addEventListener('click', () => {
   const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
   const orderDate = new Date().toLocaleString('ru-RU');
   const order = {
@@ -581,11 +578,11 @@ document.getElementById('paidButton').onclick = () => {
   total = 0;
   updateCartDisplay();
   loadOrders();
-};
+});
 
-document.getElementById('usernameCloseBtn').onclick = () => document.getElementById('usernameModal').classList.add('hidden');
+document.getElementById('usernameCloseBtn')?.addEventListener('click', () => document.getElementById('usernameModal').classList.add('hidden'));
 
-document.getElementById('submitUsername').onclick = () => {
+document.getElementById('submitUsername')?.addEventListener('click', () => {
   const username = document.getElementById('tgUsernameInput').value.trim();
   if (!username || !username.startsWith('@')) {
     alert('Пожалуйста, введите корректный username Telegram, начинающийся с "@"');
@@ -593,25 +590,29 @@ document.getElementById('submitUsername').onclick = () => {
   }
   document.getElementById('usernameModal').classList.add('hidden');
   alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
-};
+});
 
 window.addEventListener('DOMContentLoaded', () => {
-  if (window.Telegram && Telegram.WebApp) {
-    Telegram.WebApp.ready();
-    telegramUser = Telegram.WebApp.initDataUnsafe?.user;
+  try {
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
-    if (telegramUser) {
-      const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
-      document.getElementById('profile-username').textContent = fullName;
-      document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
+      if (telegramUser) {
+        const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
+        document.getElementById('profile-username').textContent = fullName;
+        document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
 
-      if (telegramUser.username) {
-        document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
-        document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
-      } else {
-        document.getElementById('profile-tg').textContent = '@неизвестен';
+        if (telegramUser.username) {
+          document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
+          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+        } else {
+          document.getElementById('profile-tg').textContent = '@неизвестен';
+        }
       }
     }
+  } catch (e) {
+    console.warn('Ошибка при инициализации Telegram WebApp:', e);
   }
 
   updateCartDisplay();
@@ -639,12 +640,10 @@ function loadReviews() {
   }
 }
 
-submitReview.onclick = () => {
+submitReview?.addEventListener('click', () => {
   const text = reviewInput.value.trim();
   if (!text) return alert('Напишите отзыв!');
-  const name = telegramUser
-    ? `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`
-    : 'Аноним';
+  const name = telegramUser ? `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}` : 'Аноним';
 
   const key = `reviews_${currentProduct}`;
   const reviews = JSON.parse(localStorage.getItem(key) || '[]');
@@ -652,7 +651,7 @@ submitReview.onclick = () => {
   localStorage.setItem(key, JSON.stringify(reviews));
   reviewInput.value = '';
   loadReviews();
-};
+});
 
 document.getElementById('edit-avatar-btn')?.addEventListener('click', () => {
   document.getElementById('avatarModal').classList.remove('hidden');
@@ -688,17 +687,19 @@ document.addEventListener('keydown', function (e) {
 
 window.addEventListener('load', () => {
   const splash = document.getElementById('splash-screen');
-  setTimeout(() => {
-    splash.classList.add('fade-out');
+  if (splash) {
     setTimeout(() => {
-      splash.style.display = 'none';
-    }, 600);
-  }, 1600);
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 600);
+    }, 1600);
+  }
 });
 
-document.getElementById('topup-btn').onclick = () => {
+document.getElementById('topup-btn')?.addEventListener('click', () => {
   alert('Для пополнения обратитесь к @Velik09845');
-};
+});
 
 function loadOrders() {
   const historyContainer = document.getElementById('order-history');
@@ -724,7 +725,6 @@ function loadOrders() {
   });
 }
 </script>
-
 
     <div id="toast" style="
   position: fixed;
