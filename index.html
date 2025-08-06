@@ -778,6 +778,22 @@ function loadOrders() {
   pointer-events: none;
 "></div>
 
+<!-- МОДАЛКА ОПЛАТЫ ЧЕРЕЗ Т-БИЗНЕС -->
+<div id="paymentModal" class="modal hidden">
+  <div class="modal-content" style="background: #101e3a;">
+    <span class="close-btn" onclick="document.getElementById('paymentModal').classList.add('hidden')">&times;</span>
+    <h2 style="color: #cce8ff;">Оплата заказа</h2>
+    <p style="color: #fff;">Сумма к оплате: <strong id="finalAmount">0 ₽</strong></p>
+
+    <div style="margin: 15px 0;">
+      <input type="text" id="paymentPromoInput" placeholder="Промокод (если есть)" style="margin-bottom: 10px;">
+      <button onclick="applyPromoCode()" style="background-color: #4fa3ff; color: #fff;">Применить промокод</button>
+      <div id="promoFeedback" style="margin-top: 8px; font-size: 14px;"></div>
+    </div>
+
+    <button id="payNowBtn" style="margin-top: 20px; background-color: #4fa3ff; color: #fff;">💳 Перейти к оплате</button>
+  </div>
+</div>
 
 </body>
 </html>
