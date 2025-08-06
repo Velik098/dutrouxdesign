@@ -365,6 +365,32 @@
     <button data-tab="profile"><img src="profile.svg" alt=""><span>Профиль</span></button>
   </div>
     
+<!-- МОДАЛКА Т-БИЗНЕС ОПЛАТЫ -->
+<div id="tBusinessModal" class="modal hidden">
+  <div class="modal-content" style="background: #102040; color: #fff;">
+    <span class="close-btn" onclick="document.getElementById('tBusinessModal').classList.add('hidden')">&times;</span>
+    <h2 style="color: #77ccff;">К оплате</h2>
+    <div id="tBusinessAmount" style="font-size: 20px; margin-bottom: 15px;"></div>
+    
+    <div>
+      <h3 style="color: #cce8ff;">Товары:</h3>
+      <ul id="tBusinessItems" style="padding-left: 20px;"></ul>
+    </div>
+
+    <hr style="margin: 15px 0; border-color: #2e5fa1;">
+
+    <div>
+      <h3 style="color: #cce8ff;">Промокод:</h3>
+      <input type="text" id="tBusinessPromo" placeholder="Введите промокод" style="margin-top: 8px;">
+      <button style="margin-top: 10px;" onclick="applyPromo()">Активировать</button>
+      <div id="tBusinessPromoMessage" style="margin-top: 5px; color: red;"></div>
+    </div>
+
+    <button style="margin-top: 20px; width: 100%; background: #3399ff; color: #fff;" onclick="payNow()">Оплатить</button>
+  </div>
+</div>
+
+
     <!-- МОДАЛКА ВВОДА USERNAME -->
   <div id="usernameModal" class="modal hidden">
     <div class="modal-content">
