@@ -720,25 +720,28 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('user-avatar').src = savedAvatar;
   }
 
-  checkoutBtn.onclick = () => {
-    if (total === 0) return;
+  // ✅ FIXED: Checkout button now works properly
+  if (checkoutBtn) {
+    checkoutBtn.onclick = () => {
+      if (total === 0) return;
 
-    document.getElementById('paymentTotal').textContent = total.toFixed(2) + ' ₽';
+      document.getElementById('paymentTotal').textContent = total.toFixed(2) + ' ₽';
 
-    const container = document.getElementById('paymentItems');
-    container.innerHTML = '';
-    Object.values(cart).forEach(item => {
-      const div = document.createElement('div');
-      div.style.marginBottom = '6px';
-      div.innerHTML = `<strong>${item.name}</strong> × ${item.count}`;
-      container.appendChild(div);
-    });
+      const container = document.getElementById('paymentItems');
+      container.innerHTML = '';
+      Object.values(cart).forEach(item => {
+        const div = document.createElement('div');
+        div.style.marginBottom = '6px';
+        div.innerHTML = `<strong>${item.name}</strong> × ${item.count}`;
+        container.appendChild(div);
+      });
 
-    document.getElementById('paymentPromoInput').value = '';
-    document.getElementById('paymentPromoMessage').textContent = '';
+      document.getElementById('paymentPromoInput').value = '';
+      document.getElementById('paymentPromoMessage').textContent = '';
 
-    document.getElementById('paymentModal').classList.remove('hidden');
-  };
+      document.getElementById('paymentModal').classList.remove('hidden');
+    };
+  }
 
   document.getElementById('paymentPromoBtn').onclick = () => {
     const promo = document.getElementById('paymentPromoInput').value.trim();
@@ -760,6 +763,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 });
 </script>
+
 
     <div id="toast" style="
   position: fixed;
