@@ -635,16 +635,18 @@ document.addEventListener('DOMContentLoaded', () => {
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-        const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
-        document.getElementById('profile-username').textContent = fullName;
-        document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
+  const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
+  document.getElementById('profile-username').textContent = fullName;
+  document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
 
         if (telegramUser.username) {
-          document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
-          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
-        } else {
-          document.getElementById('profile-tg').textContent = '@неизвестен';
-        }
+    document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
+    document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+  } else {
+    document.getElementById('profile-tg').textContent = '@неизвестен';
+  }
+        hideSplashScreen();
+}
       }
     }
   } catch (e) {
