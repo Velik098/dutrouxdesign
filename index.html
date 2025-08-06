@@ -761,6 +761,26 @@ function loadOrders() {
     historyContainer.appendChild(div);
   });
 }
+
+let appliedPromo = null;
+
+function applyPromoCode() {
+  const input = document.getElementById('paymentPromoInput');
+  const feedback = document.getElementById('promoFeedback');
+  const code = input.value.trim().toLowerCase();
+
+  if (code === "sale50") {
+    const discounted = total * 0.5;
+    document.getElementById('finalAmount').textContent = discounted.toFixed(2) + ' ₽';
+    appliedPromo = discounted;
+    feedback.textContent = '✅ Промокод применён! Скидка 50%';
+    feedback.style.color = '#4fa3ff';
+  } else {
+    feedback.textContent = '❌ Промокод недействителен';
+    feedback.style.color = 'red';
+    appliedPromo = null;
+  }
+}
 </script>
 
     <div id="toast" style="
