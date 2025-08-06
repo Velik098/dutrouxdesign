@@ -446,7 +446,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById(id)?.classList.add('active');
 
     navButtons.forEach(b => b.classList.remove('active'));
-    document.querySelector([data-tab="${id}"])?.classList.add('active');
+    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
   }
 
   function showToast(message) {
