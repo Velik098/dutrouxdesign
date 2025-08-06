@@ -396,7 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let cart = {}, total = 0;
 
   const style = document.createElement('style');
-  style.innerHTML = 
+  style.innerHTML = `
     .tab-pane {
       opacity: 0;
       transform: translateY(10px);
@@ -435,7 +435,7 @@ document.addEventListener("DOMContentLoaded", function () {
     #toast.show {
       opacity: 1;
     }
-  ;
+  `;
   document.head.appendChild(style);
 
   const toast = document.createElement('div');
@@ -447,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById(id)?.classList.add('active');
 
     navButtons.forEach(b => b.classList.remove('active'));
-    document.querySelector([data-tab="${id}"])?.classList.add('active');
+    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
   }
 
   function showToast(message) {
@@ -464,7 +464,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cart[name].count++;
     total += price;
     updateCartDisplay();
-    showToast(🛒 «${name}» добавлен в корзину);
+    showToast(`🛒 «${name}» добавлен в корзину`);
   }
 
   function updateCartDisplay() {
@@ -479,7 +479,7 @@ document.addEventListener("DOMContentLoaded", function () {
     Object.values(cart).forEach(item => {
       let div = document.createElement('div');
       div.className = 'product-card';
-      div.innerHTML = 
+      div.innerHTML = `
         <img src="${item.image}" alt="">
         <div class="product-info">
           <div class="product-title">${item.name}</div>
@@ -489,7 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <button onclick="incrementItem('${item.name}')">+</button>
           </div>
         </div>
-      ;
+      `;
       cartBody.appendChild(div);
     });
 
@@ -576,7 +576,7 @@ document.addEventListener("DOMContentLoaded", function () {
       id: orderId,
       date: orderDate,
       total: total.toFixed(2),
-      items: Object.values(cart).map(item => ${item.name} × ${item.count})
+      items: Object.values(cart).map(item => `${item.name} × ${item.count}`)
     };
 
     const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
@@ -609,13 +609,13 @@ document.addEventListener("DOMContentLoaded", function () {
     telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
     if (telegramUser) {
-      const fullName = ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()};
+      const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
       document.getElementById('profile-username').textContent = fullName;
-      document.getElementById('profile-id').textContent = ID: ${telegramUser.id};
+      document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
 
       if (telegramUser.username) {
-        document.getElementById('profile-tg').textContent = @${telegramUser.username};
-        document.getElementById('user-avatar').src = https://t.me/i/userpic/320/${telegramUser.username}.jpg;
+        document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
+        document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
       } else {
         document.getElementById('profile-tg').textContent = '@неизвестен';
       }
@@ -623,7 +623,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function loadReviews() {
-    const key = reviews_${currentProduct};
+    const key = `reviews_${currentProduct}`;
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     modalReviews.innerHTML = '';
     if (!reviews.length) {
@@ -632,7 +632,7 @@ document.addEventListener("DOMContentLoaded", function () {
       reviews.forEach(r => {
         const div = document.createElement('div');
         div.className = 'review-item';
-        div.innerHTML = <span class="review-author">${r.name}</span>: ${r.text};
+        div.innerHTML = `<span class="review-author">${r.name}</span>: ${r.text}`;
         modalReviews.appendChild(div);
       });
     }
@@ -642,10 +642,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const text = reviewInput.value.trim();
     if (!text) return alert('Напишите отзыв!');
     const name = telegramUser
-      ? ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}
+      ? `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`
       : 'Аноним';
 
-    const key = reviews_${currentProduct};
+    const key = `reviews_${currentProduct}`;
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     reviews.push({ name, text });
     localStorage.setItem(key, JSON.stringify(reviews));
@@ -702,13 +702,13 @@ document.addEventListener("DOMContentLoaded", function () {
     orders.reverse().forEach(order => {
       const div = document.createElement('div');
       div.className = 'order-entry';
-      div.innerHTML = 
+      div.innerHTML = `
         <div><strong>Код заказа:</strong> ${order.id}</div>
         <div><strong>Дата:</strong> ${order.date}</div>
         <div><strong>Сумма:</strong> ${order.total} ₽</div>
         <div><strong>Товары:</strong> ${order.items.join(', ')}</div>
         <hr style="border-color: #333; margin: 10px 0;">
-      ;
+      `;
       historyContainer.appendChild(div);
     });
   }
@@ -720,51 +720,46 @@ document.addEventListener("DOMContentLoaded", function () {
   if (savedAvatar) {
     document.getElementById('user-avatar').src = savedAvatar;
   }
-});
 
-document.getElementById('checkout-btn').onclick = () => {
-  if (total === 0) return;
+  checkoutBtn.onclick = () => {
+    if (total === 0) return;
 
-  // Обновим сумму
-  document.getElementById('paymentTotal').textContent = total.toFixed(2) + ' ₽';
-
-  // Заполним список товаров
-  const container = document.getElementById('paymentItems');
-  container.innerHTML = '';
-  Object.values(cart).forEach(item => {
-    const div = document.createElement('div');
-    div.style.marginBottom = '6px';
-    div.innerHTML = <strong>${item.name}</strong> × ${item.count};
-    container.appendChild(div);
-  });
-
-  // Очистим промо сообщение
-  document.getElementById('paymentPromoInput').value = '';
-  document.getElementById('paymentPromoMessage').textContent = '';
-
-  // Показать окно
-  document.getElementById('paymentModal').classList.remove('hidden');
-};
-
-document.getElementById('paymentPromoBtn').onclick = () => {
-  const promo = document.getElementById('paymentPromoInput').value.trim();
-  const message = document.getElementById('paymentPromoMessage');
-
-  if (promo === 'DUTROUX10') {
-    total = total * 0.9;
     document.getElementById('paymentTotal').textContent = total.toFixed(2) + ' ₽';
-    message.textContent = 'Промокод применён: скидка 10%';
-    message.style.color = '#00ffcc';
-  } else {
-    message.textContent = 'Неверный промокод';
-    message.style.color = 'red';
-  }
-};
 
-document.getElementById('payButton').onclick = () => {
-  alert("Тут будет переход к оплате — реализуешь сам 😉");
-};
+    const container = document.getElementById('paymentItems');
+    container.innerHTML = '';
+    Object.values(cart).forEach(item => {
+      const div = document.createElement('div');
+      div.style.marginBottom = '6px';
+      div.innerHTML = `<strong>${item.name}</strong> × ${item.count}`;
+      container.appendChild(div);
+    });
 
+    document.getElementById('paymentPromoInput').value = '';
+    document.getElementById('paymentPromoMessage').textContent = '';
+
+    document.getElementById('paymentModal').classList.remove('hidden');
+  };
+
+  document.getElementById('paymentPromoBtn').onclick = () => {
+    const promo = document.getElementById('paymentPromoInput').value.trim();
+    const message = document.getElementById('paymentPromoMessage');
+
+    if (promo === 'DUTROUX10') {
+      total = total * 0.9;
+      document.getElementById('paymentTotal').textContent = total.toFixed(2) + ' ₽';
+      message.textContent = 'Промокод применён: скидка 10%';
+      message.style.color = '#00ffcc';
+    } else {
+      message.textContent = 'Неверный промокод';
+      message.style.color = 'red';
+    }
+  };
+
+  document.getElementById('payButton').onclick = () => {
+    alert("Тут будет переход к оплате — реализуешь сам 😉");
+  };
+});
 </script>
 
     <div id="toast" style="
