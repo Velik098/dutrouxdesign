@@ -1,3 +1,4 @@
+Вы сказали:
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -92,7 +93,59 @@
       margin-top: 10px;
       resize: vertical;
     }
-   
+    #splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0f2c, #1d3b72); /* Синие тона */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 99999;
+  transition: opacity 0.6s ease;
+}
+
+#splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-content {
+  text-align: center;
+  animation: splash-fade 1.5s ease-in-out infinite;
+}
+
+.splash-logo {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0, 174, 255, 0.5);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.splash-title {
+  color: #cce8ff;
+  font-family: 'Arial', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes splash-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
 .splash-content {
   text-align: center;
   animation: splash-fade 1.5s ease-in-out infinite;
@@ -129,6 +182,12 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+<div id="splash-screen">
+  <div class="splash-content">
+    <img src="logo.png" alt="Logo" class="splash-logo">
+    <h1 class="splash-title">Загрузка бота...</h1>
+  </div>
+</div>
 
   <div class="header" style="display: flex; align-items: center; gap: 12px; padding: 10px 16px;">
   <img src="logo.png" alt="Logo" style="height: 40px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
@@ -312,392 +371,428 @@
     <button data-tab="cart"><img src="cart.svg" alt=""><span>Корзина</span></button>
     <button data-tab="profile"><img src="profile.svg" alt=""><span>Профиль</span></button>
   </div>
+  <!-- МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
+  <div id="orderModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="orderCloseBtn" class="close-btn">&times;</span>
+      <h2>Оформление заказа</h2>
+      <p>К оплате: <strong id="orderAmount">0 ₽</strong></p>
+      <p>Выберите карту для перевода:</p>
+      <ul>
+        <li>Тинькофф: <strong>2200701969378618</strong></li>
+        <li>Сбербанк: <strong>2202208282306746</strong></li>
+      </ul>
+      <p>После оплаты отправьте скриншот в Telegram на <strong>@Velik09845</strong></p>
+      <div style="margin-top: 20px;">
+        <button id="paidButton">Я оплатил</button>
+        <button id="orderCloseButton">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛКА ВВОДА USERNAME -->
+  <div id="usernameModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="usernameCloseBtn" class="close-btn">&times;</span>
+      <h3>Укажите ваш Telegram username</h3>
+      <p>Это нужно, чтобы мы могли найти ваш платёж и выслать товар.</p>
+      <input type="text" id="tgUsernameInput" placeholder="@username" style="width: 100%; margin-top: 10px;">
+      <div style="margin-top: 15px;">
+        <button id="submitUsername">ОК</button>
+      </div>
+    </div>
+  </div>
 
 <script>
-const navButtons = document.querySelectorAll('.bottom-nav button');
-const tabs = document.querySelectorAll('.tab-pane');
-const totalText = document.getElementById('total');
-const cartBody = document.getElementById('cart-body');
-const modal = document.getElementById('modal');
-const checkoutBtn = document.getElementById('checkout-btn');
-const modalReviews = document.getElementById('modal-reviews');
-const reviewInput = document.getElementById('reviewInput');
+  const navButtons = document.querySelectorAll('.bottom-nav button');
+  const tabs = document.querySelectorAll('.tab-pane');
+  const totalText = document.getElementById('total');
+  const cartBody = document.getElementById('cart-body');
+  const modal = document.getElementById('modal');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const modalReviews = document.getElementById('modal-reviews');
+  const reviewInput = document.getElementById('reviewInput');
+  const submitReview = document.getElementById('submitReview');
 
-let cart = {};
-let total = 0;
-let finalTotal = total;
-let currentProduct = "";
-let telegramUser = null;
+  let currentProduct = "";
+  let telegramUser = null;
+  let cart = {}, total = 0;
+  let appliedPromo = null;
 
-// Модалка оформления заказа
-checkoutBtn.onclick = () => {
-  document.getElementById('orderModal').classList.remove('hidden');
-  updateOrderModal();
-};
+  // Удалим второй toast (если есть)
+  const duplicateToast = document.querySelectorAll('#toast');
+  if (duplicateToast.length > 1) duplicateToast[1].remove();
 
-function updateOrderModal() {
-  const orderItems = document.getElementById('order-items');
-  const orderTotal = document.getElementById('orderTotal');
-  let html = '';
-  Object.values(cart).forEach(item => {
-    html += `<div>${item.name} × ${item.count}</div>`;
-  });
-  orderItems.innerHTML = html;
-  orderTotal.textContent = total.toFixed(2) + ' ₽';
-}
+  // Стили и тост
+  const style = document.createElement('style');
+  style.innerHTML = 
+    .tab-pane {
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .tab-pane.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .pulse-animate {
+      animation: pulse 0.4s ease;
+    }
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 9999;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
+    #toast.show {
+      opacity: 1;
+    }
+  ;
+  document.head.appendChild(style);
 
-document.getElementById('applyOrderPromoBtn').onclick = () => {
-  const code = document.getElementById('orderPromoInput').value.trim().toLowerCase();
-  const msg = document.getElementById('orderPromoMessage');
-  if (code === 'dutroux10') {
-    const discount = total * 0.1;
-    finalTotal = total - discount;
-    document.getElementById('orderTotal').textContent = finalTotal.toFixed(2) + ' ₽';
-    msg.textContent = `Скидка 10% применена!`;
-    msg.style.color = 'green';
-  } else {
-    finalTotal = total;
-    document.getElementById('orderTotal').textContent = finalTotal.toFixed(2) + ' ₽';
-    msg.textContent = 'Неверный промокод.';
-    msg.style.color = 'red';
-  }
-};
-
-// Стилизация + Toast
-const style = document.createElement('style');
-style.innerHTML = `
-  .tab-pane {
-    opacity: 0;
-    transform: translateY(10px);
-    pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  .tab-pane.active {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-  }
-  .pulse-animate {
-    animation: pulse 0.4s ease;
-  }
-  #toast {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.85);
-    color: #fff;
-    padding: 14px 24px;
-    border-radius: 12px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-    z-index: 9999;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-  }
-  #toast.show {
-    opacity: 1;
-  }
-`;
-document.head.appendChild(style);
-
-// Toast элемент (создаётся только если не существует)
-let toast = document.getElementById('toast');
-if (!toast) {
-  toast = document.createElement('div');
+  const toast = document.createElement('div');
   toast.id = 'toast';
   document.body.appendChild(toast);
-}
 
-// --- FUNCTIONS ---
-function goToTab(id) {
-  tabs.forEach(t => t.classList.remove('active'));
-  document.getElementById(id)?.classList.add('active');
-  navButtons.forEach(b => b.classList.remove('active'));
-  document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
-}
-
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add('show');
-  if (toast._timeout) clearTimeout(toast._timeout);
-  toast._timeout = setTimeout(() => {
-    toast.classList.remove('show');
-  }, 2500);
-}
-
-function addToCart(name, price, image) {
-  if (!cart[name]) cart[name] = { name, price, image, count: 0 };
-  cart[name].count++;
-  total += price;
-  updateCartDisplay();
-  showToast(`🛒 «${name}» добавлен в корзину`);
-}
-
-function updateCartDisplay() {
-  cartBody.innerHTML = '';
-  if (!Object.keys(cart).length) {
-    cartBody.textContent = 'Здесь будут ваши товары.';
-    totalText.textContent = '0,00 ₽';
-    checkoutBtn.style.display = 'none';
-    return;
+  function goToTab(id) {
+    tabs.forEach(t => t.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+    navButtons.forEach(b => b.classList.remove('active'));
+    document.querySelector([data-tab="${id}"])?.classList.add('active');
   }
 
-  Object.values(cart).forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'product-card';
-    div.innerHTML = `
-      <img src="${item.image}" alt="">
-      <div class="product-info">
-        <div class="product-title">${item.name}</div>
-        <div class="product-price">${item.price} ₽ × ${item.count}</div>
-        <div class="cart-controls">
-          <button onclick="decrementItem('${item.name}')">−</button>
-          <button onclick="incrementItem('${item.name}')">+</button>
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2500);
+  }
+
+  function addToCart(name, price, image) {
+    if (!cart[name]) cart[name] = { name, price, image, count: 0 };
+    cart[name].count++;
+    total += price;
+    updateCartDisplay();
+    showToast(🛒 «${name}» добавлен в корзину);
+  }
+
+  function updateCartDisplay() {
+    cartBody.innerHTML = '';
+    if (!Object.keys(cart).length) {
+      cartBody.textContent = 'Здесь будут ваши товары.';
+      totalText.textContent = '0,00 ₽';
+      checkoutBtn.style.display = 'none';
+      return;
+    }
+
+    Object.values(cart).forEach(item => {
+      let div = document.createElement('div');
+      div.className = 'product-card';
+      div.innerHTML = 
+        <img src="${item.image}" alt="">
+        <div class="product-info">
+          <div class="product-title">${item.name}</div>
+          <div class="product-price">${item.price} ₽ × ${item.count}</div>
+          <div class="cart-controls">
+            <button onclick="decrementItem('${item.name}')">−</button>
+            <button onclick="incrementItem('${item.name}')">+</button>
+          </div>
         </div>
-      </div>
-    `;
-    cartBody.appendChild(div);
-  });
+      ;
+      cartBody.appendChild(div);
+    });
 
-  totalText.textContent = total.toFixed(2) + ' ₽';
-  checkoutBtn.style.display = 'block';
-}
+    totalText.textContent = total.toFixed(2) + ' ₽';
+    checkoutBtn.style.display = 'block';
+  }
 
-function incrementItem(name) {
-  if (!cart[name]) return;
-  cart[name].count++;
-  total += cart[name].price;
-  updateCartDisplay();
-}
+  function incrementItem(name) {
+    cart[name].count++;
+    total += cart[name].price;
+    updateCartDisplay();
+  }
 
-function decrementItem(name) {
-  if (!cart[name]) return;
-  cart[name].count--;
-  total -= cart[name].price;
-  if (cart[name].count <= 0) delete cart[name];
-  updateCartDisplay();
-}
+  function decrementItem(name) {
+    if (!cart[name]) return;
+    cart[name].count--;
+    total -= cart[name].price;
+    if (cart[name].count <= 0) delete cart[name];
+    updateCartDisplay();
+  }
 
-navButtons.forEach(btn => btn.addEventListener('click', () => goToTab(btn.dataset.tab)));
+  navButtons.forEach(btn => btn.addEventListener('click', () => goToTab(btn.dataset.tab)));
 
-document.querySelectorAll('.add-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const card = btn.closest('.product-card');
-    addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
-    btn.disabled = true;
-    const originalText = btn.textContent;
-    btn.textContent = "✅ Добавлено!";
-    btn.style.backgroundColor = "#4CAF50";
-    btn.classList.add("pulse-animate");
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.style.backgroundColor = "";
-      btn.classList.remove("pulse-animate");
-      btn.disabled = false;
-    }, 1500);
-  });
-});
-
-document.querySelectorAll('.details-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const card = btn.closest('.product-card');
-    document.getElementById('modal-img').src = card.dataset.image;
-    document.getElementById('modal-title').textContent = card.dataset.name;
-    document.getElementById('modal-desc').textContent = card.dataset.desc;
-    document.getElementById('modal-price').textContent = card.dataset.price + ' ₽';
-    modal.classList.remove('hidden');
-    currentProduct = card.dataset.name;
-    loadReviews();
-    document.getElementById('modal-add').onclick = () => {
+  document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.product-card');
       addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
-      modal.classList.add('hidden');
-    };
+
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = "✅ Добавлено!";
+      btn.style.backgroundColor = "#4CAF50";
+      btn.classList.add("pulse-animate");
+
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.backgroundColor = "";
+        btn.classList.remove("pulse-animate");
+        btn.disabled = false;
+      }, 1500);
+    });
   });
-});
 
-document.getElementById('detailsCloseBtn')?.addEventListener('click', () => modal.classList.add('hidden'));
+  document.querySelectorAll('.details-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.product-card');
+      document.getElementById('modal-img').src = card.dataset.image;
+      document.getElementById('modal-title').textContent = card.dataset.name;
+      document.getElementById('modal-desc').textContent = card.dataset.desc;
+      document.getElementById('modal-price').textContent = card.dataset.price + ' ₽';
+      modal.classList.remove('hidden');
 
-window.onclick = e => {
-  if (e.target === modal) modal.classList.add('hidden');
-  if (e.target === document.getElementById('orderModal')) document.getElementById('orderModal').classList.add('hidden');
-  if (e.target === document.getElementById('usernameModal')) document.getElementById('usernameModal').classList.add('hidden');
-};
+      currentProduct = card.dataset.name;
+      loadReviews();
 
-document.getElementById('promo-btn')?.addEventListener('click', () => {
-  const message = document.getElementById('promo-message');
-  message.textContent = 'Такого промокода не существует';
-  message.style.color = 'red';
-});
+      document.getElementById('modal-add').onclick = () => {
+        addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
+        modal.classList.add('hidden');
+      };
+    });
+  });
 
-document.getElementById('orderCloseBtn')?.addEventListener('click', () => document.getElementById('orderModal').classList.add('hidden'));
-document.getElementById('orderCloseButton')?.addEventListener('click', () => document.getElementById('orderModal').classList.add('hidden'));
+  document.getElementById('detailsCloseBtn').onclick = () => modal.classList.add('hidden');
 
-document.getElementById('payButton')?.addEventListener('click', () => {
-  const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
-  const orderDate = new Date().toLocaleString('ru-RU');
-  const order = {
-    id: orderId,
-    date: orderDate,
-    total: finalTotal.toFixed(2),
-    items: Object.values(cart).map(item => `${item.name} × ${item.count}`)
+  window.onclick = e => {
+    if (e.target === modal) modal.classList.add('hidden');
+    if (e.target === document.getElementById('orderModal')) document.getElementById('orderModal').classList.add('hidden');
+    if (e.target === document.getElementById('usernameModal')) document.getElementById('usernameModal').classList.add('hidden');
   };
 
-  const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-  orders.push(order);
-  localStorage.setItem('orderHistory', JSON.stringify(orders));
+  document.getElementById('promo-btn').onclick = () => {
+    const message = document.getElementById('promo-message');
+    message.textContent = 'Такого промокода не существует';
+    message.style.color = 'red';
+  };
 
-  document.getElementById('orderModal').classList.add('hidden');
-  document.getElementById('usernameModal').classList.remove('hidden');
+  document.getElementById('checkout-btn').onclick = () => {
+    if (total === 0) return;
+    document.getElementById('finalAmount').textContent = total.toFixed(2) + ' ₽';
+    appliedPromo = null;
+    document.getElementById('paymentPromoInput').value = '';
+    document.getElementById('promoFeedback').textContent = '';
+    document.getElementById('paymentModal').classList.remove('hidden');
+  };
 
-  cart = {};
-  total = 0;
-  finalTotal = 0;
-  updateCartDisplay();
-  loadOrders();
-});
+  document.getElementById('payNowBtn').onclick = () => {
+    const amountToPay = appliedPromo !== null ? appliedPromo : total;
+    alert(Открытие оплаты через Т-Бизнес на сумму ${amountToPay.toFixed(2)} ₽ (реализация далее)...);
+  };
 
-document.getElementById('usernameCloseBtn')?.addEventListener('click', () => document.getElementById('usernameModal').classList.add('hidden'));
+  document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
+  document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
-document.getElementById('submitUsername')?.addEventListener('click', () => {
-  const username = document.getElementById('tgUsernameInput').value.trim();
-  if (!username || !username.startsWith('@')) {
-    alert('Пожалуйста, введите корректный username Telegram, начинающийся с "@"');
-    return;
-  }
-  document.getElementById('usernameModal').classList.add('hidden');
-  alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
-});
+  document.getElementById('paidButton').onclick = () => {
+    const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+    const orderDate = new Date().toLocaleString('ru-RU');
+    const order = {
+      id: orderId,
+      date: orderDate,
+      total: total.toFixed(2),
+      items: Object.values(cart).map(item => ${item.name} × ${item.count})
+    };
 
-document.addEventListener('DOMContentLoaded', () => {
-  try {
+    const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+    orders.push(order);
+    localStorage.setItem('orderHistory', JSON.stringify(orders));
+
+    document.getElementById('orderModal').classList.add('hidden');
+    document.getElementById('usernameModal').classList.remove('hidden');
+
+    cart = {};
+    total = 0;
+    appliedPromo = null;
+    updateCartDisplay();
+    loadOrders();
+  };
+
+  document.getElementById('usernameCloseBtn').onclick = () => document.getElementById('usernameModal').classList.add('hidden');
+
+  document.getElementById('submitUsername').onclick = () => {
+    const username = document.getElementById('tgUsernameInput').value.trim();
+    if (!username || !username.startsWith('@')) {
+      alert('Пожалуйста, введите корректный username Telegram, начинающийся с "@"');
+      return;
+    }
+    document.getElementById('usernameModal').classList.add('hidden');
+    alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
+  };
+
+  window.addEventListener('DOMContentLoaded', () => {
     if (window.Telegram && Telegram.WebApp) {
       Telegram.WebApp.ready();
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-        const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
+        const fullName = ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()};
         document.getElementById('profile-username').textContent = fullName;
-        document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
+        document.getElementById('profile-id').textContent = ID: ${telegramUser.id};
 
         if (telegramUser.username) {
-          document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
-          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+          document.getElementById('profile-tg').textContent = @${telegramUser.username};
+          document.getElementById('user-avatar').src = https://t.me/i/userpic/320/${telegramUser.username}.jpg;
         } else {
-          document.getElementById('profile-tg').textContent = '@неизвестен';
+          document.getElementById('profile-tg').textContent = @неизвестен;
         }
-
       }
     }
-  } catch (e) {
-    console.warn('Ошибка при инициализации Telegram WebApp:', e);
+
+    updateCartDisplay();
+    loadOrders();
+
+    const savedAvatar = localStorage.getItem('customAvatar');
+    if (savedAvatar) {
+      document.getElementById('user-avatar').src = savedAvatar;
+    }
+  });
+
+  function loadReviews() {
+    const key = reviews_${currentProduct};
+    const reviews = JSON.parse(localStorage.getItem(key) || '[]');
+    modalReviews.innerHTML = '';
+    if (!reviews.length) {
+      modalReviews.innerHTML = '<p>Отзывов пока нет.</p>';
+    } else {
+      reviews.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'review-item';
+        div.innerHTML = <span class="review-author">${r.name}</span>: ${r.text};
+        modalReviews.appendChild(div);
+      });
+    }
   }
 
-  updateCartDisplay();
-  loadOrders();
+  submitReview.onclick = () => {
+    const text = reviewInput.value.trim();
+    if (!text) return alert('Напишите отзыв!');
+    const name = telegramUser
+      ? ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}
+      : 'Аноним';
 
-  const savedAvatar = localStorage.getItem('customAvatar');
-  if (savedAvatar) {
-    document.getElementById('user-avatar').src = savedAvatar;
-  }
-});
+    const key = reviews_${currentProduct};
+    const reviews = JSON.parse(localStorage.getItem(key) || '[]');
+    reviews.push({ name, text });
+    localStorage.setItem(key, JSON.stringify(reviews));
+    reviewInput.value = '';
+    loadReviews();
+  };
 
-function loadReviews() {
-  const key = `reviews_${currentProduct}`;
-  const reviews = JSON.parse(localStorage.getItem(key) || '[]');
-  modalReviews.innerHTML = '';
-  if (!reviews.length) {
-    modalReviews.innerHTML = '<p>Отзывов пока нет.</p>';
-  } else {
-    reviews.forEach(r => {
+  document.getElementById('edit-avatar-btn')?.addEventListener('click', () => {
+    document.getElementById('avatarModal').classList.remove('hidden');
+  });
+
+  document.querySelectorAll('.preset-avatar').forEach(img => {
+    img.onclick = () => {
+      const src = img.getAttribute('src');
+      localStorage.setItem('customAvatar', src);
+      document.getElementById('user-avatar').src = src;
+      document.getElementById('avatarModal').classList.add('hidden');
+    };
+  });
+
+  document.getElementById('avatarUpload')?.addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      localStorage.setItem('customAvatar', e.target.result);
+      document.getElementById('user-avatar').src = e.target.result;
+      document.getElementById('avatarModal').classList.add('hidden');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      modal.classList.add('hidden');
+    }
+  });
+
+  window.addEventListener('load', () => {
+    const splash = document.getElementById('splash-screen');
+    setTimeout(() => {
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 600);
+    }, 1600);
+  });
+
+  document.getElementById('topup-btn').onclick = () => {
+    alert('Для пополнения обратитесь к @Velik09845');
+  };
+
+  function loadOrders() {
+    const historyContainer = document.getElementById('order-history');
+    const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+
+    if (!orders.length) {
+      historyContainer.innerHTML = '<p style="color: #888;">Нет заказов.</p>';
+      return;
+    }
+
+    historyContainer.innerHTML = '';
+    orders.reverse().forEach(order => {
       const div = document.createElement('div');
-      div.className = 'review-item';
-      div.innerHTML = `<span class="review-author">${r.name}</span>: ${r.text}`;
-      modalReviews.appendChild(div);
+      div.className = 'order-entry';
+      div.innerHTML = 
+        <div><strong>Код заказа:</strong> ${order.id}</div>
+        <div><strong>Дата:</strong> ${order.date}</div>
+        <div><strong>Сумма:</strong> ${order.total} ₽</div>
+        <div><strong>Товары:</strong> ${order.items.join(', ')}</div>
+        <hr style="border-color: #333; margin: 10px 0;">
+      ;
+      historyContainer.appendChild(div);
     });
   }
-}
 
-document.getElementById('submitReview')?.addEventListener('click', () => {
-  const text = reviewInput.value.trim();
-  if (!text) return alert('Напишите отзыв!');
-  const name = telegramUser ? `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}` : 'Аноним';
+  function applyPromoCode() {
+    const input = document.getElementById('paymentPromoInput');
+    const feedback = document.getElementById('promoFeedback');
+    const code = input.value.trim().toLowerCase();
 
-  const key = `reviews_${currentProduct}`;
-  const reviews = JSON.parse(localStorage.getItem(key) || '[]');
-  reviews.push({ name, text });
-  localStorage.setItem(key, JSON.stringify(reviews));
-  reviewInput.value = '';
-  loadReviews();
-});
-
-document.getElementById('edit-avatar-btn')?.addEventListener('click', () => {
-  document.getElementById('avatarModal').classList.remove('hidden');
-});
-
-document.querySelectorAll('.preset-avatar').forEach(img => {
-  img.onclick = () => {
-    const src = img.getAttribute('src');
-    localStorage.setItem('customAvatar', src);
-    document.getElementById('user-avatar').src = src;
-    document.getElementById('avatarModal').classList.add('hidden');
-  };
-});
-
-document.getElementById('avatarUpload')?.addEventListener('change', function () {
-  const file = this.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    localStorage.setItem('customAvatar', e.target.result);
-    document.getElementById('user-avatar').src = e.target.result;
-    document.getElementById('avatarModal').classList.add('hidden');
-  };
-  reader.readAsDataURL(file);
-});
-
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape') {
-    modal.classList.add('hidden');
+    if (code === "sale50") {
+      const discounted = total * 0.5;
+      document.getElementById('finalAmount').textContent = discounted.toFixed(2) + ' ₽';
+      appliedPromo = discounted;
+      feedback.textContent = '✅ Промокод применён! Скидка 50%';
+      feedback.style.color = '#4fa3ff';
+    } else {
+      feedback.textContent = '❌ Промокод недействителен';
+      feedback.style.color = 'red';
+      appliedPromo = null;
+    }
   }
-});
-
-document.getElementById('topup-btn')?.addEventListener('click', () => {
-  alert('Для пополнения обратитесь к @Velik09845');
-});
-
-function loadOrders() {
-  const historyContainer = document.getElementById('order-history');
-  const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-
-  if (!orders.length) {
-    historyContainer.innerHTML = '<p style="color: #888;">Нет заказов.</p>';
-    return;
-  }
-
-  historyContainer.innerHTML = '';
-  orders.reverse().forEach(order => {
-    const div = document.createElement('div');
-    div.className = 'order-entry';
-    div.innerHTML = `
-      <div><strong>Код заказа:</strong> ${order.id}</div>
-      <div><strong>Дата:</strong> ${order.date}</div>
-      <div><strong>Сумма:</strong> ${order.total} ₽</div>
-      <div><strong>Товары:</strong> ${order.items.join(', ')}</div>
-      <hr style="border-color: #333; margin: 10px 0;">
-    `;
-    historyContainer.appendChild(div);
-  });
-}
-
-console.log('JS работает');
 </script>
 
     <div id="toast" style="
@@ -715,25 +810,20 @@ console.log('JS работает');
   pointer-events: none;
 "></div>
 
-<!-- Модалка оформления заказа -->
-<div id="orderModal" class="modal hidden">
-  <div class="modal-content" style="max-width: 450px;">
-    <span class="close-btn" onclick="document.getElementById('orderModal').classList.add('hidden')">&times;</span>
-    <h2 style="color: #3390ff; margin-bottom: 15px;">К оплате</h2>
+<!-- МОДАЛКА ОПЛАТЫ ЧЕРЕЗ Т-БИЗНЕС -->
+<div id="paymentModal" class="modal hidden">
+  <div class="modal-content" style="background: #101e3a;">
+    <span class="close-btn" onclick="document.getElementById('paymentModal').classList.add('hidden')">&times;</span>
+    <h2 style="color: #cce8ff;">Оплата заказа</h2>
+    <p style="color: #fff;">Сумма к оплате: <strong id="finalAmount">0 ₽</strong></p>
 
-    <div id="order-items" style="margin-bottom: 15px; font-size: 15px; color: #ddd;"></div>
-
-    <div class="promocode-card" style="margin-bottom: 15px;">
-      <input type="text" id="orderPromoInput" placeholder="Введите промокод" />
-      <button id="applyOrderPromoBtn" style="margin-top: 8px;">Активировать</button>
-      <div id="orderPromoMessage" style="margin-top: 5px; font-size: 13px;"></div>
+    <div style="margin: 15px 0;">
+      <input type="text" id="paymentPromoInput" placeholder="Промокод (если есть)" style="margin-bottom: 10px;">
+      <button onclick="applyPromoCode()" style="background-color: #4fa3ff; color: #fff;">Применить промокод</button>
+      <div id="promoFeedback" style="margin-top: 8px; font-size: 14px;"></div>
     </div>
 
-    <div style="font-weight: bold; font-size: 18px; margin-bottom: 20px;">
-      Итого: <span id="orderTotal" style="color: #3390ff;">0 ₽</span>
-    </div>
-
-    <button id="payButton" style="background: #3390ff; color: white;">Оплатить</button>
+    <button id="payNowBtn" style="margin-top: 20px; background-color: #4fa3ff; color: #fff;">💳 Перейти к оплате</button>
   </div>
 </div>
 
