@@ -397,7 +397,7 @@
   </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
   const navButtons = document.querySelectorAll('.bottom-nav button');
   const tabs = document.querySelectorAll('.tab-pane');
   const totalText = document.getElementById('total');
@@ -412,48 +412,48 @@
   let telegramUser = null;
   let cart = {}, total = 0;
 
-const style = document.createElement('style');
-style.innerHTML = `
-  .tab-pane {
-    opacity: 0;
-    transform: translateY(10px);
-    pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  .tab-pane.active {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-  }
-  .pulse-animate {
-    animation: pulse 0.4s ease;
-  }
-  #toast {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.85);
-    color: #fff;
-    padding: 14px 24px;
-    border-radius: 12px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-    z-index: 9999;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-  }
-  #toast.show {
-    opacity: 1;
-  }
-`;
-document.head.appendChild(style);
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .tab-pane {
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .tab-pane.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .pulse-animate {
+      animation: pulse 0.4s ease;
+    }
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 9999;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
+    #toast.show {
+      opacity: 1;
+    }
+  `;
+  document.head.appendChild(style);
 
   const toast = document.createElement('div');
   toast.id = 'toast';
@@ -464,7 +464,7 @@ document.head.appendChild(style);
     document.getElementById(id)?.classList.add('active');
 
     navButtons.forEach(b => b.classList.remove('active'));
-    document.querySelector([data-tab="${id}"])?.classList.add('active');
+    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
   }
 
   function showToast(message) {
@@ -481,7 +481,7 @@ document.head.appendChild(style);
     cart[name].count++;
     total += price;
     updateCartDisplay();
-    showToast(🛒 «${name}» добавлен в корзину);
+    showToast(`🛒 «${name}» добавлен в корзину`);
   }
 
   function updateCartDisplay() {
@@ -496,7 +496,7 @@ document.head.appendChild(style);
     Object.values(cart).forEach(item => {
       let div = document.createElement('div');
       div.className = 'product-card';
-      div.innerHTML = 
+      div.innerHTML = `
         <img src="${item.image}" alt="">
         <div class="product-info">
           <div class="product-title">${item.name}</div>
@@ -506,7 +506,7 @@ document.head.appendChild(style);
             <button onclick="incrementItem('${item.name}')">+</button>
           </div>
         </div>
-      ;
+      `;
       cartBody.appendChild(div);
     });
 
@@ -514,19 +514,19 @@ document.head.appendChild(style);
     checkoutBtn.style.display = 'block';
   }
 
-  function incrementItem(name) {
+  window.incrementItem = function(name) {
     cart[name].count++;
     total += cart[name].price;
     updateCartDisplay();
-  }
+  };
 
-  function decrementItem(name) {
+  window.decrementItem = function(name) {
     if (!cart[name]) return;
     cart[name].count--;
     total -= cart[name].price;
     if (cart[name].count <= 0) delete cart[name];
     updateCartDisplay();
-  }
+  };
 
   navButtons.forEach(btn => btn.addEventListener('click', () => goToTab(btn.dataset.tab)));
 
@@ -592,28 +592,28 @@ document.head.appendChild(style);
   document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
   document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
- document.getElementById('paidButton').onclick = () => {
-  const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
-  const orderDate = new Date().toLocaleString('ru-RU');
-  const order = {
-    id: orderId,
-    date: orderDate,
-    total: total.toFixed(2),
-    items: Object.values(cart).map(item => ${item.name} × ${item.count})
+  document.getElementById('paidButton').onclick = () => {
+    const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+    const orderDate = new Date().toLocaleString('ru-RU');
+    const order = {
+      id: orderId,
+      date: orderDate,
+      total: total.toFixed(2),
+      items: Object.values(cart).map(item => `${item.name} × ${item.count}`)
+    };
+
+    const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+    orders.push(order);
+    localStorage.setItem('orderHistory', JSON.stringify(orders));
+
+    document.getElementById('orderModal').classList.add('hidden');
+    document.getElementById('usernameModal').classList.remove('hidden');
+
+    cart = {};
+    total = 0;
+    updateCartDisplay();
+    loadOrders();
   };
-
-  const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-  orders.push(order);
-  localStorage.setItem('orderHistory', JSON.stringify(orders));
-
-  document.getElementById('orderModal').classList.add('hidden');
-  document.getElementById('usernameModal').classList.remove('hidden');
-
-  cart = {};
-  total = 0;
-  updateCartDisplay();
-  loadOrders();
-};
 
   document.getElementById('usernameCloseBtn').onclick = () => document.getElementById('usernameModal').classList.add('hidden');
 
@@ -627,36 +627,26 @@ document.head.appendChild(style);
     alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
   };
 
-  window.addEventListener('DOMContentLoaded', () => {
-    if (window.Telegram && Telegram.WebApp) {
-      Telegram.WebApp.ready();
-      telegramUser = Telegram.WebApp.initDataUnsafe?.user;
+  if (window.Telegram && Telegram.WebApp) {
+    Telegram.WebApp.ready();
+    telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
-      if (telegramUser) {
-  const fullName = ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()};
-  document.getElementById('profile-username').textContent = fullName;
-  document.getElementById('profile-id').textContent = ID: ${telegramUser.id};
+    if (telegramUser) {
+      const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
+      document.getElementById('profile-username').textContent = fullName;
+      document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
 
-  if (telegramUser.username) {
-    document.getElementById('profile-tg').textContent = @${telegramUser.username};
-    document.getElementById('user-avatar').src = https://t.me/i/userpic/320/${telegramUser.username}.jpg;
-  } else {
-    document.getElementById('profile-tg').textContent = @неизвестен;
+      if (telegramUser.username) {
+        document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
+        document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+      } else {
+        document.getElementById('profile-tg').textContent = '@неизвестен';
+      }
+    }
   }
-}
-    }
-
-    updateCartDisplay();
-    loadOrders();
-
-    const savedAvatar = localStorage.getItem('customAvatar');
-    if (savedAvatar) {
-      document.getElementById('user-avatar').src = savedAvatar;
-    }
-  });
 
   function loadReviews() {
-    const key = reviews_${currentProduct};
+    const key = `reviews_${currentProduct}`;
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     modalReviews.innerHTML = '';
     if (!reviews.length) {
@@ -665,7 +655,7 @@ document.head.appendChild(style);
       reviews.forEach(r => {
         const div = document.createElement('div');
         div.className = 'review-item';
-        div.innerHTML = <span class="review-author">${r.name}</span>: ${r.text};
+        div.innerHTML = `<span class="review-author">${r.name}</span>: ${r.text}`;
         modalReviews.appendChild(div);
       });
     }
@@ -675,10 +665,10 @@ document.head.appendChild(style);
     const text = reviewInput.value.trim();
     if (!text) return alert('Напишите отзыв!');
     const name = telegramUser
-      ? ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}
+      ? `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`
       : 'Аноним';
 
-    const key = reviews_${currentProduct};
+    const key = `reviews_${currentProduct}`;
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
     reviews.push({ name, text });
     localStorage.setItem(key, JSON.stringify(reviews));
@@ -718,35 +708,42 @@ document.head.appendChild(style);
     }
   });
 
-document.getElementById('topup-btn').onclick = () => {
-  alert('Для пополнения обратитесь к @Velik09845');
-};
+  document.getElementById('topup-btn').onclick = () => {
+    alert('Для пополнения обратитесь к @Velik09845');
+  };
 
-function loadOrders() {
-  const historyContainer = document.getElementById('order-history');
-  const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+  function loadOrders() {
+    const historyContainer = document.getElementById('order-history');
+    const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
 
-  if (!orders.length) {
-    historyContainer.innerHTML = '<p style="color: #888;">Нет заказов.</p>';
-    return;
+    if (!orders.length) {
+      historyContainer.innerHTML = '<p style="color: #888;">Нет заказов.</p>';
+      return;
+    }
+
+    historyContainer.innerHTML = '';
+    orders.reverse().forEach(order => {
+      const div = document.createElement('div');
+      div.className = 'order-entry';
+      div.innerHTML = `
+        <div><strong>Код заказа:</strong> ${order.id}</div>
+        <div><strong>Дата:</strong> ${order.date}</div>
+        <div><strong>Сумма:</strong> ${order.total} ₽</div>
+        <div><strong>Товары:</strong> ${order.items.join(', ')}</div>
+        <hr style="border-color: #333; margin: 10px 0;">
+      `;
+      historyContainer.appendChild(div);
+    });
   }
 
-  historyContainer.innerHTML = '';
-  orders.reverse().forEach(order => {
-    const div = document.createElement('div');
-    div.className = 'order-entry';
-   div.innerHTML = 
-  <div><strong>Код заказа:</strong> ${order.id}</div>
-  <div><strong>Дата:</strong> ${order.date}</div>
-  <div><strong>Сумма:</strong> ${order.total} ₽</div>
-  <div><strong>Товары:</strong> ${order.items.join(', ')}</div>
-  <hr style="border-color: #333; margin: 10px 0;">
-;
-    historyContainer.appendChild(div);
-  });
-});
-}
+  updateCartDisplay();
+  loadOrders();
 
+  const savedAvatar = localStorage.getItem('customAvatar');
+  if (savedAvatar) {
+    document.getElementById('user-avatar').src = savedAvatar;
+  }
+});
 </script>
 
     <div id="toast" style="
