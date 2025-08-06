@@ -737,15 +737,15 @@
     }
   });
 
-  window.addEventListener('load', () => {
-    const splash = document.getElementById('splash-screen');
+  document.addEventListener('DOMContentLoaded', () => {
+  const splash = document.getElementById('splash-screen');
+  setTimeout(() => {
+    splash.classList.add('fade-out');
     setTimeout(() => {
-      splash.classList.add('fade-out');
-      setTimeout(() => {
-        splash.style.display = 'none';
-      }, 600);
-    }, 1600);
-  });
+      splash.style.display = 'none';
+    }, 600);
+  }, 1600);
+});
 
   document.getElementById('topup-btn').onclick = () => {
     alert('Для пополнения обратитесь к @Velik09845');
