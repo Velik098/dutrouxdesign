@@ -387,7 +387,7 @@ let finalTotal = total;
 let currentProduct = "";
 let telegramUser = null;
 
-// ✅ Модалка оформления заказа
+// Модалка оформления заказа
 checkoutBtn.onclick = () => {
   document.getElementById('orderModal').classList.remove('hidden');
   updateOrderModal();
@@ -421,7 +421,7 @@ document.getElementById('applyOrderPromoBtn').onclick = () => {
   }
 };
 
-// --- STYLE + TOAST ---
+// Стилизация + Toast
 const style = document.createElement('style');
 style.innerHTML = `
   .tab-pane {
@@ -465,9 +465,13 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
-const toast = document.createElement('div');
-toast.id = 'toast';
-document.body.appendChild(toast);
+// Toast элемент (создаётся только если не существует)
+let toast = document.getElementById('toast');
+if (!toast) {
+  toast = document.createElement('div');
+  toast.id = 'toast';
+  document.body.appendChild(toast);
+}
 
 // --- FUNCTIONS ---
 function goToTab(id) {
@@ -480,7 +484,7 @@ function goToTab(id) {
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add('show');
-  clearTimeout(toast._timeout);
+  if (toast._timeout) clearTimeout(toast._timeout);
   toast._timeout = setTimeout(() => {
     toast.classList.remove('show');
   }, 2500);
@@ -525,6 +529,7 @@ function updateCartDisplay() {
 }
 
 function incrementItem(name) {
+  if (!cart[name]) return;
   cart[name].count++;
   total += cart[name].price;
   updateCartDisplay();
@@ -635,18 +640,18 @@ document.addEventListener('DOMContentLoaded', () => {
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-  const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
-  document.getElementById('profile-username').textContent = fullName;
-  document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
+        const fullName = `${telegramUser.first_name} ${(telegramUser.last_name || '').trim()}`;
+        document.getElementById('profile-username').textContent = fullName;
+        document.getElementById('profile-id').textContent = `ID: ${telegramUser.id}`;
 
         if (telegramUser.username) {
-    document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
-    document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
-  } else {
-    document.getElementById('profile-tg').textContent = '@неизвестен';
-  }
+          document.getElementById('profile-tg').textContent = `@${telegramUser.username}`;
+          document.getElementById('user-avatar').src = `https://t.me/i/userpic/320/${telegramUser.username}.jpg`;
+        } else {
+          document.getElementById('profile-tg').textContent = '@неизвестен';
+        }
+
         hideSplashScreen();
-}
       }
     }
   } catch (e) {
@@ -723,7 +728,6 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// ✅ Надежное скрытие splash-screen
 function hideSplashScreen() {
   const splash = document.getElementById('splash-screen');
   if (splash && !splash.classList.contains('fade-out')) {
@@ -737,8 +741,6 @@ function hideSplashScreen() {
 window.addEventListener('load', () => {
   setTimeout(hideSplashScreen, 1000);
 });
-
-setTimeout(hideSplashScreen, 5000); // резерв
 
 document.getElementById('topup-btn')?.addEventListener('click', () => {
   alert('Для пополнения обратитесь к @Velik09845');
@@ -769,7 +771,6 @@ function loadOrders() {
 }
 
 console.log('JS работает');
-
 </script>
 
     <div id="toast" style="
