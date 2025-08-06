@@ -733,7 +733,7 @@ document.getElementById('checkout-btn').onclick = () => {
   Object.values(cart).forEach(item => {
     const div = document.createElement('div');
     div.style.marginBottom = '6px';
-    div.innerHTML = <strong>${item.name}</strong> × ${item.count};
+    div.innerHTML = `<strong>${item.name}</strong> × ${item.count}`;
     container.appendChild(div);
   });
 
