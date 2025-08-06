@@ -417,48 +417,48 @@
   let telegramUser = null;
   let cart = {}, total = 0;
 
-  const style = document.createElement('style');
-  style.innerHTML = 
-    .tab-pane {
-      opacity: 0;
-      transform: translateY(10px);
-      pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-    .tab-pane.active {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-    .pulse-animate {
-      animation: pulse 0.4s ease;
-    }
-    #toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.85);
-      color: #fff;
-      padding: 14px 24px;
-      border-radius: 12px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-      z-index: 9999;
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-    }
-    #toast.show {
-      opacity: 1;
-    }
-  ;
-  document.head.appendChild(style);
+const style = document.createElement('style');
+style.innerHTML = `
+  .tab-pane {
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .tab-pane.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  .pulse-animate {
+    animation: pulse 0.4s ease;
+  }
+  #toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 9999;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+  }
+  #toast.show {
+    opacity: 1;
+  }
+`;
+document.head.appendChild(style);
 
   const toast = document.createElement('div');
   toast.id = 'toast';
