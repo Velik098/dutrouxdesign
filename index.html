@@ -831,5 +831,23 @@ function hideSplash() {
   </div>
 </div>
 
+<script>
+  function hideSplash() {
+    const splash = document.getElementById('splash-screen');
+    if (!splash || splash.classList.contains('fade-out')) return;
+
+    setTimeout(() => {
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 600);
+    }, 1000);
+  }
+
+  // Гарантированно запускаем, когда всё загружено
+  window.addEventListener('load', hideSplash);
+  document.addEventListener('DOMContentLoaded', hideSplash);
+</script>
+
 </body>
 </html>
