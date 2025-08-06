@@ -670,20 +670,6 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-function hideSplashScreen() {
-  const splash = document.getElementById('splash-screen');
-  if (splash && !splash.classList.contains('fade-out')) {
-    splash.classList.add('fade-out');
-    setTimeout(() => {
-      splash.style.display = 'none';
-    }, 600);
-  }
-}
-
-window.addEventListener('load', () => {
-  setTimeout(hideSplashScreen, 1000);
-});
-
 document.getElementById('topup-btn')?.addEventListener('click', () => {
   alert('Для пополнения обратитесь к @Velik09845');
 });
