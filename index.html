@@ -92,11 +92,101 @@
       margin-top: 10px;
       resize: vertical;
     }
-    
+    #splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0f2c, #1d3b72); /* Синие тона */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 99999;
+  transition: opacity 0.6s ease;
+}
+
+#splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-content {
+  text-align: center;
+  animation: splash-fade 1.5s ease-in-out infinite;
+}
+
+.splash-logo {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0, 174, 255, 0.5);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.splash-title {
+  color: #cce8ff;
+  font-family: 'Arial', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes splash-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+.splash-content {
+  text-align: center;
+  animation: splash-fade 1.5s ease-in-out infinite;
+}
+
+.splash-logo {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0, 174, 255, 0.5);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.splash-title {
+  color: #cce8ff;
+  font-family: 'Arial', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes splash-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+<div id="splash-screen">
+  <div class="splash-content">
+    <img src="logo.png" alt="Logo" class="splash-logo">
+    <h1 class="splash-title">Загрузка бота...</h1>
+  </div>
+</div>
 
   <div class="header" style="display: flex; align-items: center; gap: 12px; padding: 10px 16px;">
   <img src="logo.png" alt="Logo" style="height: 40px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
@@ -326,13 +416,7 @@
   let currentProduct = "";
   let telegramUser = null;
   let cart = {}, total = 0;
-  let appliedPromo = null;
 
-  // Удалим второй toast (если есть)
-  const duplicateToast = document.querySelectorAll('#toast');
-  if (duplicateToast.length > 1) duplicateToast[1].remove();
-
-  // Стили и тост
   const style = document.createElement('style');
   style.innerHTML = 
     .tab-pane {
@@ -383,6 +467,7 @@
   function goToTab(id) {
     tabs.forEach(t => t.classList.remove('active'));
     document.getElementById(id)?.classList.add('active');
+
     navButtons.forEach(b => b.classList.remove('active'));
     document.querySelector([data-tab="${id}"])?.classList.add('active');
   }
@@ -505,44 +590,35 @@
 
   document.getElementById('checkout-btn').onclick = () => {
     if (total === 0) return;
-    document.getElementById('finalAmount').textContent = total.toFixed(2) + ' ₽';
-    appliedPromo = null;
-    document.getElementById('paymentPromoInput').value = '';
-    document.getElementById('promoFeedback').textContent = '';
-    document.getElementById('paymentModal').classList.remove('hidden');
-  };
-
-  document.getElementById('payNowBtn').onclick = () => {
-    const amountToPay = appliedPromo !== null ? appliedPromo : total;
-    alert(Открытие оплаты через Т-Бизнес на сумму ${amountToPay.toFixed(2)} ₽ (реализация далее)...);
+    document.getElementById('orderAmount').textContent = total.toFixed(2) + ' ₽';
+    document.getElementById('orderModal').classList.remove('hidden');
   };
 
   document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
   document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
-  document.getElementById('paidButton').onclick = () => {
-    const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
-    const orderDate = new Date().toLocaleString('ru-RU');
-    const order = {
-      id: orderId,
-      date: orderDate,
-      total: total.toFixed(2),
-      items: Object.values(cart).map(item => ${item.name} × ${item.count})
-    };
-
-    const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-    orders.push(order);
-    localStorage.setItem('orderHistory', JSON.stringify(orders));
-
-    document.getElementById('orderModal').classList.add('hidden');
-    document.getElementById('usernameModal').classList.remove('hidden');
-
-    cart = {};
-    total = 0;
-    appliedPromo = null;
-    updateCartDisplay();
-    loadOrders();
+ document.getElementById('paidButton').onclick = () => {
+  const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+  const orderDate = new Date().toLocaleString('ru-RU');
+  const order = {
+    id: orderId,
+    date: orderDate,
+    total: total.toFixed(2),
+    items: Object.values(cart).map(item => ${item.name} × ${item.count})
   };
+
+  const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+  orders.push(order);
+  localStorage.setItem('orderHistory', JSON.stringify(orders));
+
+  document.getElementById('orderModal').classList.add('hidden');
+  document.getElementById('usernameModal').classList.remove('hidden');
+
+  cart = {};
+  total = 0;
+  updateCartDisplay();
+  loadOrders();
+};
 
   document.getElementById('usernameCloseBtn').onclick = () => document.getElementById('usernameModal').classList.add('hidden');
 
@@ -562,17 +638,17 @@
       telegramUser = Telegram.WebApp.initDataUnsafe?.user;
 
       if (telegramUser) {
-        const fullName = ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()};
-        document.getElementById('profile-username').textContent = fullName;
-        document.getElementById('profile-id').textContent = ID: ${telegramUser.id};
+  const fullName = ${telegramUser.first_name} ${(telegramUser.last_name || '').trim()};
+  document.getElementById('profile-username').textContent = fullName;
+  document.getElementById('profile-id').textContent = ID: ${telegramUser.id};
 
-        if (telegramUser.username) {
-          document.getElementById('profile-tg').textContent = @${telegramUser.username};
-          document.getElementById('user-avatar').src = https://t.me/i/userpic/320/${telegramUser.username}.jpg;
-        } else {
-          document.getElementById('profile-tg').textContent = @неизвестен;
-        }
-      }
+  if (telegramUser.username) {
+    document.getElementById('profile-tg').textContent = @${telegramUser.username};
+    document.getElementById('user-avatar').src = https://t.me/i/userpic/320/${telegramUser.username}.jpg;
+  } else {
+    document.getElementById('profile-tg').textContent = @неизвестен;
+  }
+}
     }
 
     updateCartDisplay();
@@ -647,51 +723,44 @@
     }
   });
 
-    document.getElementById('topup-btn').onclick = () => {
-    alert('Для пополнения обратитесь к @Velik09845');
-  };
+  // ✅ Убираем splash-экран
+  window.addEventListener('load', () => {
+    const splash = document.getElementById('splash-screen');
+    setTimeout(() => {
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 600);
+    }, 1600);
+  });
 
-  function loadOrders() {
-    const historyContainer = document.getElementById('order-history');
-    const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+document.getElementById('topup-btn').onclick = () => {
+  alert('Для пополнения обратитесь к @Velik09845');
+};
 
-    if (!orders.length) {
-      historyContainer.innerHTML = '<p style="color: #888;">Нет заказов.</p>';
-      return;
-    }
+function loadOrders() {
+  const historyContainer = document.getElementById('order-history');
+  const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
 
-    historyContainer.innerHTML = '';
-    orders.reverse().forEach(order => {
-      const div = document.createElement('div');
-      div.className = 'order-entry';
-      div.innerHTML = 
-        <div><strong>Код заказа:</strong> ${order.id}</div>
-        <div><strong>Дата:</strong> ${order.date}</div>
-        <div><strong>Сумма:</strong> ${order.total} ₽</div>
-        <div><strong>Товары:</strong> ${order.items.join(', ')}</div>
-        <hr style="border-color: #333; margin: 10px 0;">
-      ;
-      historyContainer.appendChild(div);
-    });
+  if (!orders.length) {
+    historyContainer.innerHTML = '<p style="color: #888;">Нет заказов.</p>';
+    return;
   }
 
-  function applyPromoCode() {
-    const input = document.getElementById('paymentPromoInput');
-    const feedback = document.getElementById('promoFeedback');
-    const code = input.value.trim().toLowerCase();
-
-    if (code === "sale50") {
-      const discounted = total * 0.5;
-      document.getElementById('finalAmount').textContent = discounted.toFixed(2) + ' ₽';
-      appliedPromo = discounted;
-      feedback.textContent = '✅ Промокод применён! Скидка 50%';
-      feedback.style.color = '#4fa3ff';
-    } else {
-      feedback.textContent = '❌ Промокод недействителен';
-      feedback.style.color = 'red';
-      appliedPromo = null;
-    }
-  }
+  historyContainer.innerHTML = '';
+  orders.reverse().forEach(order => {
+    const div = document.createElement('div');
+    div.className = 'order-entry';
+   div.innerHTML = 
+  <div><strong>Код заказа:</strong> ${order.id}</div>
+  <div><strong>Дата:</strong> ${order.date}</div>
+  <div><strong>Сумма:</strong> ${order.total} ₽</div>
+  <div><strong>Товары:</strong> ${order.items.join(', ')}</div>
+  <hr style="border-color: #333; margin: 10px 0;">
+;
+    historyContainer.appendChild(div);
+  });
+}
 </script>
 
     <div id="toast" style="
@@ -709,22 +778,6 @@
   pointer-events: none;
 "></div>
 
-<!-- МОДАЛКА ОПЛАТЫ ЧЕРЕЗ Т-БИЗНЕС -->
-<div id="paymentModal" class="modal hidden">
-  <div class="modal-content" style="background: #101e3a;">
-    <span class="close-btn" onclick="document.getElementById('paymentModal').classList.add('hidden')">&times;</span>
-    <h2 style="color: #cce8ff;">Оплата заказа</h2>
-    <p style="color: #fff;">Сумма к оплате: <strong id="finalAmount">0 ₽</strong></p>
-
-    <div style="margin: 15px 0;">
-      <input type="text" id="paymentPromoInput" placeholder="Промокод (если есть)" style="margin-bottom: 10px;">
-      <button onclick="applyPromoCode()" style="background-color: #4fa3ff; color: #fff;">Применить промокод</button>
-      <div id="promoFeedback" style="margin-top: 8px; font-size: 14px;"></div>
-    </div>
-
-    <button id="payNowBtn" style="margin-top: 20px; background-color: #4fa3ff; color: #fff;">💳 Перейти к оплате</button>
-  </div>
-</div>
 
 </body>
 </html>
