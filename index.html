@@ -592,7 +592,7 @@ document.getElementById('submitUsername')?.addEventListener('click', () => {
   alert('Спасибо! Мы скоро с вами свяжемся в Telegram.');
 });
 
-window.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   try {
     if (window.Telegram && Telegram.WebApp) {
       Telegram.WebApp.ready();
