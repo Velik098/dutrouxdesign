@@ -741,6 +741,27 @@ function loadOrders() {
   pointer-events: none;
 "></div>
 
+<!-- Модалка оформления заказа -->
+<div id="orderModal" class="modal hidden">
+  <div class="modal-content" style="max-width: 450px;">
+    <span class="close-btn" onclick="document.getElementById('orderModal').classList.add('hidden')">&times;</span>
+    <h2 style="color: #3390ff; margin-bottom: 15px;">К оплате</h2>
+
+    <div id="order-items" style="margin-bottom: 15px; font-size: 15px; color: #ddd;"></div>
+
+    <div class="promocode-card" style="margin-bottom: 15px;">
+      <input type="text" id="orderPromoInput" placeholder="Введите промокод" />
+      <button id="applyOrderPromoBtn" style="margin-top: 8px;">Активировать</button>
+      <div id="orderPromoMessage" style="margin-top: 5px; font-size: 13px;"></div>
+    </div>
+
+    <div style="font-weight: bold; font-size: 18px; margin-bottom: 20px;">
+      Итого: <span id="orderTotal" style="color: #3390ff;">0 ₽</span>
+    </div>
+
+    <button id="payButton" style="background: #3390ff; color: white;">Оплатить</button>
+  </div>
+</div>
 
 </body>
 </html>
