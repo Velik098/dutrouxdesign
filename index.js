@@ -125,3 +125,59 @@ const YooKassa = require('@appigram/yookassa-node').YooKassa;
     console.log(`🌐 WebApp доступен по адресу: http://localhost:${PORT}`);
   });
 })();
+
+const express = require('express');
+const axios = require('axios');
+const crypto = require('crypto');
+const bodyParser = require('body-parser');
+const app = express();
+app.use(bodyParser.json());
+
+const TERMINAL_KEY = '1754495953908DEMO';
+const PASSWORD = '%woQMJBy3fIovnft'; // Никому не показывай!
+const NOTIFICATION_URL = 'https://dutroux-1.onrender.com'; // Измени на свой Render-URL
+
+function generateToken(data) {
+  const tokenStr = Object.entries(data)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .reduce((acc, [key, value]) => acc + value, '') + PASSWORD;
+  return crypto.createHash('sha256').update(tokenStr).digest('hex');
+}
+
+// 📦 Создание оплаты
+app.post('/create-payment', async (req, res) => {
+  const { amount, username, items } = req.body;
+
+  const orderId = 'ORDER-' + Date.now();
+  const payload = {
+    TerminalKey: TERMINAL_KEY,
+    Amount: amount * 100, // в копейках
+    OrderId: orderId,
+    Description: `Покупка от ${username || 'неизвестно'}`,
+    NotificationURL: NOTIFICATION_URL,
+    DATA: {
+      email: `${username}@tg`, // можно использовать для связи
+    },
+  };
+
+  payload.Token = generateToken(payload);
+
+  try {
+    const { data } = await axios.post('https://securepay.tinkoff.ru/v2/Init', payload);
+    res.json({ url: data.PaymentURL, orderId });
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    res.status(500).json({ error: 'Ошибка при создании оплаты' });
+  }
+});
+
+// 📬 Webhook от Тинькофф
+app.post('/webhook', (req, res) => {
+  const { OrderId, Status, Success, Amount } = req.body;
+  console.log(`💰 Оплата! Order: ${OrderId}, Статус: ${Status}, Успешно: ${Success}, Сумма: ${Amount / 100} ₽`);
+  res.send('OK');
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
