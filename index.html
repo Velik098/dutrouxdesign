@@ -599,27 +599,8 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
   document.getElementById('paidButton').onclick = () => {
-    const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
-    const orderDate = new Date().toLocaleString('ru-RU');
-    const order = {
-      id: orderId,
-      date: orderDate,
-      total: total.toFixed(2),
-      items: Object.values(cart).map(item => `${item.name} × ${item.count}`)
-    };
-
-    const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-    orders.push(order);
-    localStorage.setItem('orderHistory', JSON.stringify(orders));
-
-    document.getElementById('orderModal').classList.add('hidden');
-    document.getElementById('usernameModal').classList.remove('hidden');
-
-    cart = {};
-    total = 0;
-    updateCartDisplay();
-    loadOrders();
-  };
+  // Действие отключено. Оплата будет добавлена позже вручную.
+};
 
   document.getElementById('usernameCloseBtn').onclick = () => document.getElementById('usernameModal').classList.add('hidden');
 
