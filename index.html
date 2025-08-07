@@ -745,25 +745,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('user-avatar').src = savedAvatar;
   }
 
-    document.getElementById('paymentPromoBtn').onclick = () => {
-    const promo = document.getElementById('paymentPromoInput').value.trim();
-    const message = document.getElementById('paymentPromoMessage');
-
-    if (promo === 'DUTROUX10') {
-      total = total * 0.9;
-      document.getElementById('paymentTotal').textContent = total.toFixed(2) + ' ₽';
-      message.textContent = 'Промокод применён: скидка 10%';
-      message.style.color = '#00ffcc';
-    } else {
-      message.textContent = 'Неверный промокод';
-      message.style.color = 'red';
-    }
-  };
-
-  document.getElementById('payButton').onclick = () => {
-    alert("Тут будет переход к оплате — реализуешь сам 😉");
-  };
-});
 </script>
 
   </div>
