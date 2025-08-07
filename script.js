@@ -36,31 +36,3 @@ document.getElementById("previewBtn").addEventListener("click", () => {
 document.getElementById("privatkaBtn").addEventListener("click", () => {
   sendOrder("Приватка", 300);
 });
-
-document.getElementById('paidButton').onclick = async () => {
-  const itemsList = Object.values(cart).map(i => `${i.name} ×${i.count}`).join(', ');
-  const amount = total;
-
-  try {
-    const res = await fetch('/create-payment', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        amount,
-        username: telegramUser?.username || 'неизвестно',
-        items: itemsList
-      })
-    });
-
-    const data = await res.json();
-    if (data.url) {
-      window.open(data.url, '_blank'); // или Telegram.WebApp.openLink(data.url);
-    } else {
-      alert('Ошибка при получении ссылки на оплату');
-    }
-  } catch (err) {
-    console.error(err);
-    alert('Ошибка при создании оплаты');
-  }
-};
-
