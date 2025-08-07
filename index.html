@@ -592,7 +592,6 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
-  document.getElementById('orderCloseButton').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
   document.getElementById('paidButton').onclick = () => {
     const orderId = 'ORD-' + Math.random().toString(36).substr(2, 8).toUpperCase();
@@ -738,7 +737,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // --- Новый обработчик открытия модального окна заказа ---
+  // --- Обработчик открытия окна оформления заказа ---
   checkoutBtn.onclick = () => {
     const container = document.getElementById('order-items-container');
     container.innerHTML = '';
@@ -760,7 +759,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('orderModal').classList.remove('hidden');
   };
 
-  // --- Новый обработчик промокода ---
   document.getElementById('checkout-promo-btn').onclick = () => {
     const input = document.getElementById('checkout-promo-input');
     const message = document.getElementById('checkout-promo-message');
@@ -782,6 +780,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
+
 
      </body>
    </html>
