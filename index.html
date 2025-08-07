@@ -387,17 +387,13 @@
       <!-- Сюда динамически вставим содержимое корзины -->
     </div>
 
-    <!-- Промокод -->
-    <div style="margin-top: 20px;">
-      <div style="color: #cce8ff;">Промокод:</div>
-      <input type="text" id="checkout-promo-input" placeholder="Введите промокод"
-             style="margin-top: 8px; width: 100%; background: #1a2e5a; border: 1px solid #395a99; color: #fff; padding: 8px; border-radius: 6px;" />
-      <button id="checkout-promo-btn"
-              style="margin-top: 10px; background: #3399ff; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer;">
-        Применить
-      </button>
-      <div id="checkout-promo-message" style="margin-top: 6px; color: red;"></div>
-    </div>
+<div class="promocode-card styled-card" style="margin-top: 20px;">
+  <div style="color: #fff;">Промокод:</div>
+  <input type="text" id="checkout-promo-input" placeholder="Введите промокод"
+         style="width: 95%; box-sizing: border-box; margin-top: 8px;">
+  <button id="checkout-promo-btn" style="margin-top: 10px;">Активировать</button>
+  <div id="checkout-promo-message" class="promo-error"></div>
+</div>
 
     <!-- Кнопка оплаты -->
     <button id="paidButton" style="margin-top: 25px; background: #007bff; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; width: 100%; font-weight: bold; font-size: 16px; cursor: pointer;">
@@ -737,25 +733,26 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // --- Обработчик открытия окна оформления заказа ---
+  // ✅ ОБНОВЛЁННЫЙ ОБРАБОТЧИК ОФОРМЛЕНИЯ ЗАКАЗА
   checkoutBtn.onclick = () => {
     const container = document.getElementById('order-items-container');
     container.innerHTML = '';
 
     Object.values(cart).forEach(item => {
       const div = document.createElement('div');
-      div.style.marginBottom = '10px';
-      div.style.borderBottom = '1px dashed #395a99';
-      div.style.paddingBottom = '8px';
+      div.className = 'product-card';
       div.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div style="color: #cce8ff;">${item.name}</div>
-          <div style="color: #cce8ff;">${item.price} ₽ × ${item.count}</div>
+        <img src="${item.image}" alt="${item.name}">
+        <div class="product-info">
+          <div class="product-title">${item.name}</div>
+          <div class="product-description">Количество: ${item.count}</div>
+          <div class="product-price">${item.price} ₽ × ${item.count} = ${(item.price * item.count).toFixed(2)} ₽</div>
         </div>
       `;
       container.appendChild(div);
     });
 
+    document.getElementById('order-total').textContent = total.toFixed(2) + ' ₽';
     document.getElementById('orderModal').classList.remove('hidden');
   };
 
