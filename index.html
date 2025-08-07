@@ -772,6 +772,48 @@ function goToTab(id) {
     document.getElementById('user-avatar').src = savedAvatar;
   }
 });
+
+async function startPayment(orderId, amount, description) {
+  const terminalKey = '1754495953908DEMO';
+  const password = '%woQMJBy3fIovnft';
+
+  const data = {
+    TerminalKey: terminalKey,
+    Amount: Math.round(amount * 100),
+    OrderId: orderId,
+    Description: description,
+    SuccessURL: 'https://securepay.tinkoff.ru/html/payForm/success.html',
+    FailURL: 'https://securepay.tinkoff.ru/html/payForm/fail.html'
+  };
+
+  try {
+    const res = await fetch('https://securepay.tinkoff.ru/v2/init', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+
+    if (result.PaymentURL) {
+      window.location.href = result.PaymentURL;
+    } else {
+      alert('Ошибка оплаты: ' + (result.Message || 'Неизвестная'));
+    }
+  } catch (err) {
+    alert('Сетевая ошибка: ' + err.message);
+  }
+}
+
+document.getElementById('paidButton').onclick = () => {
+  const orderId = 'ORDER-' + Date.now();
+  const description = Object.values(cart).map(i => `${i.name} x${i.count}`).join(', ');
+  const totalText = document.getElementById('order-total').textContent;
+  const totalAmount = parseFloat(totalText.replace('₽', '').replace(',', '.'));
+
+  startPayment(orderId, totalAmount, description);
+};
+
 </script>
 
 
