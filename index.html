@@ -457,14 +457,6 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
-function goToTab(id) {
-    tabs.forEach(t => t.classList.remove('active'));
-    document.getElementById(id)?.classList.add('active');
-
-    navButtons.forEach(b => b.classList.remove('active'));
-    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
-  }
-
 document.addEventListener("DOMContentLoaded", function () {
   const navButtons = document.querySelectorAll('.bottom-nav button');
   const tabs = document.querySelectorAll('.tab-pane');
@@ -480,6 +472,13 @@ document.addEventListener("DOMContentLoaded", function () {
   let telegramUser = null;
   let cart = {}, total = 0;
 
+function goToTab(id) {
+    tabs.forEach(t => t.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+
+    navButtons.forEach(b => b.classList.remove('active'));
+    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
+  }
 
   function showToast(message) {
     toast.textContent = message;
