@@ -472,6 +472,30 @@ document.addEventListener("DOMContentLoaded", function () {
   let telegramUser = null;
   let cart = {}, total = 0;
 
+// вместо alert — реальная отправка
+document.getElementById('paidButton').onclick = async () => {
+  const userId = telegramUser?.id || 0;
+  const username = telegramUser?.username || 'unknown';
+
+  const orderDetails = {
+    id: Date.now(),
+    tgId: userId,
+    username: username,
+    total: total.toFixed(2),
+    items: Object.values(cart),
+  };
+
+  // Отправляем заказ на сервер
+  await fetch('https://dutroux-1.onrender.com/api/order', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(orderDetails),
+  });
+
+  Telegram.WebApp.close(); // Закрывает WebApp после оформления
+};
+
+
 function goToTab(id) {
     tabs.forEach(t => t.classList.remove('active'));
     document.getElementById(id)?.classList.add('active');
