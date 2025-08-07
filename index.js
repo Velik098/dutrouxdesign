@@ -126,7 +126,6 @@ const YooKassa = require('@appigram/yookassa-node').YooKassa;
   });
 })();
 
-const express = require('express');
 const axios = require('axios');
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
