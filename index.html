@@ -413,6 +413,9 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+  Telegram.WebApp.ready();
+  Telegram.WebApp.expand();
+
   // Создание и стилизация toast
   const toast = document.createElement('div');
   toast.id = 'toast';
@@ -473,7 +476,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const reviewInput = document.getElementById('reviewInput');
   const submitReview = document.getElementById('submitReview');
 
-  let cart = {}, total = 0, currentProduct = '', telegramUser = null;
+  let cart = {}, total = 0, currentProduct = '', telegramUser = Telegram.WebApp.initDataUnsafe?.user || null;
 
   // Вспомогательные функции
   function goToTab(id) {
@@ -526,7 +529,6 @@ document.addEventListener("DOMContentLoaded", function () {
     totalText.textContent = total.toFixed(2) + ' ₽';
     checkoutBtn.style.display = 'block';
 
-    // События для кнопок + и -
     cartBody.querySelectorAll('.inc').forEach(btn => {
       btn.onclick = () => {
         const name = btn.dataset.name;
@@ -548,12 +550,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Навигация
   navButtons.forEach(btn => {
     btn.addEventListener('click', () => goToTab(btn.dataset.tab));
   });
 
-  // Кнопки "Добавить в корзину"
   document.querySelectorAll('.add-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.product-card');
@@ -577,7 +577,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Детали товара
   document.querySelectorAll('.details-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.product-card');
@@ -597,7 +596,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Модальные окна
   document.getElementById('detailsCloseBtn')?.addEventListener('click', () => modal.classList.add('hidden'));
   window.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal')) {
@@ -605,7 +603,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Промокод (при оформлении)
   document.getElementById('checkout-promo-btn')?.addEventListener('click', () => {
     const input = document.getElementById('checkout-promo-input');
     const promo = input.value.trim().toLowerCase();
@@ -622,7 +619,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Отзывы
   function loadReviews() {
     const key = `reviews_${currentProduct}`;
     const reviews = JSON.parse(localStorage.getItem(key) || '[]');
@@ -654,7 +650,6 @@ document.addEventListener("DOMContentLoaded", function () {
     loadReviews();
   });
 
-  // Оформление заказа
   checkoutBtn?.addEventListener('click', () => {
     const container = document.getElementById('order-items-container');
     container.innerHTML = '';
@@ -676,7 +671,43 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('orderModal').classList.remove('hidden');
   });
 
-  // Загрузка аватарки из localStorage
+  // === ✅ ОПЛАТА через Telegram Business ===
+  const paidButton = document.getElementById('paidButton');
+  if (paidButton) {
+    paidButton.addEventListener('click', () => {
+      if (!window.Telegram || !Telegram.WebApp) {
+        showToast("Telegram WebApp API не доступен");
+        return;
+      }
+
+      const payload = {
+        title: "Оплата заказа Dutroux Sell",
+        description: "Товары из корзины",
+        payload: "dutroux_order_001", // можно сгенерировать уникально
+        provider_token: "1754495953908DEMO",
+        currency: "RUB",
+        prices: [{ label: "Сумма", amount: Math.round(total * 100) }],
+        photo_url: "logo.png",
+        photo_width: 512,
+        photo_height: 512,
+        need_name: true,
+        is_flexible: false
+      };
+
+      Telegram.WebApp.openInvoice(payload, function (status) {
+        if (status === 'paid') {
+          showToast("✅ Оплата успешна!");
+          cart = {};
+          total = 0;
+          updateCartDisplay();
+          document.getElementById('orderModal').classList.add('hidden');
+        } else {
+          showToast("❌ Оплата не завершена.");
+        }
+      });
+    });
+  }
+
   const savedAvatar = localStorage.getItem('customAvatar');
   if (savedAvatar) {
     document.getElementById('user-avatar').src = savedAvatar;
@@ -685,6 +716,7 @@ document.addEventListener("DOMContentLoaded", function () {
   updateCartDisplay();
 });
 </script>
+
 
 
      </body>
