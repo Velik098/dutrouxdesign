@@ -17,6 +17,8 @@
       --neon-red: #ff385c;
       --neon-cyan: #00d4ff;
       --muted: rgba(255,255,255,0.6);
+      --header-h: 72px; /* используем в вычислениях */
+      --bottom-nav-h: 92px; /* запас для мобиль/паддинга */
     }
 
     /* Reset & base */
@@ -26,7 +28,6 @@
       margin:0;
       min-height:100vh;
       font-family:"Poppins", "Montserrat", system-ui, Arial, sans-serif;
-      /* background fixed + cover to avoid "stitching" */
       background:
         radial-gradient(900px 500px at 10% 10%, rgba(0,212,255,0.035), transparent 8%),
         radial-gradient(900px 500px at 90% 90%, rgba(186,255,0,0.02), transparent 8%),
@@ -37,8 +38,10 @@
       color:#eaf6ff;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      padding-bottom:92px; /* space for bottom nav */
+      padding:0; /* убрал bottom padding — теперь учитываем пространство через .tab-content */
       overflow-x:hidden;
+      /* allow smooth scrolling for in-page scroll containers */
+      -webkit-font-smoothing:antialiased;
     }
 
     /* Header */
@@ -52,6 +55,7 @@
       backdrop-filter: blur(6px);
       border-bottom: 1px solid rgba(255,255,255,0.03);
       background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      height: var(--header-h);
     }
     .header img{height:44px;border-radius:12px;box-shadow:0 6px 30px rgba(0,0,0,0.6)}
     .header h1{
@@ -109,7 +113,19 @@
     }
 
     /* Catalog wrapper */
-    .tab-content{padding:12px 14px 140px 14px}
+    /* ВАЖНО: делаем area вкладок фиксированной высоты с внутренним скроллом,
+       чтобы управление прокруткой было локальным и мы могли сбрасывать scrollTop при переключении табов.
+       calc высоты учитывает header + нижнюю навигацию. */
+    .tab-content{
+      padding:12px 14px;
+      /* высота: весь экран минус header и место под bottom-nav */
+      height: calc(100vh - var(--header-h) - 24px); /* 24px запас для divider/маркировки */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* плавный скролл на iOS */
+      overscroll-behavior-y: contain; /* запрет "перелистывания" страницы при достижении конца */
+      padding-bottom: calc(var(--bottom-nav-h) + 20px); /* чтобы контент не прятался под bottom-nav */
+      /* выше — ключевое: локальная прокрутка, запрет внешнего "бесконечного" листания */
+    }
 
     .catalog-header{
       display:flex;
@@ -129,7 +145,6 @@
     }
 
     /* Products grid (preserve product-card class) */
-    /* Global product-card style (applies both in catalog and cart) */
     .product-card{
       display:flex;
       gap:10px;
@@ -145,7 +160,6 @@
       align-items:center;
     }
 
-    /* Ensure images inside any .product-card have limited size (fix huge cards) */
     .product-card img{
       width:84px;
       height:84px;
@@ -156,7 +170,6 @@
       background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15));
     }
 
-    /* Catalog-specific fine-tuning */
     #catalog .product-card::after{
       content:'';
       position:absolute;
@@ -317,6 +330,7 @@
       box-shadow: 0 10px 40px rgba(0,0,0,0.7);
       border:1px solid rgba(255,255,255,0.03);
       z-index:40;
+      /* делаем запас для высоты при вычислении таб-контента */
     }
     .bottom-nav button{
       background:transparent;border:0;color:var(--neon-yellow);font-weight:700;
@@ -338,16 +352,16 @@
       .modal-content{ max-width:640px; }
       .product-card{ gap:14px; padding:14px }
       .product-card img{ width:110px; height:110px; border-radius:12px; }
+      :root { --bottom-nav-h: 80px; }
     }
     @media (max-width:420px){
       .header h1{ font-size:16px }
       .category{ padding:7px 10px; font-size:12px }
       .bottom-nav{ height:72px; left:8px; right:8px; bottom:8px; border-radius:14px;}
+      :root { --bottom-nav-h: 110px; } /* больше запас для мобильных кнопок */
     }
 
-    /* Tab animation: keep original JS behavior but avoid hiding content forever.
-       JS will toggle .tab-pane / .tab-pane.active. Leave default invisible,
-       but ensure when active it's visible. */
+    /* Tab animation */
     .tab-pane { opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .28s ease, transform .28s ease; }
     .tab-pane.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
@@ -379,7 +393,6 @@
   </div>
 
   <!-- Основной контент -->
-
   <div class="tab-content">
     <!-- КАТАЛОГ -->
 <div id="catalog" class="tab-pane active">
@@ -597,8 +610,8 @@
 <!-- ====== JS (твоя логика оставлена как есть) ====== -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  Telegram.WebApp.ready();
-  Telegram.WebApp.expand();
+  Telegram.WebApp?.ready?.();
+  Telegram.WebApp?.expand?.();
 
   // Создание и стилизация toast
   const toast = document.createElement('div');
@@ -658,14 +671,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalReviews = document.getElementById('modal-reviews');
   const reviewInput = document.getElementById('reviewInput');
   const submitReview = document.getElementById('submitReview');
+  const tabContent = document.querySelector('.tab-content');
 
-  let cart = {}, total = 0, currentProduct = '', telegramUser = Telegram.WebApp.initDataUnsafe?.user || null;
+  let cart = {}, total = 0, currentProduct = '', telegramUser = (Telegram.WebApp && Telegram.WebApp.initDataUnsafe) ? Telegram.WebApp.initDataUnsafe.user : null;
 
   function goToTab(id) {
     tabs.forEach(t => t.classList.remove('active'));
     document.getElementById(id)?.classList.add('active');
     navButtons.forEach(b => b.classList.remove('active'));
     document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
+
+    // Сбрасываем локальную прокрутку .tab-content при переключении вкладок,
+    // чтобы профиль/корзина не оказывались "внизу".
+    if (tabContent) {
+      tabContent.scrollTop = 0;
+    }
   }
 
   function showToast(message) {
@@ -768,20 +788,28 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById('modal-price').textContent = card.dataset.price + ' ₽';
       modal.classList.remove('hidden');
 
+      // блокируем прокрутку body при открытом модальном окне
+      document.body.style.overflow = 'hidden';
+
       currentProduct = card.dataset.name;
       loadReviews();
 
       document.getElementById('modal-add').onclick = () => {
         addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
         modal.classList.add('hidden');
+        document.body.style.overflow = ''; // восстановить
       };
     });
   });
 
-  document.getElementById('detailsCloseBtn')?.addEventListener('click', () => modal.classList.add('hidden'));
+  document.getElementById('detailsCloseBtn')?.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  });
   window.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal')) {
       e.target.classList.add('hidden');
+      document.body.style.overflow = '';
     }
   });
 
@@ -851,6 +879,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('order-total').textContent = total.toFixed(2) + ' ₽';
     document.getElementById('orderModal').classList.remove('hidden');
+    // блокируем фон от прокрутки
+    document.body.style.overflow = 'hidden';
+  });
+
+  // Закрытие orderModal
+  document.getElementById('orderCloseBtn')?.addEventListener('click', () => {
+    document.getElementById('orderModal').classList.add('hidden');
+    document.body.style.overflow = '';
   });
 
   // КНОПКА ОПЛАТЫ
@@ -883,8 +919,10 @@ document.addEventListener("DOMContentLoaded", function () {
         total = 0;
         updateCartDisplay();
         document.getElementById('orderModal').classList.add('hidden');
+        document.body.style.overflow = '';
       } else {
         showToast("❌ Оплата не завершена");
+        document.body.style.overflow = '';
       }
     });
   });
@@ -895,6 +933,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   updateCartDisplay();
+
+  // Доп: при свайпах/перелистывании не позволит странице прокрутиться дальше конца .tab-content
+  // уже реализовано через CSS overscroll-behavior: contain;
 });
 </script>
 
