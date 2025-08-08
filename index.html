@@ -465,7 +465,6 @@ document.addEventListener("DOMContentLoaded", function () {
   `;
   document.head.appendChild(style);
 
-  // Элементы
   const navButtons = document.querySelectorAll('.bottom-nav button');
   const tabs = document.querySelectorAll('.tab-pane');
   const totalText = document.getElementById('total');
@@ -478,7 +477,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let cart = {}, total = 0, currentProduct = '', telegramUser = Telegram.WebApp.initDataUnsafe?.user || null;
 
-  // Вспомогательные функции
   function goToTab(id) {
     tabs.forEach(t => t.classList.remove('active'));
     document.getElementById(id)?.classList.add('active');
@@ -671,42 +669,41 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('orderModal').classList.remove('hidden');
   });
 
-  // === ✅ ОПЛАТА через Telegram Business ===
-  const paidButton = document.getElementById('paidButton');
-  if (paidButton) {
-    paidButton.addEventListener('click', () => {
-      if (!window.Telegram || !Telegram.WebApp) {
-        showToast("Telegram WebApp API не доступен");
-        return;
+  // КНОПКА ОПЛАТЫ
+  document.getElementById('paidButton')?.addEventListener('click', () => {
+    if (!Telegram.WebApp || !Telegram.WebApp.openInvoice) {
+      showToast("⚠️ Telegram WebApp API не поддерживается");
+      return;
+    }
+
+    const payload = {
+      title: "Оплата заказа",
+      description: "Покупка товаров в Dutroux Sell",
+      payload: "order_" + Date.now(),
+      provider_token: "1754495953908DEMO",
+      currency: "RUB",
+      prices: [
+        { label: "Товары", amount: Math.round(total * 100) }
+      ],
+      need_name: true,
+      photo_url: "logo.png",
+      photo_width: 512,
+      photo_height: 512,
+      is_flexible: false
+    };
+
+    Telegram.WebApp.openInvoice(payload, function (status) {
+      if (status === 'paid') {
+        showToast("✅ Оплата успешна!");
+        cart = {};
+        total = 0;
+        updateCartDisplay();
+        document.getElementById('orderModal').classList.add('hidden');
+      } else {
+        showToast("❌ Оплата не завершена");
       }
-
-      const payload = {
-        title: "Оплата заказа Dutroux Sell",
-        description: "Товары из корзины",
-        payload: "dutroux_order_001", // можно сгенерировать уникально
-        provider_token: "1754495953908DEMO",
-        currency: "RUB",
-        prices: [{ label: "Сумма", amount: Math.round(total * 100) }],
-        photo_url: "logo.png",
-        photo_width: 512,
-        photo_height: 512,
-        need_name: true,
-        is_flexible: false
-      };
-
-      Telegram.WebApp.openInvoice(payload, function (status) {
-        if (status === 'paid') {
-          showToast("✅ Оплата успешна!");
-          cart = {};
-          total = 0;
-          updateCartDisplay();
-          document.getElementById('orderModal').classList.add('hidden');
-        } else {
-          showToast("❌ Оплата не завершена.");
-        }
-      });
     });
-  }
+  });
 
   const savedAvatar = localStorage.getItem('customAvatar');
   if (savedAvatar) {
@@ -716,6 +713,7 @@ document.addEventListener("DOMContentLoaded", function () {
   updateCartDisplay();
 });
 </script>
+
 
 
 
