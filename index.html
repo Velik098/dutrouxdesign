@@ -157,6 +157,23 @@
     }
     /* ================================================= */
 
+    /* Topup modal specific */
+    .topup-presets { display:flex; gap:8px; margin-top:8px; }
+    .preset-btn {
+      flex:1;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.04);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+      cursor:pointer;
+      font-weight:700;
+      text-align:center;
+    }
+    .preset-btn.active { border-color: rgba(255,215,0,0.9); box-shadow: 0 8px 30px rgba(255,215,0,0.06); transform:translateY(-2px); }
+
+    .topup-footer { display:flex; gap:8px; margin-top:14px; }
+    .topup-amount-input { font-size:18px; font-weight:700; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:#07101a; color:#eaf6ff; width:100%; text-align:center; }
+
     @media (min-width:720px){ .modal-content{ max-width:640px; } .product-card{ gap:14px; padding:14px } .product-card img{ width:110px; height:110px; border-radius:12px; } :root { --bottom-nav-h: 80px; } }
     @media (max-width:420px){ .header h1{ font-size:16px } .category{ padding:7px 10px; font-size:12px } .bottom-nav{ height:72px; left:8px; right:8px; bottom:8px; border-radius:14px;} :root { --bottom-nav-h: 110px; } }
 
@@ -372,6 +389,29 @@
       </div>
     </div>
 
+    <!-- ===== Topup modal (added) ===== -->
+    <div id="topupModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-content" role="dialog" aria-labelledby="topupTitle" style="max-width:420px;">
+        <span class="close-btn" id="topupCloseBtn">&times;</span>
+        <h2 id="topupTitle" style="text-align:center; margin-bottom:8px;">Пополнение баланса</h2>
+
+        <div style="margin-top:8px;">
+          <div style="font-weight:700; margin-bottom:6px;">Выберите сумму для пополнения</div>
+          <input id="topupAmount" class="topup-amount-input" type="number" min="1" placeholder="Введите сумму для пополнения" />
+          <div class="topup-presets" style="margin-top:10px;">
+            <button class="preset-btn" data-amount="100">+100 ₽</button>
+            <button class="preset-btn" data-amount="300">+300 ₽</button>
+            <button class="preset-btn" data-amount="500">+500 ₽</button>
+          </div>
+
+          <div class="topup-footer">
+            <button id="confirmTopup" class="btn btn-primary" style="width:100%;">Пополнить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ===== end topup modal ===== -->
+
   </div>
 
   <div class="bottom-nav" id="bottomNav" aria-hidden="false">
@@ -399,6 +439,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const submitReview = document.getElementById('submitReview');
   const tabContent = document.getElementById('tabContent');
   const headerEl = document.getElementById('appHeader');
+
+  // topup modal elements
+  const topupModal = document.getElementById('topupModal');
+  const topupCloseBtn = document.getElementById('topupCloseBtn');
+  const topupAmountInput = document.getElementById('topupAmount');
+  const presetButtons = Array.from(document.querySelectorAll('.preset-btn'));
+  const confirmTopupBtn = document.getElementById('confirmTopup');
 
   // state
   let cart = JSON.parse(localStorage.getItem('cart_v1') || '{}');
@@ -794,19 +841,56 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // balance management (simple demo)
+  // balance management (now using modal)
   function getBalance() { return parseFloat(localStorage.getItem('balance_v1') || '0'); }
   function setBalance(v) { localStorage.setItem('balance_v1', parseFloat(v).toFixed(2)); document.getElementById('balance-amount').textContent = parseFloat(v).toFixed(2) + ' ₽'; }
   setBalance(getBalance());
 
+  // Open topup modal (replace previous prompt-based flow)
   document.getElementById('topup-btn')?.addEventListener('click', () => {
-    const amount = prompt('Сколько пополнить (₽)?', '100');
-    if (!amount) return;
-    const n = parseFloat(amount);
+    // reset input and presets
+    topupAmountInput.value = '';
+    presetButtons.forEach(b => b.classList.remove('active'));
+    topupModal.classList.remove('hidden');
+    topupModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    // focus input after small delay so mobile keyboard opens smoothly
+    setTimeout(()=> topupAmountInput.focus(), 120);
+  });
+
+  // close topup modal
+  topupCloseBtn?.addEventListener('click', () => {
+    topupModal.classList.add('hidden');
+    topupModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  });
+
+  // clicking outside modal to close (already handled globally)
+  // preset buttons
+  presetButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const amount = parseFloat(btn.dataset.amount || '0');
+      if (isNaN(amount) || amount <= 0) return;
+      topupAmountInput.value = amount;
+      presetButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // confirm topup
+  confirmTopupBtn?.addEventListener('click', () => {
+    const val = (topupAmountInput.value || '').toString().trim();
+    if (!val) { showToast('Введите сумму для пополнения'); return; }
+    const n = parseFloat(val);
     if (isNaN(n) || n <= 0) { showToast('Неверная сумма'); return; }
+
+    // perform topup (demo: just add to local balance; in real — call payment)
     const newBal = parseFloat((getBalance() + n).toFixed(2));
     setBalance(newBal);
-    showToast('Баланс пополнен');
+    showToast('Баланс пополнен на ' + n.toFixed(2) + ' ₽');
+    topupModal.classList.add('hidden');
+    topupModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
   });
 
   // order history save
