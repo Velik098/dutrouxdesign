@@ -128,9 +128,9 @@
 
     .styled-card{ background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border:1px solid rgba(255,255,255,0.03); padding:12px;border-radius:12px;margin-bottom:12px; color: #eaf6ff; }
 
-    .bottom-nav{ position:fixed; left:12px;right:12px;bottom:12px; height:64px; display:flex; align-items:center; justify-content:space-around; gap:8px; background: linear-gradient(180deg, rgba(8,10,20,0.95), rgba(6,8,12,0.95)); border-radius:18px; padding:6px 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); z-index:40; }
-    .bottom-nav button{ background:transparent;border:0;color:var(--neon-yellow);font-weight:700; display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;cursor:pointer; }
-    .bottom-nav button.active, .bottom-nav button:hover{ color:var(--neon-red); transform:translateY(-2px); }
+    .bottom-nav{ position:fixed; left:12px;right:12px;bottom:12px; height:64px; display:flex; align-items:center; justify-content:space-around; gap:8px; background: linear-gradient(180deg, rgba(8,10,20,0.95), rgba(6,8,12,0.95)); border-radius:18px; padding:6px 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); z-index:9999; }
+    .bottom-nav button{ background:transparent;border:0;color:var(--neon-yellow);font-weight:700; display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;cursor:pointer; padding:6px 8px; border-radius:10px; }
+    .bottom-nav button.active, .bottom-nav button:hover{ color:var(--neon-red); transform:translateY(-2px); background: rgba(255,255,255,0.01); }
 
     .cart-header{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 4px 12px 4px;}
     .cart-body{ padding:8px 4px; color:var(--muted); min-height:80px; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
@@ -140,13 +140,30 @@
 
     .promo-error{ margin-top:8px; color: #ffdddd; font-weight:700; }
 
+    /* ===== Promo input styling (исправлено) ===== */
+    .promocode-card input#promo-input {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+      border: 1px solid rgba(255,255,255,0.04);
+      color: #eaf6ff;
+      padding: 10px;
+      border-radius: 10px;
+      width: 100%;
+      outline: none;
+      transition: box-shadow .12s ease, transform .08s ease;
+    }
+    .promocode-card input#promo-input:focus {
+      box-shadow: 0 8px 30px rgba(0,212,255,0.06);
+      transform: translateY(-2px);
+    }
+    /* ================================================= */
+
     @media (min-width:720px){ .modal-content{ max-width:640px; } .product-card{ gap:14px; padding:14px } .product-card img{ width:110px; height:110px; border-radius:12px; } :root { --bottom-nav-h: 80px; } }
     @media (max-width:420px){ .header h1{ font-size:16px } .category{ padding:7px 10px; font-size:12px } .bottom-nav{ height:72px; left:8px; right:8px; bottom:8px; border-radius:14px;} :root { --bottom-nav-h: 110px; } }
 
     .tab-pane { opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .18s ease, transform .18s ease; display: none; }
     .tab-pane.active { opacity: 1; transform: translateY(0); pointer-events: auto; display: block; }
 
-    #toast{ border-radius:12px; padding:12px 18px; font-weight:600; letter-spacing:0.2px; box-shadow: 0 12px 30px rgba(0,0,0,0.6); position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:9999; opacity:0; transition:opacity .25s ease; background: rgba(0,0,0,0.85); color: #fff; }
+    #toast{ border-radius:12px; padding:12px 18px; font-weight:600; letter-spacing:0.2px; box-shadow: 0 12px 30px rgba(0,0,0,0.6); position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:99999; opacity:0; transition:opacity .25s ease; background: rgba(0,0,0,0.85); color: #fff; }
     #toast.show{ opacity:1; pointer-events:auto; }
   </style>
 </head>
@@ -285,15 +302,14 @@
         </div>
         <div style="display:flex; gap:8px; margin-top:10px;">
           <button id="topup-btn" class="btn btn-accent">Пополнить баланс</button>
-          <!-- Кнопка "Вывести" удалена по запросу -->
         </div>
       </div>
 
       <hr style="margin: 18px 0; border-color: #333;">
 
-            <div class="promocode-card styled-card">
+      <div class="promocode-card styled-card">
         <div>Промокод:</div>
-        <input type="text" id="promo-input" placeholder="Введите промокод" style="width: 95%; box-sizing: border-box; margin-top: 8px;">
+        <input type="text" id="promo-input" placeholder="Введите промокод" style="margin-top: 8px;">
         <div style="display:flex; gap:8px; margin-top:8px;">
           <button id="promo-btn" class="btn btn-primary">Активировать</button>
         </div>
@@ -350,8 +366,6 @@
           <hr style="border: none; border-top: 2px dashed #ffffff; margin: 20px 0;">
         </div>
 
-        <!-- Промокоды в чекауте удалены по запросу -->
-
         <button id="paidButton" class="btn btn-primary" style="margin-top: 25px; width:100%; font-size:16px;">
           Оплатить
         </button>
@@ -360,7 +374,7 @@
 
   </div>
 
-  <div class="bottom-nav" id="bottomNav">
+  <div class="bottom-nav" id="bottomNav" aria-hidden="false">
     <button class="active" data-tab="catalog"><img src="home.svg" alt="" style="width:20px;height:20px"><span>Каталог</span></button>
     <button data-tab="cart"><img src="cart.svg" alt="" style="width:20px;height:20px"><span>Корзина</span></button>
     <button data-tab="profile"><img src="profile.svg" alt="" style="width:20px;height:20px"><span>Профиль</span></button>
@@ -375,8 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // elements
   const toast = document.getElementById('toast');
-  const navButtons = document.querySelectorAll('.bottom-nav button');
-  const tabs = document.querySelectorAll('.tab-pane');
+  const bottomNav = document.getElementById('bottomNav');
   const totalText = document.getElementById('total');
   const cartBody = document.getElementById('cart-body');
   const modal = document.getElementById('modal');
@@ -386,29 +399,28 @@ document.addEventListener("DOMContentLoaded", function () {
   const submitReview = document.getElementById('submitReview');
   const tabContent = document.getElementById('tabContent');
   const headerEl = document.getElementById('appHeader');
-  const bottomNav = document.getElementById('bottomNav');
 
   // state
   let cart = JSON.parse(localStorage.getItem('cart_v1') || '{}');
   let total = parseFloat(localStorage.getItem('cart_total_v1') || '0');
   let currentProduct = '';
-  // removed promo related variables and logic per request
-  let checkoutAppliedPromo = null; // left but not used
-  let checkoutDiscountAmount = 0;  // left but not used
+  let checkoutAppliedPromo = null;
+  let checkoutDiscountAmount = 0;
   let telegramUser = null;
   try { telegramUser = (Telegram.WebApp && Telegram.WebApp.initDataUnsafe) ? Telegram.WebApp.initDataUnsafe.user : null; } catch(e){ telegramUser = null; }
 
   // profile basic data
   const storedUsername = localStorage.getItem('tg_username');
-  const storedAvatar = localStorage.getItem('customAvatar');
-  const balanceAmountEl = document.getElementById('balance-amount');
 
-  // username and avatar elements
+  // username and avatar elements - read live inside applyProfileInfo
   function applyProfileInfo() {
     const profileNameEl = document.getElementById('profile-username');
     const profileTgEl = document.getElementById('profile-tg');
     const profileIdEl = document.getElementById('profile-id');
     const userAvatarEl = document.getElementById('user-avatar');
+
+    // read avatar fresh from localStorage each time
+    const storedAvatar = localStorage.getItem('customAvatar');
 
     // topmost should be first_name + last_name from Telegram if available; otherwise fallback to storedUsername (without @) or placeholder
     let fullName = '';
@@ -417,20 +429,21 @@ document.addEventListener("DOMContentLoaded", function () {
       const ln = telegramUser.last_name || '';
       fullName = (fn + (ln ? (' ' + ln) : '')).trim();
     }
-    if (!fullName && storedUsername) {
-      fullName = storedUsername.startsWith('@') ? storedUsername.substring(1) : storedUsername;
+    if (!fullName && localStorage.getItem('tg_username')) {
+      const su = localStorage.getItem('tg_username');
+      fullName = su.startsWith('@') ? su.substring(1) : su;
     }
     if (!fullName) fullName = 'Имя пользователя';
 
     // profile handle (tg) should be @username if exists (from telegramUser.username or storedUsername)
     let handle = '';
     if (telegramUser && telegramUser.username) handle = '@' + telegramUser.username;
-    else if (storedUsername) handle = storedUsername.startsWith('@') ? storedUsername : ('@' + storedUsername);
+    else if (localStorage.getItem('tg_username')) handle = localStorage.getItem('tg_username').startsWith('@') ? localStorage.getItem('tg_username') : ('@' + localStorage.getItem('tg_username'));
 
     const idText = 'ID: ' + (telegramUser && telegramUser.id ? telegramUser.id : '—');
 
     profileNameEl.textContent = fullName;
-    profileTgEl.textContent = handle;
+    profileTgEl.textContent = handle || '';
     profileIdEl.textContent = idText;
 
     if (storedAvatar) {
@@ -459,15 +472,32 @@ document.addEventListener("DOMContentLoaded", function () {
   updateHeights();
   window.addEventListener('resize', updateHeights);
 
-  function goToTab(id) {
-    tabs.forEach(t => t.classList.remove('active'));
-    document.getElementById(id)?.classList.add('active');
-    navButtons.forEach(b => b.classList.remove('active'));
-    document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
-    if (tabContent) tabContent.scrollTop = 0;
-  }
+  // centralized tab switcher (закрывает модалки, снимает блокировку скролла)
+  window.goToTab = function(id) {
+    document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
 
-  navButtons.forEach(btn => { btn.addEventListener('click', () => goToTab(btn.dataset.tab)); });
+    // set active class on bottom nav buttons (query fresh)
+    document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
+    const navBtn = document.querySelector(`.bottom-nav button[data-tab="${id}"]`);
+    if (navBtn) navBtn.classList.add('active');
+
+    // close all modals and allow body scroll
+    document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
+    document.body.style.overflow = '';
+
+    if (tabContent) tabContent.scrollTop = 0;
+  };
+
+  // bottom nav: use delegation to avoid stale NodeList issues
+  bottomNav.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-tab]');
+    if (!btn) return;
+    const tab = btn.dataset.tab;
+    if (!tab) return;
+    goToTab(tab);
+  });
 
   // cart functions
   function saveCart() {
@@ -516,6 +546,7 @@ document.addEventListener("DOMContentLoaded", function () {
     totalText.textContent = total.toFixed(2) + ' ₽';
     checkoutBtn.style.display = 'block';
 
+    // attach controls (re-query from current DOM)
     cartBody.querySelectorAll('.inc').forEach(btn => {
       btn.onclick = () => {
         const name = btn.dataset.name;
@@ -532,16 +563,6 @@ document.addEventListener("DOMContentLoaded", function () {
         cart[name].count--;
         total = parseFloat((total - cart[name].price).toFixed(2));
         if (cart[name].count <= 0) delete cart[name];
-        saveCart();
-        updateCartDisplay();
-      };
-    });
-    cartBody.querySelectorAll('.remove').forEach(btn => {
-      btn.onclick = () => {
-        const name = btn.dataset.name;
-        if (!cart[name]) return;
-        total = parseFloat((total - cart[name].price * cart[name].count).toFixed(2));
-        delete cart[name];
         saveCart();
         updateCartDisplay();
       };
@@ -587,13 +608,13 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('modal-title').textContent = card.dataset.name;
         document.getElementById('modal-desc').textContent = card.dataset.desc;
         document.getElementById('modal-price').textContent = parseFloat(card.dataset.price).toFixed(2) + ' ₽';
-        modal.classList.remove('hidden');
+        document.getElementById('modal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
         currentProduct = card.dataset.name;
         loadReviews();
         document.getElementById('modal-add').onclick = () => {
           addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
-          modal.classList.add('hidden');
+          document.getElementById('modal').classList.add('hidden');
           document.body.style.overflow = '';
         };
       });
@@ -601,8 +622,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   attachProductButtons();
 
-  document.getElementById('detailsCloseBtn')?.addEventListener('click', () => { modal.classList.add('hidden'); document.body.style.overflow = ''; });
-  window.addEventListener('click', (e) => { if (e.target.classList.contains('modal')) { e.target.classList.add('hidden'); document.body.style.overflow = ''; } });
+  document.getElementById('detailsCloseBtn')?.addEventListener('click', () => { document.getElementById('modal').classList.add('hidden'); document.body.style.overflow = ''; });
+  window.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('modal')) { e.target.classList.add('hidden'); document.body.style.overflow = ''; } });
 
   // Reviews storage
   function loadReviews() {
@@ -655,9 +676,7 @@ document.addEventListener("DOMContentLoaded", function () {
       container.appendChild(div);
     });
 
-    // default order total is cart total
     document.getElementById('order-total').textContent = total.toFixed(2) + ' ₽';
-    // Promo removed, reset promo vars just in case
     checkoutAppliedPromo = null;
     checkoutDiscountAmount = 0;
     document.getElementById('orderModal').classList.remove('hidden');
@@ -666,14 +685,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById('orderCloseBtn')?.addEventListener('click', () => { document.getElementById('orderModal').classList.add('hidden'); document.body.style.overflow = ''; });
 
-  // Promo logic removed by request — no handlers below for promo
-
   // Payment
   document.getElementById('paidButton')?.addEventListener('click', () => {
-    // Ensure username set
     const usernameSaved = localStorage.getItem('tg_username');
     if (!usernameSaved && (!telegramUser || !telegramUser.username)) {
-      // ask user to fill username
       document.getElementById('usernameModal').classList.remove('hidden');
       return;
     }
@@ -781,7 +796,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // balance management (simple demo)
   function getBalance() { return parseFloat(localStorage.getItem('balance_v1') || '0'); }
-  function setBalance(v) { localStorage.setItem('balance_v1', parseFloat(v).toFixed(2)); balanceAmountEl.textContent = parseFloat(v).toFixed(2) + ' ₽'; }
+  function setBalance(v) { localStorage.setItem('balance_v1', parseFloat(v).toFixed(2)); document.getElementById('balance-amount').textContent = parseFloat(v).toFixed(2) + ' ₽'; }
   setBalance(getBalance());
 
   document.getElementById('topup-btn')?.addEventListener('click', () => {
@@ -810,7 +825,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const div = document.createElement('div');
       div.style.padding = '8px 0';
       div.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
-      div.innerHTML = `<div style="font-weight:700">${o.id}</div><div style="color:var(--muted)">Сумма: ${o.total} ₽ — ${new Date(o.date).toLocaleString()}</div>`;
+      const dateStr = new Date(o.date).toLocaleString();
+      div.innerHTML = `<div style="font-weight:700">${o.id}</div><div style="color:var(--muted)">Сумма: ${o.total} ₽ — ${dateStr}</div>`;
       el.appendChild(div);
     });
   }
@@ -838,15 +854,27 @@ document.addEventListener("DOMContentLoaded", function () {
   // initial attach for dynamic items and re-attach after DOM changes if needed
   attachProductButtons();
 
-  // make sure profile shows telegram user if available
+  // make sure profile shows telegram user if available (but don't overwrite manually saved)
   if (telegramUser && !localStorage.getItem('tg_username')) {
-    // set a sensible display but don't overwrite if user saved manually
     if (telegramUser.username) localStorage.setItem('tg_username', '@' + telegramUser.username);
     applyProfileInfo();
   }
 
+  // populate username input with existing value when opening modal
+  document.querySelectorAll('#usernameModal, #avatarModal').forEach(m => {
+    m.addEventListener('click', (e) => {
+      if (m.classList.contains('hidden')) return;
+      const tgInput = document.getElementById('tgUsernameInput');
+      if (tgInput) {
+        const cur = localStorage.getItem('tg_username') || (telegramUser && telegramUser.username ? ('@' + telegramUser.username) : '');
+        tgInput.value = cur;
+      }
+    });
+  });
+
   // small protection: keep header heights updated when fonts/images load
   window.addEventListener('load', updateHeights);
+
 });
 </script>
 
