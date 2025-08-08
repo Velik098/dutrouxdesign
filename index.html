@@ -48,6 +48,14 @@
       background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
       height: var(--header-h);
       min-height: 56px;
+
+      /* CENTER the logo and title */
+      justify-content: center;
+    }
+    .header-inner{
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
     .header img{height:44px;border-radius:12px;box-shadow:0 6px 30px rgba(0,0,0,0.6)}
     .header h1{
@@ -57,6 +65,7 @@
       letter-spacing:0.2px;
       color:var(--neon-cyan);
       font-weight:700;
+      text-align:center;
     }
 
     .divider-horizontal{
@@ -182,13 +191,38 @@
 
     #toast{ border-radius:12px; padding:12px 18px; font-weight:600; letter-spacing:0.2px; box-shadow: 0 12px 30px rgba(0,0,0,0.6); position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:99999; opacity:0; transition:opacity .25s ease; background: rgba(0,0,0,0.85); color: #fff; }
     #toast.show{ opacity:1; pointer-events:auto; }
+
+    /* disabled confirm topup */
+    .btn.disabled, .btn[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Centered small title for topup modal */
+    .topup-title {
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      color: #fff;
+      margin: 0 0 6px 0;
+    }
+    .topup-subtitle {
+      font-size: 13px;
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 <body>
 
   <div class="header" id="appHeader">
-    <img src="logo.png" alt="Logo" id="logoImg" style="height: 40px; border-radius: 12px;">
-    <h1 id="appTitle">Dutroux Sell 🔥</h1>
+    <div class="header-inner">
+      <img src="logo.png" alt="Logo" id="logoImg" style="height: 40px; border-radius: 12px;">
+      <h1 id="appTitle">Dutroux Sell 🔥</h1>
+    </div>
   </div>
   <div class="divider-horizontal"></div>
 
@@ -333,12 +367,7 @@
         <div id="promo-message" class="promo-error"></div>
       </div>
 
-      <hr style="margin: 18px 0; border-color: #333;">
-
-      <div class="orders-card styled-card">
-        <div style="font-weight: bold; margin-bottom: 10px;">Прошлые заказы:</div>
-        <div id="order-history">Загрузить заказы...</div>
-      </div>
+      <!-- removed hr and past orders block as requested -->
     </div>
 
     <div id="avatarModal" class="modal hidden">
@@ -389,14 +418,14 @@
       </div>
     </div>
 
-    <!-- ===== Topup modal (added) ===== -->
+    <!-- ===== Topup modal (modified appearance and disabled confirm) ===== -->
     <div id="topupModal" class="modal hidden" aria-hidden="true">
       <div class="modal-content" role="dialog" aria-labelledby="topupTitle" style="max-width:420px;">
         <span class="close-btn" id="topupCloseBtn">&times;</span>
-        <h2 id="topupTitle" style="text-align:center; margin-bottom:8px;">Пополнение баланса</h2>
+        <h3 class="topup-title" id="topupTitle">Пополнение баланса</h3>
+        <div class="topup-subtitle">ПОПОЛНИТЬ БАЛАНС В РУБЛЯХ</div>
 
         <div style="margin-top:8px;">
-          <div style="font-weight:700; margin-bottom:6px;">   ПОПОЛНИТЬ БАЛАНС В РУБЛЯХ</div>
           <input id="topupAmount" class="topup-amount-input" type="number" min="1" placeholder="Введите сумму для пополнения" />
           <div class="topup-presets" style="margin-top:10px;">
             <button class="preset-btn" data-amount="100">+100 ₽</button>
@@ -405,7 +434,8 @@
           </div>
 
           <div class="topup-footer">
-            <button id="confirmTopup" class="btn btn-primary" style="width:100%;">Пополнить</button>
+            <!-- This button is intentionally disabled — clicking it will do nothing (per your request). -->
+            <button id="confirmTopup" class="btn btn-primary disabled" style="width:100%;" disabled>Пополнить</button>
           </div>
         </div>
       </div>
@@ -865,7 +895,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.style.overflow = '';
   });
 
-  // clicking outside modal to close (already handled globally)
   // preset buttons
   presetButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -877,44 +906,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // confirm topup
-  confirmTopupBtn?.addEventListener('click', () => {
-    const val = (topupAmountInput.value || '').toString().trim();
-    if (!val) { showToast('Введите сумму для пополнения'); return; }
-    const n = parseFloat(val);
-    if (isNaN(n) || n <= 0) { showToast('Неверная сумма'); return; }
+  // IMPORTANT: confirmTopupBtn intentionally disabled — clicking does nothing.
+  if (confirmTopupBtn) {
+    // ensure it's disabled visually and functionally
+    confirmTopupBtn.disabled = true;
+    confirmTopupBtn.classList.add('disabled');
+    confirmTopupBtn.onclick = (e) => {
+      // explicit no-op to prevent accidental form submission
+      e.preventDefault();
+      return false;
+    };
+  }
 
-    // perform topup (demo: just add to local balance; in real — call payment)
-    const newBal = parseFloat((getBalance() + n).toFixed(2));
-    setBalance(newBal);
-    showToast('Баланс пополнен на ' + n.toFixed(2) + ' ₽');
-    topupModal.classList.add('hidden');
-    topupModal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  });
-
-  // order history save
+  // order history save (kept for internal use but the UI block was removed)
   function saveOrderHistory(order) {
     const arr = JSON.parse(localStorage.getItem('order_history_v1') || '[]');
     arr.unshift(order);
     localStorage.setItem('order_history_v1', JSON.stringify(arr));
-    renderOrderHistory();
+    // no render here — UI for history removed per your request
   }
-  function renderOrderHistory() {
-    const el = document.getElementById('order-history');
-    const arr = JSON.parse(localStorage.getItem('order_history_v1') || '[]');
-    if (!arr.length) { el.textContent = 'История пуста.'; return; }
-    el.innerHTML = '';
-    arr.forEach(o => {
-      const div = document.createElement('div');
-      div.style.padding = '8px 0';
-      div.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
-      const dateStr = new Date(o.date).toLocaleString();
-      div.innerHTML = `<div style="font-weight:700">${o.id}</div><div style="color:var(--muted)">Сумма: ${o.total} ₽ — ${dateStr}</div>`;
-      el.appendChild(div);
-    });
-  }
-  renderOrderHistory();
 
   // small UX: block page scroll when modal open handled above; prevent page native scroll bleed
   tabContent.addEventListener('wheel', function (e) {
