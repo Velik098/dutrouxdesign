@@ -4,6 +4,7 @@ tg.expand();
 const sendOrder = async (productName, productPrice) => {
   const user = tg.initDataUnsafe.user;
 
+  // Шаг 1: отправка данных о заказе на сервер
   const res = await fetch("/order", {
     method: "POST",
     headers: {
@@ -21,14 +22,36 @@ const sendOrder = async (productName, productPrice) => {
   });
 
   const data = await res.json();
+
   if (data.success) {
-    alert("✅ Заказ оформлен! Владелец уведомлен.");
-    document.getElementById("access").classList.remove("hidden");
+    alert("✅ Заказ оформлен! Переход к оплате...");
+
+    // Шаг 2: запрос на создание оплаты
+    const payRes = await fetch('/api/pay', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: productPrice, // цена товара в рублях
+        username: user.username,
+        userId: user.id,
+        items: [productName] // можешь заменить на массив объектов, если нужно
+      })
+    });
+
+    const payData = await payRes.json();
+
+    if (payData.paymentUrl) {
+      window.location.href = payData.paymentUrl; // редирект на оплату
+    } else {
+      alert("❌ Ошибка при создании платежа.");
+    }
+
   } else {
     alert("❌ Ошибка при оформлении заказа.");
   }
 };
 
+// Обработчики кнопок
 document.getElementById("previewBtn").addEventListener("click", () => {
   sendOrder("Превью", 200);
 });
