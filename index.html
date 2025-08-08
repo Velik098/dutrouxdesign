@@ -130,6 +130,14 @@
     .modal.hidden{ display:none; }
     .modal-content{ width:100%; max-width:520px; background: linear-gradient(180deg, rgba(9,14,24,0.96), rgba(6,8,12,0.96)); border-radius:16px; padding:18px; color:#eaf6ff; box-shadow: 0 20px 60px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); position:relative; }
     .modal-content h2, .modal-content h3{ margin-top:0; color:var(--neon-yellow); }
+
+    /* Make modal-content scrollable when content is tall (DETAILS requirement) */
+    .modal-content {
+      max-height: calc(100vh - 120px);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .modal-content button{ cursor:pointer; }
     .modal-content input, .modal-content textarea{ background:#0f1724; border:1px solid rgba(255,255,255,0.04); color:#eaf6ff; padding:10px; border-radius:10px; width:100%; outline:none; }
 
@@ -214,6 +222,12 @@
       color: var(--muted);
       margin-bottom: 8px;
     }
+
+    /* Order modal specifics to visually match other modals */
+    .order-items { display:flex; flex-direction:column; gap:10px; max-height:320px; overflow:auto; padding-right:6px; }
+    .order-total-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px; }
+    .order-title { text-align:center; font-weight:800; color: #fff; font-size:18px; }
+    .order-pay-btn { margin-top:16px; width:100%; padding:12px 14px; border-radius:12px; font-weight:900; }
   </style>
 </head>
 <body>
@@ -297,18 +311,24 @@
       </div>
     </div>
 
-    <div id="modal" class="modal hidden">
-      <div class="modal-content">
+    <!-- DETAILS modal (scrollable content, same visual style) -->
+    <div id="modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-content" role="dialog" aria-labelledby="detailsTitle">
         <span class="close-btn" id="detailsCloseBtn">&times;</span>
+
         <img id="modal-img" src="" alt="" style="max-width: 100%; border-radius: 8px; margin-bottom: 10px;">
         <h2 id="modal-title"></h2>
-        <p id="modal-desc"></p>
-        <div class="modal-price" id="modal-price"></div>
-        <button id="modal-add" class="btn btn-primary" style="margin-top:12px">Добавить в корзину</button>
+        <p id="modal-desc" style="color:var(--muted)"></p>
+        <div class="modal-price" id="modal-price" style="font-weight:800; color:var(--neon-yellow); margin-top:6px;"></div>
+
+        <div style="margin-top:12px; display:flex; gap:8px;">
+          <button id="modal-add" class="btn btn-primary" style="flex:1">Добавить в корзину</button>
+          <button class="btn btn-outline" onclick="document.getElementById('modal').classList.add('hidden'); document.body.style.overflow='';">Закрыть</button>
+        </div>
 
         <div id="reviews-container" style="margin-top:12px">
-          <h3>Отзывы:</h3>
-          <div id="modal-reviews"></div>
+          <h3 style="margin-bottom:6px;">Отзывы:</h3>
+          <div id="modal-reviews" style="color:var(--muted);"></div>
           <textarea id="reviewInput" rows="3" placeholder="Напишите ваш отзыв..." style="margin-top:8px"></textarea>
           <button id="submitReview" class="btn btn-accent" style="margin-top:8px">Оставить отзыв</button>
         </div>
@@ -399,22 +419,21 @@
       </div>
     </div>
 
-    <div id="orderModal" class="modal hidden">
-      <div class="modal-content" style="background: #142537;">
+    <!-- ORDER modal — now uses same visual modal-content and is scrollable -->
+    <div id="orderModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-content" role="dialog" aria-labelledby="orderTitle">
         <span class="close-btn" id="orderCloseBtn">&times;</span>
-        <h2 style="color: #ffffff; font-size: 22px; margin-bottom: 15px; text-align: center;">
-          К ОПЛАТЕ: <span id="order-total">... ₽</span>
-        </h2>
 
-        <div id="order-items-container" style="margin: 15px 0;"></div>
+        <h2 id="orderTitle" style="text-align:center; color:var(--neon-yellow); margin-bottom:10px;">К ОПЛАТЕ: <span id="order-total">... ₽</span></h2>
 
-        <div style="width: 100%; height: auto;">
-          <hr style="border: none; border-top: 2px dashed #ffffff; margin: 20px 0;">
+        <div id="order-items-container" class="order-items" aria-live="polite" style="margin-bottom:8px;"></div>
+
+        <div class="order-total-row">
+          <div style="color:var(--muted); font-weight:700;">Итого:</div>
+          <div id="order-total-bottom" style="font-weight:900; color:var(--neon-yellow);"></div>
         </div>
 
-        <button id="paidButton" class="btn btn-primary" style="margin-top: 25px; width:100%; font-size:16px;">
-          Оплатить
-        </button>
+        <button id="paidButton" class="btn btn-primary order-pay-btn" style="background: linear-gradient(90deg,var(--neon-yellow),var(--neon-red));">Оплатить</button>
       </div>
     </div>
 
@@ -754,6 +773,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById('order-total').textContent = total.toFixed(2) + ' ₽';
+    const bottomTotal = document.getElementById('order-total-bottom');
+    if (bottomTotal) bottomTotal.textContent = total.toFixed(2) + ' ₽';
+
     checkoutAppliedPromo = null;
     checkoutDiscountAmount = 0;
     document.getElementById('orderModal').classList.remove('hidden');
