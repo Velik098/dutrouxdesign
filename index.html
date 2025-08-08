@@ -4,188 +4,355 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dutroux Sell🔥</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .modal {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .modal.hidden {
-      display: none;
-    }
-    .modal-content {
-      background: #1e1e1e;
-      color: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-      max-width: 400px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      font-family: 'Arial', sans-serif;
-      position: relative;
-    }
-    .modal-content h2, .modal-content h3 {
-      margin-top: 0;
-      color: #ffcc00;
-    }
-    .modal-content button {
-      background-color: #ffcc00;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .modal-content button:hover {
-      background-color: #e6b800;
-    }
-    .modal-content input, .modal-content textarea {
-      background: #2e2e2e;
-      border: 1px solid #555;
-      color: #fff;
-      padding: 8px;
-      border-radius: 6px;
-      width: 100%;
-    }
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 24px;
-      cursor: pointer;
-      color: #fff;
-    }
-    #orderModal ul {
-      padding-left: 20px;
-    }
-    .review-item {
-      margin-top: 10px;
-      border-top: 1px dashed #444;
-      padding-top: 8px;
-      font-size: 14px;
-    }
-    .review-author {
-      color: #ffcc00;
-      font-weight: bold;
-    }
-    #reviews-container h3 {
-      text-align: center;
-      margin-top: 25px;
-      margin-bottom: 10px;
-    }
-    #submitReview {
-      margin-top: 10px;
-      display: block;
-      width: 100%;
-      text-align: center;
-    }
-    #reviewInput {
-      margin-top: 10px;
-      resize: vertical;
-    }
-    #splash-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(135deg, #0a0f2c, #1d3b72); /* Синие тона */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 99999;
-  transition: opacity 0.6s ease;
-}
-
-#splash-screen.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.splash-content {
-  text-align: center;
-  animation: splash-fade 1.5s ease-in-out infinite;
-}
-
-.splash-logo {
-  width: 90px;
-  height: 90px;
-  margin-bottom: 20px;
-  border-radius: 16px;
-  box-shadow: 0 0 25px rgba(0, 174, 255, 0.5);
-  animation: pulse 1.2s ease-in-out infinite;
-}
-
-.splash-title {
-  color: #cce8ff;
-  font-family: 'Arial', sans-serif;
-  font-size: 22px;
-  font-weight: 500;
-  text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.9; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes splash-fade {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
-}
-
-.splash-content {
-  text-align: center;
-  animation: splash-fade 1.5s ease-in-out infinite;
-}
-
-.splash-logo {
-  width: 90px;
-  height: 90px;
-  margin-bottom: 20px;
-  border-radius: 16px;
-  box-shadow: 0 0 25px rgba(0, 174, 255, 0.5);
-  animation: pulse 1.2s ease-in-out infinite;
-}
-
-.splash-title {
-  color: #cce8ff;
-  font-family: 'Arial', sans-serif;
-  font-size: 22px;
-  font-weight: 500;
-  text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.9; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes splash-fade {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
-}
-  </style>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- === НОВЫЙ СТИЛЬ: неоново-тёмная тема, сохранены все id/class === -->
+  <style>
+    :root{
+      --bg-1: #07060a;
+      --bg-2: #0f1724;
+      --card: rgba(255,255,255,0.03);
+      --glass: rgba(255,255,255,0.03);
+      --neon-yellow: #ffd800;
+      --neon-red: #ff385c;
+      --neon-cyan: #00d4ff;
+      --muted: rgba(255,255,255,0.6);
+      --accent-glow: 0 8px 30px rgba(0, 212, 255, 0.08), 0 2px 8px rgba(186,255,0,0.06);
+      --radius: 14px;
+    }
+
+    /* Reset & base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100%;
+      font-family:"Poppins", "Montserrat", system-ui, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(0,212,255,0.04), transparent 8%),
+        radial-gradient(1000px 500px at 90% 90%, rgba(186,255,0,0.02), transparent 8%),
+        linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#eaf6ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding-bottom:78px; /* space for bottom nav */
+      overflow-x:hidden;
+    }
+
+    /* Header */
+    .header{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:16px;
+      position:relative;
+      z-index:30;
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    }
+    .header img{height:44px;border-radius:12px;box-shadow:0 6px 30px rgba(0,0,0,0.6)}
+    .header h1{
+      font-size:18px;
+      margin:0;
+      line-height:1;
+      letter-spacing:0.2px;
+      color:var(--neon-cyan);
+      text-shadow: 0 2px 18px rgba(0,212,255,0.08);
+      font-weight:700;
+    }
+
+    .divider-horizontal{
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+      margin: 6px 0 8px 0;
+    }
+
+    /* Marquee / categories */
+    .category-marquee{
+      overflow:hidden;
+      padding:8px 0;
+      border-top:1px solid rgba(255,255,255,0.02);
+      border-bottom:1px solid rgba(255,255,255,0.02);
+      background: linear-gradient(90deg, rgba(0,0,0,0.15), transparent);
+      position:relative;
+      z-index:20;
+    }
+    .category-track{
+      display:flex;
+      gap:12px;
+      animation: marquee 14s linear infinite;
+      padding-left:6px;
+    }
+    @keyframes marquee{
+      0%{transform:translateX(0)}
+      100%{transform:translateX(-50%)}
+    }
+    .category{
+      border:1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      color: #fff;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:13px;
+      cursor:pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .category:hover{
+      transform: translateY(-3px);
+      border-color: rgba(186,255,0,0.9);
+      box-shadow: 0 10px 30px rgba(186,255,0,0.06);
+    }
+
+    /* Catalog wrapper */
+    .tab-content{padding:12px 14px 120px 14px}
+
+    .catalog-header{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .catalog-header .bar{
+      width:4px;height:28px;border-radius:4px;
+      background: linear-gradient(180deg,var(--neon-cyan),var(--neon-yellow));
+      box-shadow: 0 6px 20px rgba(0,212,255,0.06);
+    }
+    .catalog-header .title{
+      font-weight:700;
+      font-size:18px;
+      color:#fff;
+    }
+
+    /* Products grid (preserve product-card class) */
+    #catalog .product-card{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px;
+      margin-bottom:12px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border: 1px solid rgba(255,255,255,0.03);
+      transition: transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s ease, border-color .22s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    /* Neon outline using pseudo-element */
+    #catalog .product-card::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      border-radius:12px;
+      box-shadow: 0 0 40px rgba(0,212,255,0.03), inset 0 0 18px rgba(186,255,0,0.02);
+      transition: opacity .22s ease;
+      opacity:0;
+    }
+    #catalog .product-card img{
+      width:84px;
+      height:84px;
+      object-fit:cover;
+      border-radius:10px;
+      flex-shrink:0;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15));
+    }
+    #catalog .product-card:hover{ transform: translateY(-6px); border-color: rgba(186,255,0,0.7);}
+    #catalog .product-card:hover::after{ opacity:1; }
+
+    .product-info{
+      flex:1;
+      min-width:0;
+    }
+    .product-title{
+      font-weight:700;
+      font-size:16px;
+      color:#fff;
+      margin-bottom:6px;
+      text-overflow:ellipsis;
+      overflow:hidden;
+      white-space:nowrap;
+    }
+    .product-description{
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:8px;
+      display:block;
+    }
+    .product-price{
+      color:var(--neon-yellow);
+      font-weight:700;
+      font-size:14px;
+      display:inline-block;
+    }
+    .product-info .details-btn, .product-info .add-btn{
+      margin-top:10px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:10px;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .14s ease, box-shadow .14s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+    .product-info .details-btn{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      color:#cfefff;
+      border:1px solid rgba(255,255,255,0.04);
+      margin-right:8px;
+    }
+    .product-info .details-btn:hover{ transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.6); }
+
+    .product-info .add-btn{
+      background: linear-gradient(90deg, var(--neon-yellow), var(--neon-red));
+      color:#000;
+      border: none;
+      padding:8px 12px;
+    }
+    .product-info .add-btn:hover{
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 10px 30px rgba(255,56,92,0.12), 0 6px 18px rgba(186,255,0,0.06);
+    }
+
+    /* Modal tweaks (preserve .modal .modal-content) */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.7));
+      z-index:1200;
+      padding:20px;
+    }
+    .modal.hidden{ display:none; }
+    .modal-content{
+      width:100%;
+      max-width:440px;
+      background: linear-gradient(180deg, rgba(9,14,24,0.9), rgba(6,8,12,0.95));
+      border-radius:16px;
+      padding:18px;
+      color:#eaf6ff;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      border:1px solid rgba(255,255,255,0.03);
+      position:relative;
+    }
+    .modal-content h2, .modal-content h3{
+      margin-top:0;
+      color:var(--neon-yellow);
+      text-shadow: 0 6px 28px rgba(186,255,0,0.03);
+    }
+    .modal-content button{
+      background: linear-gradient(90deg, var(--neon-yellow), var(--neon-red));
+      color:#000;
+      border:none;
+      padding:10px 16px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:700;
+      box-shadow: 0 12px 30px rgba(255,56,92,0.08);
+    }
+    .modal-content input, .modal-content textarea{
+      background:#0f1724;
+      border:1px solid rgba(255,255,255,0.04);
+      color:#eaf6ff;
+      padding:10px;
+      border-radius:10px;
+      width:100%;
+      outline:none;
+    }
+    .close-btn{
+      position:absolute;
+      top:12px;
+      right:14px;
+      font-size:22px;
+      color:#fff;
+      opacity:0.95;
+      cursor:pointer;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      width:36px;height:36px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .review-item{
+      margin-top:10px;border-top:1px dashed rgba(255,255,255,0.04);
+      padding-top:8px;font-size:14px;color:var(--muted);
+    }
+    .review-author{ color:var(--neon-yellow); font-weight:700; }
+
+    /* Profile & cards */
+    .styled-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:12px;border-radius:12px;margin-bottom:12px;
+    }
+
+    /* Bottom navigation (preserve .bottom-nav) */
+    .bottom-nav{
+      position:fixed;
+      left:12px;right:12px;bottom:12px;
+      height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:space-around;
+      gap:8px;
+      background: linear-gradient(180deg, rgba(8,10,20,0.9), rgba(6,8,12,0.85));
+      border-radius:18px;
+      padding:6px 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+      border:1px solid rgba(255,255,255,0.03);
+      z-index:40;
+    }
+    .bottom-nav button{
+      background:transparent;border:0;color:var(--neon-yellow);font-weight:700;
+      display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;cursor:pointer;
+    }
+    .bottom-nav button img{width:20px;height:20px;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6));}
+    .bottom-nav button.active, .bottom-nav button:hover{ color:var(--neon-red); transform:translateY(-2px); }
+
+    /* Cart area */
+    .cart-header{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 4px 12px 4px;}
+    .cart-body{ padding:8px 4px; color:var(--muted); min-height:80px; }
+
+    /* small utilities */
+    .back-btn{ background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:6px 10px;border-radius:10px;cursor:pointer }
+    .checkout-btn{ display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--neon-yellow),var(--neon-red));border:none;color:#000;font-weight:800;cursor:pointer }
+
+    /* Responsive tweaks */
+    @media (min-width:720px){
+      .modal-content{ max-width:520px; }
+      #catalog .product-card{ align-items:center; gap:14px; padding:14px }
+      #catalog .product-card img{ width:110px;height:110px;border-radius:12px }
+    }
+    @media (max-width:420px){
+      .header h1{ font-size:16px }
+      .category{ padding:7px 10px; font-size:12px }
+      .bottom-nav{ height:72px; left:8px; right:8px; bottom:8px; border-radius:14px;}
+    }
+
+    /* subtle entrance */
+    .tab-pane{ opacity:1; transform:none; transition: none; }
+    /* toast (uses existing JS element #toast) */
+    #toast{ border-radius:12px; padding:12px 18px; font-weight:600; letter-spacing:0.2px; box-shadow: 0 12px 30px rgba(0,0,0,0.6); }
+    #toast.show{ opacity:1 !important; transform: translateY(0) !important; }
+
+  </style>
+  <!-- === Конец стиля === -->
 </head>
 <body>
 
   <div class="header" style="display: flex; align-items: center; gap: 12px; padding: 10px 16px;">
-  <img src="logo.png" alt="Logo" style="height: 40px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
-  <h1 style="font-size: 24px; color: #fff; font-family: 'Arial', sans-serif;">Dutroux Sell 🔥</h1>
-</div>
+    <img src="logo.png" alt="Logo" style="height: 40px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
+    <h1 style="font-size: 24px; color: #fff; font-family: 'Arial', sans-serif;">Dutroux Sell 🔥</h1>
+  </div>
   <div class="divider-horizontal"></div>
 
   <!-- Бегущие категории -->
@@ -203,7 +370,6 @@
   <!-- Основной контент -->
 
   <div class="tab-content">
-    <!-- КАТАЛОГ -->
     <!-- КАТАЛОГ -->
 <div id="catalog" class="tab-pane active">
   <div class="catalog-header">
@@ -291,39 +457,36 @@
     </div>
 
     <!-- ПРОФИЛЬ -->
-<!-- Профиль -->
 <div id="profile" class="tab-pane">
   <div class="profile-card styled-card">
     <div class="profile-header" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-  <div style="flex-shrink: 0;">
-    <div style="position: relative; width: 70px; height: 70px; cursor: pointer;" onclick="document.getElementById('avatarModal').classList.remove('hidden')">
-  <img id="user-avatar" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="Avatar"
-       style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 10px rgba(0,0,0,0.4);" />
-  <img src="https://cdn-icons-png.flaticon.com/512/84/84380.png" alt="Edit" title="Изменить аватар"
-       style="position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; padding: 2px;" />
-  </div>
-  </div>
-  <div style="text-align: right;">
-   <div style="text-align: right;">
-    <div id="profile-username" style="font-size: 18px; font-weight: bold;">Имя пользователя</div>
-    <div id="profile-tg" style="font-size: 14px; color: #ccc;">@username</div>
-    <div id="profile-id" style="font-size: 14px; color: #888;">ID: 123456</div>
-  </div>
-  </div>
-</div>
+      <div style="flex-shrink: 0;">
+        <div style="position: relative; width: 70px; height: 70px; cursor: pointer;" onclick="document.getElementById('avatarModal').classList.remove('hidden')">
+          <img id="user-avatar" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="Avatar"
+               style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 10px rgba(0,0,0,0.4);" />
+          <img src="https://cdn-icons-png.flaticon.com/512/84/84380.png" alt="Edit" title="Изменить аватар"
+               style="position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; padding: 2px;" />
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div id="profile-username" style="font-size: 18px; font-weight: bold;">Имя пользователя</div>
+        <div id="profile-tg" style="font-size: 14px; color: #ccc;">@username</div>
+        <div id="profile-id" style="font-size: 14px; color: #888;">ID: 123456</div>
+      </div>
+    </div>
   </div>
 
   <!-- БАЛАНС -->
   <div class="balance-card styled-card">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div>Ваш баланс:</div>
-    <div id="balance-amount" style="font-weight: bold; font-size: 18px;">0 ₽</div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>Ваш баланс:</div>
+      <div id="balance-amount" style="font-weight: bold; font-size: 18px;">0 ₽</div>
+    </div>
+    <button id="topup-btn" style="margin-top: 10px;">Пополнить баланс</button>
   </div>
-  <button id="topup-btn" style="margin-top: 10px;">Пополнить баланс</button>
-</div>
 
   <hr style="margin: 18px 0; border-color: #333;">
-  
+
   <!-- ПРОМОКОД -->
   <div class="promocode-card styled-card">
     <div>Промокод:</div>
@@ -331,32 +494,32 @@
     <button id="promo-btn">Активировать</button>
     <div id="promo-message" class="promo-error"></div>
   </div>
-  
+
   <hr style="margin: 18px 0; border-color: #333;">
 
-<!-- ПРОШЛЫЕ ЗАКАЗЫ -->
-<div class="orders-card styled-card">
-  <div style="font-weight: bold; margin-bottom: 10px;">Прошлые заказы:</div>
-  <div id="order-history">Загрузить заказы...</div>
-</div>
+  <!-- ПРОШЛЫЕ ЗАКАЗЫ -->
+  <div class="orders-card styled-card">
+    <div style="font-weight: bold; margin-bottom: 10px;">Прошлые заказы:</div>
+    <div id="order-history">Загрузить заказы...</div>
+  </div>
 </div>
 
   <div id="avatarModal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close-btn" onclick="document.getElementById('avatarModal').classList.add('hidden')">&times;</span>
-    <h3>Выберите аватар</h3>
-    <p>Можно загрузить свой (1000x1000 PNG/JPG):</p>
-    <input type="file" id="avatarUpload" accept="image/png, image/jpeg" />
-    <hr style="margin: 15px 0;">
-    <p>Или выбрать из готовых:</p>
-    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-      <img src="blue.png" class="preset-avatar" alt="blue" width="60">
-      <img src="green.png" class="preset-avatar" alt="green" width="60">
-      <img src="purple.png" class="preset-avatar" alt="purple" width="60">
-      <img src="red.png" class="preset-avatar" alt="red" width="60">
+    <div class="modal-content">
+      <span class="close-btn" onclick="document.getElementById('avatarModal').classList.add('hidden')">&times;</span>
+      <h3>Выберите аватар</h3>
+      <p>Можно загрузить свой (1000x1000 PNG/JPG):</p>
+      <input type="file" id="avatarUpload" accept="image/png, image/jpeg" />
+      <hr style="margin: 15px 0;">
+      <p>Или выбрать из готовых:</p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <img src="blue.png" class="preset-avatar" alt="blue" width="60">
+        <img src="green.png" class="preset-avatar" alt="green" width="60">
+        <img src="purple.png" class="preset-avatar" alt="purple" width="60">
+        <img src="red.png" class="preset-avatar" alt="red" width="60">
+      </div>
     </div>
   </div>
-</div>
 
   <!-- НАВИГАЦИЯ -->
   <div class="bottom-nav">
@@ -364,8 +527,8 @@
     <button data-tab="cart"><img src="cart.svg" alt=""><span>Корзина</span></button>
     <button data-tab="profile"><img src="profile.svg" alt=""><span>Профиль</span></button>
   </div>
-    
-    <!-- МОДАЛКА ВВОДА USERNAME -->
+
+  <!-- МОДАЛКА ВВОДА USERNAME -->
   <div id="usernameModal" class="modal hidden">
     <div class="modal-content">
       <span id="usernameCloseBtn" class="close-btn">&times;</span>
@@ -378,39 +541,39 @@
     </div>
   </div>
 
-<div id="orderModal" class="modal hidden">
-  <div class="modal-content" style="background: #142537;">
-    <span class="close-btn" id="orderCloseBtn">&times;</span>
-    <h2 style="color: #ffffff; font-size: 22px; margin-bottom: 15px; text-align: center;">
-  К ОПЛАТЕ: <span id="order-total">... ₽</span>
-</h2>
+  <div id="orderModal" class="modal hidden">
+    <div class="modal-content" style="background: #142537;">
+      <span class="close-btn" id="orderCloseBtn">&times;</span>
+      <h2 style="color: #ffffff; font-size: 22px; margin-bottom: 15px; text-align: center;">
+        К ОПЛАТЕ: <span id="order-total">... ₽</span>
+      </h2>
 
-    <div id="order-items-container" style="margin: 15px 0;">
-      <!-- Сюда динамически вставим содержимое корзины -->
+      <div id="order-items-container" style="margin: 15px 0;">
+        <!-- Сюда динамически вставим содержимое корзины -->
+      </div>
+
+      <div style="width: 100%; height: auto;">
+        <hr style="border: none; border-top: 2px dashed #ffffff; margin: 20px 0;">
+      </div>
+
+      <div class="promocode-card styled-card" style="margin-top: 20px;">
+        <div style="color: #fff;">Промокод:</div>
+        <input type="text" id="checkout-promo-input" placeholder="Введите промокод"
+               style="width: 95%; box-sizing: border-box; margin-top: 8px; background-color: #0f1e33; color: white; border: 1px solid #33445a; border-radius: 6px; padding: 8px;">
+        <button id="checkout-promo-btn"
+                style="margin-top: 10px; background-color: #0077ff; color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-weight: bold; cursor: pointer;">
+          Активировать
+        </button>
+        <div id="checkout-promo-message" class="promo-error"></div>
+      </div>
+
+      <button id="paidButton" style="margin-top: 25px; background: #007bff; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; width: 100%; font-weight: bold; font-size: 16px; cursor: pointer;">
+        Оплатить
+      </button>
     </div>
-
-<div style="width: 100%; height: auto;">
-  <hr style="border: none; border-top: 2px dashed #ffffff; margin: 20px 0;">
-</div>
-
-<div class="promocode-card styled-card" style="margin-top: 20px;">
-  <div style="color: #fff;">Промокод:</div>
-  <input type="text" id="checkout-promo-input" placeholder="Введите промокод"
-         style="width: 95%; box-sizing: border-box; margin-top: 8px; background-color: #0f1e33; color: white; border: 1px solid #33445a; border-radius: 6px; padding: 8px;">
-  <button id="checkout-promo-btn"
-          style="margin-top: 10px; background-color: #0077ff; color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-weight: bold; cursor: pointer;">
-    Активировать
-  </button>
-  <div id="checkout-promo-message" class="promo-error"></div>
-</div>
-
-    <!-- Кнопка оплаты -->
-    <button id="paidButton" style="margin-top: 25px; background: #007bff; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; width: 100%; font-weight: bold; font-size: 16px; cursor: pointer;">
-      Оплатить
-    </button>
   </div>
-</div>
 
+<!-- ====== JS (твоя логика оставлена как есть) ====== -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   Telegram.WebApp.ready();
@@ -437,7 +600,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   document.body.appendChild(toast);
 
-  // Добавление стилей
+  // Добавление стилей для табов/анимации, оставлено
   const style = document.createElement('style');
   style.innerHTML = `
     .tab-pane {
@@ -564,13 +727,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const original = btn.textContent;
       btn.textContent = '✅ Добавлено!';
       btn.classList.add('pulse-animate');
-      btn.style.backgroundColor = '#4CAF50';
+      btn.style.background = 'linear-gradient(90deg, #8cff00, #ff5a75)';
 
       setTimeout(() => {
         btn.textContent = original;
         btn.disabled = false;
         btn.classList.remove('pulse-animate');
-        btn.style.backgroundColor = '';
+        btn.style.background = '';
       }, 1500);
     });
   });
@@ -714,10 +877,5 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-
-
-
-     </body>
-   </html>
-  </div>
-</div>
+</body>
+</html>
