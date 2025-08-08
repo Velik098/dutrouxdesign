@@ -599,7 +599,50 @@ function goToTab(id) {
   document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
   document.getElementById('paidButton').onclick = () => {
-  // Действие отключено. Оплата будет добавлена позже вручную.
+  document.getElementById('paidButton').onclick = async () => {
+  if (!telegramUser || !telegramUser.username) {
+    alert("Пожалуйста, войдите через Telegram, чтобы оплатить.");
+    return;
+  }
+
+  const itemsList = Object.values(cart).map(item => `${item.name} x${item.count}`);
+  const totalAmount = total.toFixed(2);
+
+  const payload = {
+    amount: parseInt(total * 100), // копейки
+    username: telegramUser.username,
+    userId: telegramUser.id,
+    items: itemsList
+  };
+
+  try {
+    const res = await fetch('/api/pay', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    if (data.paymentUrl) {
+      // Сохраняем заказ в локалку
+      const history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+      history.push({
+        id: data.orderId,
+        date: new Date().toLocaleString(),
+        total: totalAmount,
+        items: itemsList
+      });
+      localStorage.setItem('orderHistory', JSON.stringify(history));
+      window.location.href = data.paymentUrl;
+    } else {
+      alert('Ошибка при получении ссылки на оплату.');
+    }
+  } catch (e) {
+    console.error(e);
+    alert('Ошибка при попытке оплаты.');
+  }
+};
+
 };
 
   document.getElementById('usernameCloseBtn').onclick = () => document.getElementById('usernameModal').classList.add('hidden');
