@@ -598,7 +598,7 @@ function goToTab(id) {
 
   document.getElementById('orderCloseBtn').onclick = () => document.getElementById('orderModal').classList.add('hidden');
 
-  document.getElementById('paidButton').onclick = () => {
+  document.getElementById('paidButton').onclick = async () => {
   if (!telegramUser || !telegramUser.username) {
     alert("Пожалуйста, войдите через Telegram, чтобы оплатить.");
     return;
