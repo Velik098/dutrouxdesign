@@ -848,15 +848,6 @@ async function startPayment(orderId, amount, description) {
   }
 }
 
-document.getElementById('paidButton').onclick = () => {
-  const orderId = 'ORDER-' + Date.now();
-  const description = Object.values(cart).map(i => `${i.name} x${i.count}`).join(', ');
-  const totalText = document.getElementById('order-total').textContent;
-  const totalAmount = parseFloat(totalText.replace('₽', '').replace(',', '.'));
-
-  startPayment(orderId, totalAmount, description);
-};
-
 </script>
 
 
