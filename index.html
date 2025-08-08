@@ -13,31 +13,31 @@
     :root{
       --bg-1: #07060a;
       --bg-2: #0f1724;
-      --card: rgba(255,255,255,0.03);
-      --glass: rgba(255,255,255,0.03);
       --neon-yellow: #ffd800;
       --neon-red: #ff385c;
       --neon-cyan: #00d4ff;
       --muted: rgba(255,255,255,0.6);
-      --accent-glow: 0 8px 30px rgba(0, 212, 255, 0.08), 0 2px 8px rgba(186,255,0,0.06);
-      --radius: 14px;
     }
 
     /* Reset & base */
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; padding: 0; }
     body{
       margin:0;
-      min-height:100%;
+      min-height:100vh;
       font-family:"Poppins", "Montserrat", system-ui, Arial, sans-serif;
+      /* background fixed + cover to avoid "stitching" */
       background:
-        radial-gradient(1200px 600px at 10% 10%, rgba(0,212,255,0.04), transparent 8%),
-        radial-gradient(1000px 500px at 90% 90%, rgba(186,255,0,0.02), transparent 8%),
+        radial-gradient(900px 500px at 10% 10%, rgba(0,212,255,0.035), transparent 8%),
+        radial-gradient(900px 500px at 90% 90%, rgba(186,255,0,0.02), transparent 8%),
         linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
       color:#eaf6ff;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      padding-bottom:78px; /* space for bottom nav */
+      padding-bottom:92px; /* space for bottom nav */
       overflow-x:hidden;
     }
 
@@ -46,7 +46,7 @@
       display:flex;
       align-items:center;
       gap:12px;
-      padding:16px;
+      padding:14px 16px;
       position:relative;
       z-index:30;
       backdrop-filter: blur(6px);
@@ -76,7 +76,7 @@
       padding:8px 0;
       border-top:1px solid rgba(255,255,255,0.02);
       border-bottom:1px solid rgba(255,255,255,0.02);
-      background: linear-gradient(90deg, rgba(0,0,0,0.15), transparent);
+      background: linear-gradient(90deg, rgba(0,0,0,0.12), transparent);
       position:relative;
       z-index:20;
     }
@@ -109,7 +109,7 @@
     }
 
     /* Catalog wrapper */
-    .tab-content{padding:12px 14px 120px 14px}
+    .tab-content{padding:12px 14px 140px 14px}
 
     .catalog-header{
       display:flex;
@@ -129,7 +129,8 @@
     }
 
     /* Products grid (preserve product-card class) */
-    #catalog .product-card{
+    /* Global product-card style (applies both in catalog and cart) */
+    .product-card{
       display:flex;
       gap:10px;
       align-items:flex-start;
@@ -141,8 +142,21 @@
       transition: transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s ease, border-color .22s ease;
       position:relative;
       overflow:hidden;
+      align-items:center;
     }
-    /* Neon outline using pseudo-element */
+
+    /* Ensure images inside any .product-card have limited size (fix huge cards) */
+    .product-card img{
+      width:84px;
+      height:84px;
+      object-fit:cover;
+      border-radius:10px;
+      flex-shrink:0;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15));
+    }
+
+    /* Catalog-specific fine-tuning */
     #catalog .product-card::after{
       content:'';
       position:absolute;
@@ -153,21 +167,14 @@
       transition: opacity .22s ease;
       opacity:0;
     }
-    #catalog .product-card img{
-      width:84px;
-      height:84px;
-      object-fit:cover;
-      border-radius:10px;
-      flex-shrink:0;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15));
-    }
     #catalog .product-card:hover{ transform: translateY(-6px); border-color: rgba(186,255,0,0.7);}
     #catalog .product-card:hover::after{ opacity:1; }
 
     .product-info{
       flex:1;
       min-width:0;
+      display:flex;
+      flex-direction:column;
     }
     .product-title{
       font-weight:700;
@@ -236,8 +243,8 @@
     .modal.hidden{ display:none; }
     .modal-content{
       width:100%;
-      max-width:440px;
-      background: linear-gradient(180deg, rgba(9,14,24,0.9), rgba(6,8,12,0.95));
+      max-width:520px;
+      background: linear-gradient(180deg, rgba(9,14,24,0.96), rgba(6,8,12,0.96));
       border-radius:16px;
       padding:18px;
       color:#eaf6ff;
@@ -304,7 +311,7 @@
       align-items:center;
       justify-content:space-around;
       gap:8px;
-      background: linear-gradient(180deg, rgba(8,10,20,0.9), rgba(6,8,12,0.85));
+      background: linear-gradient(180deg, rgba(8,10,20,0.95), rgba(6,8,12,0.95));
       border-radius:18px;
       padding:6px 12px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.7);
@@ -318,9 +325,9 @@
     .bottom-nav button img{width:20px;height:20px;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6));}
     .bottom-nav button.active, .bottom-nav button:hover{ color:var(--neon-red); transform:translateY(-2px); }
 
-    /* Cart area */
+    /* Cart area tweaks */
     .cart-header{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 4px 12px 4px;}
-    .cart-body{ padding:8px 4px; color:var(--muted); min-height:80px; }
+    .cart-body{ padding:8px 4px; color:var(--muted); min-height:80px; display:flex; flex-direction:column; gap:8px; }
 
     /* small utilities */
     .back-btn{ background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:6px 10px;border-radius:10px;cursor:pointer }
@@ -328,9 +335,9 @@
 
     /* Responsive tweaks */
     @media (min-width:720px){
-      .modal-content{ max-width:520px; }
-      #catalog .product-card{ align-items:center; gap:14px; padding:14px }
-      #catalog .product-card img{ width:110px;height:110px;border-radius:12px }
+      .modal-content{ max-width:640px; }
+      .product-card{ gap:14px; padding:14px }
+      .product-card img{ width:110px; height:110px; border-radius:12px; }
     }
     @media (max-width:420px){
       .header h1{ font-size:16px }
@@ -338,11 +345,15 @@
       .bottom-nav{ height:72px; left:8px; right:8px; bottom:8px; border-radius:14px;}
     }
 
-    /* subtle entrance */
-    .tab-pane{ opacity:1; transform:none; transition: none; }
+    /* Tab animation: keep original JS behavior but avoid hiding content forever.
+       JS will toggle .tab-pane / .tab-pane.active. Leave default invisible,
+       but ensure when active it's visible. */
+    .tab-pane { opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .28s ease, transform .28s ease; }
+    .tab-pane.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
     /* toast (uses existing JS element #toast) */
-    #toast{ border-radius:12px; padding:12px 18px; font-weight:600; letter-spacing:0.2px; box-shadow: 0 12px 30px rgba(0,0,0,0.6); }
-    #toast.show{ opacity:1 !important; transform: translateY(0) !important; }
+    #toast{ border-radius:12px; padding:12px 18px; font-weight:600; letter-spacing:0.2px; box-shadow: 0 12px 30px rgba(0,0,0,0.6); position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:9999; opacity:0; transition:opacity .25s ease; }
+    #toast.show{ opacity:1; }
 
   </style>
   <!-- === Конец стиля === -->
@@ -384,8 +395,10 @@
       <div class="product-title">Превью</div>
       <div class="product-description">Красочное превью для Вашего канала</div>
       <div class="product-price">200 ₽</div>
-      <button class="details-btn">Подробнее</button>
-      <button class="add-btn">Добавить в корзину</button>
+      <div style="margin-top:auto">
+        <button class="details-btn">Подробнее</button>
+        <button class="add-btn">Добавить в корзину</button>
+      </div>
     </div>
   </div>
 
@@ -395,8 +408,10 @@
       <div class="product-title">Приватка</div>
       <div class="product-description">Доступ к приватному контенту для подписчиков</div>
       <div class="product-price">300 ₽</div>
-      <button class="details-btn">Подробнее</button>
-      <button class="add-btn">Добавить в корзину</button>
+      <div style="margin-top:auto">
+        <button class="details-btn">Подробнее</button>
+        <button class="add-btn">Добавить в корзину</button>
+      </div>
     </div>
   </div>
 
@@ -407,8 +422,10 @@
       <div class="product-title">Оформление для YT канала</div>
       <div class="product-description">Профессиональное оформление для вашего YouTube-канала (баннер, аватар, стиль)</div>
       <div class="product-price">500 ₽</div>
-      <button class="details-btn">Подробнее</button>
-      <button class="add-btn">Добавить в корзину</button>
+      <div style="margin-top:auto">
+        <button class="details-btn">Подробнее</button>
+        <button class="add-btn">Добавить в корзину</button>
+      </div>
     </div>
   </div>
 
@@ -419,8 +436,10 @@
       <div class="product-title">3 Превью по цене 2</div>
       <div class="product-description">Получите три уникальных превью по цене двух — выгодное предложение!</div>
       <div class="product-price">400 ₽</div>
-      <button class="details-btn">Подробнее</button>
-      <button class="add-btn">Добавить в корзину</button>
+      <div style="margin-top:auto">
+        <button class="details-btn">Подробнее</button>
+        <button class="add-btn">Добавить в корзину</button>
+      </div>
     </div>
   </div>
 
@@ -453,7 +472,9 @@
         <div class="total" id="total">0,00 ₽</div>
       </div>
       <div class="cart-body" id="cart-body">Здесь будут ваши товары.</div>
-      <button class="checkout-btn" id="checkout-btn" style="display: none;">Перейти к оформлению</button>
+      <div style="padding:10px;">
+        <button class="checkout-btn" id="checkout-btn" style="display: none;">Перейти к оформлению</button>
+      </div>
     </div>
 
     <!-- ПРОФИЛЬ -->
@@ -679,7 +700,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="product-info">
           <div class="product-title">${item.name}</div>
           <div class="product-price">${item.price} ₽ × ${item.count}</div>
-          <div class="cart-controls">
+          <div class="cart-controls" style="margin-top:8px">
             <button class="dec" data-name="${item.name}">−</button>
             <button class="inc" data-name="${item.name}">+</button>
           </div>
