@@ -272,7 +272,7 @@
           </div>
           <div style="text-align: right;">
             <div id="profile-username" style="font-size: 18px; font-weight: bold;">Имя пользователя</div>
-            <div id="profile-tg" style="font-size: 14px; color: #ccc;">@username</div>
+            <div id="profile-tg" style="font-size: 14px; color: #ccc;"></div>
             <div id="profile-id" style="font-size: 14px; color: #888;">ID: —</div>
           </div>
         </div>
@@ -285,21 +285,13 @@
         </div>
         <div style="display:flex; gap:8px; margin-top:10px;">
           <button id="topup-btn" class="btn btn-accent">Пополнить баланс</button>
-          <button id="withdraw-btn" class="btn btn-outline">Вывести</button>
+          <!-- Кнопка "Вывести" удалена по запросу -->
         </div>
       </div>
 
       <hr style="margin: 18px 0; border-color: #333;">
 
-      <div class="promocode-card styled-card">
-        <div>Промокод:</div>
-        <input type="text" id="promo-input" placeholder="Введите промокод" style="width: 95%; box-sizing: border-box; margin-top: 8px;">
-        <div style="display:flex; gap:8px; margin-top:8px;">
-          <button id="promo-btn" class="btn btn-primary">Активировать</button>
-          <button id="promo-clear-btn" class="btn btn-outline">Очистить</button>
-        </div>
-        <div id="promo-message" class="promo-error"></div>
-      </div>
+      <!-- Промокоды удалены по запросу (UI и логика) -->
 
       <hr style="margin: 18px 0; border-color: #333;">
 
@@ -351,16 +343,7 @@
           <hr style="border: none; border-top: 2px dashed #ffffff; margin: 20px 0;">
         </div>
 
-        <div class="promocode-card styled-card" style="margin-top: 20px;">
-          <div style="color: #fff;">Промокод:</div>
-          <input type="text" id="checkout-promo-input" placeholder="Введите промокод"
-                 style="width: 95%; box-sizing: border-box; margin-top: 8px; background-color: #0f1e33; color: white; border: 1px solid #33445a; border-radius: 6px; padding: 8px;">
-          <div style="display:flex; gap:8px; margin-top:8px;">
-            <button id="checkout-promo-btn" class="btn btn-accent">Активировать</button>
-            <button id="checkout-promo-clear" class="btn btn-outline">Сброс</button>
-          </div>
-          <div id="checkout-promo-message" class="promo-error"></div>
-        </div>
+        <!-- Промокоды в чекауте удалены по запросу -->
 
         <button id="paidButton" class="btn btn-primary" style="margin-top: 25px; width:100%; font-size:16px;">
           Оплатить
@@ -402,9 +385,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let cart = JSON.parse(localStorage.getItem('cart_v1') || '{}');
   let total = parseFloat(localStorage.getItem('cart_total_v1') || '0');
   let currentProduct = '';
-  let activePromo = localStorage.getItem('activePromo') || null; // profile promo code (string) or null
-  let checkoutAppliedPromo = null; // promo applied at checkout
-  let checkoutDiscountAmount = 0;
+  // removed promo related variables and logic per request
+  let checkoutAppliedPromo = null; // left but not used
+  let checkoutDiscountAmount = 0;  // left but not used
   let telegramUser = null;
   try { telegramUser = (Telegram.WebApp && Telegram.WebApp.initDataUnsafe) ? Telegram.WebApp.initDataUnsafe.user : null; } catch(e){ telegramUser = null; }
 
@@ -420,28 +403,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const profileIdEl = document.getElementById('profile-id');
     const userAvatarEl = document.getElementById('user-avatar');
 
-    // username precedence: local saved -> telegram username -> telegram first+last -> placeholder
-    let displayName = 'Имя пользователя';
-    let tgHandle = '@username';
-    let idText = 'ID: —';
-
-    if (storedUsername) {
-      displayName = storedUsername.startsWith('@') ? storedUsername : '@' + storedUsername;
-      tgHandle = displayName;
-    } else if (telegramUser) {
-      if (telegramUser.username) {
-        displayName = '@' + telegramUser.username;
-        tgHandle = displayName;
-      } else {
-        const full = (telegramUser.first_name || '') + (telegramUser.last_name ? (' ' + telegramUser.last_name) : '');
-        displayName = full || 'Telegram user';
-        tgHandle = telegramUser.username ? ('@' + telegramUser.username) : displayName;
-      }
-      idText = 'ID: ' + (telegramUser.id || '—');
+    // topmost should be first_name + last_name from Telegram if available; otherwise fallback to storedUsername (without @) or placeholder
+    let fullName = '';
+    if (telegramUser) {
+      const fn = telegramUser.first_name || '';
+      const ln = telegramUser.last_name || '';
+      fullName = (fn + (ln ? (' ' + ln) : '')).trim();
     }
+    if (!fullName && storedUsername) {
+      fullName = storedUsername.startsWith('@') ? storedUsername.substring(1) : storedUsername;
+    }
+    if (!fullName) fullName = 'Имя пользователя';
 
-    profileNameEl.textContent = displayName;
-    profileTgEl.textContent = tgHandle;
+    // profile handle (tg) should be @username if exists (from telegramUser.username or storedUsername)
+    let handle = '';
+    if (telegramUser && telegramUser.username) handle = '@' + telegramUser.username;
+    else if (storedUsername) handle = storedUsername.startsWith('@') ? storedUsername : ('@' + storedUsername);
+
+    const idText = 'ID: ' + (telegramUser && telegramUser.id ? telegramUser.id : '—');
+
+    profileNameEl.textContent = fullName;
+    profileTgEl.textContent = handle;
     profileIdEl.textContent = idText;
 
     if (storedAvatar) {
@@ -493,6 +475,8 @@ document.addEventListener("DOMContentLoaded", function () {
     saveCart();
     updateCartDisplay();
     showToast(`🛒 «${name}» добавлен в корзину`);
+    // Перейти сразу в корзину после добавления (по запросу)
+    goToTab('cart');
   }
 
   function updateCartDisplay() {
@@ -667,66 +651,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // default order total is cart total
     document.getElementById('order-total').textContent = total.toFixed(2) + ' ₽';
+    // Promo removed, reset promo vars just in case
     checkoutAppliedPromo = null;
     checkoutDiscountAmount = 0;
-    document.getElementById('checkout-promo-input').value = '';
-    document.getElementById('checkout-promo-message').textContent = '';
     document.getElementById('orderModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   });
 
   document.getElementById('orderCloseBtn')?.addEventListener('click', () => { document.getElementById('orderModal').classList.add('hidden'); document.body.style.overflow = ''; });
 
-  // Promo logic: profile promo applies to future orders? We'll store a profile promo as "activated" (example: 'dutroux' gives 10% discount at checkout)
-  document.getElementById('promo-btn')?.addEventListener('click', () => {
-    const promo = (document.getElementById('promo-input').value || '').trim().toLowerCase();
-    const message = document.getElementById('promo-message');
-    if (!promo) { message.style.color = 'red'; message.textContent = 'Введите промокод'; return; }
-    if (promo === 'dutroux') {
-      activePromo = promo;
-      localStorage.setItem('activePromo', promo);
-      message.style.color = 'lime';
-      message.textContent = '🎉 Промокод активирован: 10% на оформление';
-      showToast('Промокод сохранён в профиле');
-    } else {
-      message.style.color = 'red';
-      message.textContent = '❌ Промокод не найден';
-    }
-  });
-  document.getElementById('promo-clear-btn')?.addEventListener('click', () => {
-    activePromo = null;
-    localStorage.removeItem('activePromo');
-    document.getElementById('promo-message').textContent = '';
-    showToast('Промокод удалён');
-  });
-
-  // checkout promo apply
-  document.getElementById('checkout-promo-btn')?.addEventListener('click', () => {
-    const input = document.getElementById('checkout-promo-input');
-    const promo = (input.value || '').trim().toLowerCase();
-    const message = document.getElementById('checkout-promo-message');
-    if (!promo) { message.style.color = 'red'; message.textContent = 'Введите промокод'; return; }
-
-    if (promo === 'dutroux') {
-      checkoutAppliedPromo = promo;
-      checkoutDiscountAmount = parseFloat((total * 0.10).toFixed(2));
-      const newTotal = parseFloat((total - checkoutDiscountAmount).toFixed(2));
-      message.style.color = 'lime';
-      message.textContent = `🎉 Промокод применён! Скидка: ${checkoutDiscountAmount.toFixed(2)} ₽`;
-      document.getElementById('order-total').textContent = newTotal.toFixed(2) + ' ₽';
-    } else {
-      message.style.color = 'red';
-      message.textContent = '❌ Промокод не найден';
-    }
-  });
-
-  document.getElementById('checkout-promo-clear')?.addEventListener('click', () => {
-    checkoutAppliedPromo = null;
-    checkoutDiscountAmount = 0;
-    document.getElementById('checkout-promo-input').value = '';
-    document.getElementById('checkout-promo-message').textContent = '';
-    document.getElementById('order-total').textContent = total.toFixed(2) + ' ₽';
-  });
+  // Promo logic removed by request — no handlers below for promo
 
   // Payment
   document.getElementById('paidButton')?.addEventListener('click', () => {
@@ -738,12 +672,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const amountToPay = (() => {
-      if (checkoutAppliedPromo) {
-        return Math.round((total - checkoutDiscountAmount) * 100);
-      }
-      return Math.round(total * 100);
-    })();
+    const amountToPay = Math.round(total * 100);
 
     if (!Telegram.WebApp || !Telegram.WebApp.openInvoice) {
       showToast("⚠️ Telegram WebApp API не поддерживается");
@@ -771,11 +700,8 @@ document.addEventListener("DOMContentLoaded", function () {
       is_flexible: false
     };
 
-    // openInvoice expects payload and success callback in some wrappers;
-    // We'll use Telegram.WebApp.openInvoice as in your original code and try-catch.
     try {
       Telegram.WebApp.openInvoice(payload, function (status) {
-        // Many WebApp wrappers callbacks differ; we handle generically
         if (status === 'paid' || status === 'success') {
           showToast("✅ Оплата успешна!");
           // save order history
