@@ -17,8 +17,8 @@
       --neon-red: #ff385c;
       --neon-cyan: #00d4ff;
       --muted: rgba(255,255,255,0.6);
-      --header-h: 72px; /* используем в вычислениях */
-      --bottom-nav-h: 92px; /* запас для мобиль/паддинга */
+      --header-h: 72px; /* будет обновляться скриптом */
+      --bottom-nav-h: 92px; /* запас для мобиль/паддинга, тоже корректируется */
     }
 
     /* Reset & base */
@@ -38,10 +38,8 @@
       color:#eaf6ff;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      padding:0; /* убрал bottom padding — теперь учитываем пространство через .tab-content */
+      padding:0;
       overflow-x:hidden;
-      /* allow smooth scrolling for in-page scroll containers */
-      -webkit-font-smoothing:antialiased;
     }
 
     /* Header */
@@ -56,6 +54,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.03);
       background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
       height: var(--header-h);
+      min-height: 56px;
     }
     .header img{height:44px;border-radius:12px;box-shadow:0 6px 30px rgba(0,0,0,0.6)}
     .header h1{
@@ -113,18 +112,15 @@
     }
 
     /* Catalog wrapper */
-    /* ВАЖНО: делаем area вкладок фиксированной высоты с внутренним скроллом,
-       чтобы управление прокруткой было локальным и мы могли сбрасывать scrollTop при переключении табов.
-       calc высоты учитывает header + нижнюю навигацию. */
+    /* фиксированная зона с локальной прокруткой (динамически вычисляется через JS) */
     .tab-content{
       padding:12px 14px;
-      /* высота: весь экран минус header и место под bottom-nav */
-      height: calc(100vh - var(--header-h) - 24px); /* 24px запас для divider/маркировки */
+      height: calc(100vh - var(--header-h) - 24px);
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch; /* плавный скролл на iOS */
-      overscroll-behavior-y: contain; /* запрет "перелистывания" страницы при достижении конца */
-      padding-bottom: calc(var(--bottom-nav-h) + 20px); /* чтобы контент не прятался под bottom-nav */
-      /* выше — ключевое: локальная прокрутка, запрет внешнего "бесконечного" листания */
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+      padding-bottom: calc(var(--bottom-nav-h) + 20px);
+      display: block;
     }
 
     .catalog-header{
@@ -278,7 +274,7 @@
       border-radius:10px;
       cursor:pointer;
       font-weight:700;
-      box-shadow: 0 12px 30px rgba(255,56,92,0.08);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
     }
     .modal-content input, .modal-content textarea{
       background:#0f1724;
@@ -330,7 +326,6 @@
       box-shadow: 0 10px 40px rgba(0,0,0,0.7);
       border:1px solid rgba(255,255,255,0.03);
       z-index:40;
-      /* делаем запас для высоты при вычислении таб-контента */
     }
     .bottom-nav button{
       background:transparent;border:0;color:var(--neon-yellow);font-weight:700;
@@ -341,7 +336,7 @@
 
     /* Cart area tweaks */
     .cart-header{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 4px 12px 4px;}
-    .cart-body{ padding:8px 4px; color:var(--muted); min-height:80px; display:flex; flex-direction:column; gap:8px; }
+    .cart-body{ padding:8px 4px; color:var(--muted); min-height:80px; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
 
     /* small utilities */
     .back-btn{ background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:6px 10px;border-radius:10px;cursor:pointer }
@@ -358,12 +353,12 @@
       .header h1{ font-size:16px }
       .category{ padding:7px 10px; font-size:12px }
       .bottom-nav{ height:72px; left:8px; right:8px; bottom:8px; border-radius:14px;}
-      :root { --bottom-nav-h: 110px; } /* больше запас для мобильных кнопок */
+      :root { --bottom-nav-h: 110px; }
     }
 
-    /* Tab animation */
-    .tab-pane { opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .28s ease, transform .28s ease; }
-    .tab-pane.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    /* Tab animation (упростил отображение, чтобы содержимое не смещалось вниз) */
+    .tab-pane { opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .18s ease, transform .18s ease; display: none; }
+    .tab-pane.active { opacity: 1; transform: translateY(0); pointer-events: auto; display: block; }
 
     /* toast (uses existing JS element #toast) */
     #toast{ border-radius:12px; padding:12px 18px; font-weight:600; letter-spacing:0.2px; box-shadow: 0 12px 30px rgba(0,0,0,0.6); position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:9999; opacity:0; transition:opacity .25s ease; }
@@ -374,7 +369,7 @@
 </head>
 <body>
 
-  <div class="header" style="display: flex; align-items: center; gap: 12px; padding: 10px 16px;">
+  <div class="header" id="appHeader" style="display: flex; align-items: center; gap: 12px; padding: 10px 16px;">
     <img src="logo.png" alt="Logo" style="height: 40px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
     <h1 style="font-size: 24px; color: #fff; font-family: 'Arial', sans-serif;">Dutroux Sell 🔥</h1>
   </div>
@@ -393,7 +388,7 @@
   </div>
 
   <!-- Основной контент -->
-  <div class="tab-content">
+  <div class="tab-content" id="tabContent">
     <!-- КАТАЛОГ -->
 <div id="catalog" class="tab-pane active">
   <div class="catalog-header">
@@ -556,7 +551,7 @@
   </div>
 
   <!-- НАВИГАЦИЯ -->
-  <div class="bottom-nav">
+  <div class="bottom-nav" id="bottomNav">
     <button class="active" data-tab="catalog"><img src="home.svg" alt=""><span>Каталог</span></button>
     <button data-tab="cart"><img src="cart.svg" alt=""><span>Корзина</span></button>
     <button data-tab="profile"><img src="profile.svg" alt=""><span>Профиль</span></button>
@@ -607,7 +602,7 @@
     </div>
   </div>
 
-<!-- ====== JS (твоя логика оставлена как есть) ====== -->
+<!-- ====== JS (твоя логика оставлена как есть + исправления прокрутки/высот) ====== -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   Telegram.WebApp?.ready?.();
@@ -634,7 +629,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   document.body.appendChild(toast);
 
-  // Добавление стилей для табов/анимации, оставлено
+  // Добавление стилей для табов/анимации
   const style = document.createElement('style');
   style.innerHTML = `
     .tab-pane {
@@ -642,11 +637,13 @@ document.addEventListener("DOMContentLoaded", function () {
       transform: translateY(10px);
       pointer-events: none;
       transition: opacity 0.3s ease, transform 0.3s ease;
+      display:none;
     }
     .tab-pane.active {
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
+      display:block;
     }
     @keyframes pulse {
       0% { transform: scale(1); }
@@ -671,9 +668,27 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalReviews = document.getElementById('modal-reviews');
   const reviewInput = document.getElementById('reviewInput');
   const submitReview = document.getElementById('submitReview');
-  const tabContent = document.querySelector('.tab-content');
+  const tabContent = document.getElementById('tabContent');
+  const headerEl = document.getElementById('appHeader');
+  const bottomNav = document.getElementById('bottomNav');
 
   let cart = {}, total = 0, currentProduct = '', telegramUser = (Telegram.WebApp && Telegram.WebApp.initDataUnsafe) ? Telegram.WebApp.initDataUnsafe.user : null;
+
+  // --- Динамическое обновление CSS-переменных для корректной высоты контента ---
+  function updateHeights() {
+    // вычисляем реальные высоты header и bottom nav, ставим в :root
+    const headerH = Math.max(56, Math.round(headerEl.getBoundingClientRect().height));
+    const bottomH = Math.max(64, Math.round(bottomNav.getBoundingClientRect().height + 12)); // запас
+    document.documentElement.style.setProperty('--header-h', headerH + 'px');
+    document.documentElement.style.setProperty('--bottom-nav-h', bottomH + 'px');
+
+    // пересчёт зоны прокрутки
+    tabContent.style.height = `calc(100vh - ${headerH}px - 24px)`;
+  }
+
+  // запустить сразу и при ресайзе
+  updateHeights();
+  window.addEventListener('resize', updateHeights);
 
   function goToTab(id) {
     tabs.forEach(t => t.classList.remove('active'));
@@ -681,8 +696,7 @@ document.addEventListener("DOMContentLoaded", function () {
     navButtons.forEach(b => b.classList.remove('active'));
     document.querySelector(`[data-tab="${id}"]`)?.classList.add('active');
 
-    // Сбрасываем локальную прокрутку .tab-content при переключении вкладок,
-    // чтобы профиль/корзина не оказывались "внизу".
+    // Сбрасываем локальную прокрутку .tab-content при переключении вкладок
     if (tabContent) {
       tabContent.scrollTop = 0;
     }
@@ -692,7 +706,7 @@ document.addEventListener("DOMContentLoaded", function () {
     toast.textContent = message;
     toast.classList.add('show');
     clearTimeout(toast._timeout);
-    toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+    toast._timeout = setTimeout(() => toast.classList.remove('show'), 2000);
   }
 
   function addToCart(name, price, image) {
@@ -756,6 +770,7 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.addEventListener('click', () => goToTab(btn.dataset.tab));
   });
 
+  // Добавление в корзину с анимацией кнопки
   document.querySelectorAll('.add-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.product-card');
@@ -797,7 +812,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById('modal-add').onclick = () => {
         addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
         modal.classList.add('hidden');
-        document.body.style.overflow = ''; // восстановить
+        document.body.style.overflow = '';
       };
     });
   });
@@ -934,8 +949,60 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updateCartDisplay();
 
-  // Доп: при свайпах/перелистывании не позволит странице прокрутиться дальше конца .tab-content
-  // уже реализовано через CSS overscroll-behavior: contain;
+  // =======================
+  // ПРЕДОТВРАЩЕНИЕ "ПРОЛИСТЫВАНИЯ ВНИЗ" (локально) для tabContent
+  // =======================
+  // Wheel (desktop) — блокируем прокрутку дальше, когда уже на самом верху/низу
+  tabContent.addEventListener('wheel', function (e) {
+    // allow default if no vertical delta
+    if (!e.deltaY) return;
+    const st = tabContent.scrollTop;
+    const max = tabContent.scrollHeight - tabContent.clientHeight;
+
+    if ((st <= 0 && e.deltaY < 0) || (st >= max && e.deltaY > 0)) {
+      // на краю — не позволяем "просачиваться" дальше
+      e.preventDefault();
+    }
+    // иначе — обычная прокрутка внутри tabContent
+  }, { passive: false });
+
+  // Touch (mobile) — track touchstart/touchmove
+  let touchStartY = 0;
+  tabContent.addEventListener('touchstart', function (e) {
+    if (e.touches && e.touches.length) touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  tabContent.addEventListener('touchmove', function (e) {
+    if (!e.touches || !e.touches.length) return;
+    const currentY = e.touches[0].clientY;
+    const dy = touchStartY - currentY;
+    const st = tabContent.scrollTop;
+    const max = tabContent.scrollHeight - tabContent.clientHeight;
+
+    if ((st <= 0 && dy < 0) || (st >= max && dy > 0)) {
+      e.preventDefault(); // блокируем перетяжку за границу
+    }
+  }, { passive: false });
+
+  // ---------------------------------------------------------
+  // Дополнительно: запрет колесика на самой странице, если tabContent может прокручиваться
+  // (предотвращает едва заметную прокрутку родителя при достижении края)
+  window.addEventListener('wheel', function (e) {
+    const activeTab = document.querySelector('.tab-pane.active');
+    if (!activeTab) return;
+    // если tabContent может скроллиться (есть прокрутка) — не дать родительской странице прокрутиться
+    if (tabContent.scrollHeight > tabContent.clientHeight) {
+      // остановим всплытие, если мы внутри tabContent
+      const inside = e.composedPath().includes(tabContent);
+      if (inside) e.stopPropagation();
+    }
+  }, { passive: true });
+
+  // =======================
+  // Конец обработки прокрутки
+  // =======================
+
+  // Доп: при свайпах/перелистывании не позволит странице прокрутиться дальше конца .tab-content (уже реализовано)
 });
 </script>
 
