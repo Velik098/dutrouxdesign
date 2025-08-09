@@ -127,7 +127,7 @@
 
     .modal{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.7)); z-index:3000; padding:20px; }
     .modal.hidden{ display:none; }
-    .modal-content{ width:100%; max-width:520px; background: linear-gradient(180deg, rgba(9,14,24,0.96), rgba(6,8,12,0.96)); border-radius:16px; padding:18px; color:#eaf6ff; box-shadow: 0 20px 60px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); position:relative; -webkit-overflow-scrolling: touch; }
+    .modal-content{ width:100%; max-width:520px; background: linear-gradient(180deg, rgba(9,14,24,0.96), rgba(6,8,12,0.96)); border-radius:16px; padding:18px; color:#eaf6ff; box-shadow: 0 20px 60px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); position:relative; }
     .modal-content h2, .modal-content h3{ margin-top:0; color:var(--neon-yellow); }
 
     .modal-content {
@@ -143,7 +143,7 @@
 
     .styled-card{ background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border:1px solid rgba(255,255,255,0.03); padding:12px;border-radius:12px;margin-bottom:12px; color: #eaf6ff; }
 
-    .bottom-nav{ position:fixed; left:12px;right:12px;bottom:12px; height:64px; display:flex; align-items:center; justify-content:space-around; gap:8px; background: linear-gradient(180deg, rgba(8,10,20,0.95), rgba(6,8,12,0.95)); border-radius:18px; padding:6px 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); z-index:99999; }
+    .bottom-nav{ position:fixed; left:12px;right:12px;bottom:12px; height:64px; display:flex; align-items:center; justify-content:space-around; gap:8px; background: linear-gradient(180deg, rgba(8,10,20,0.95), rgba(6,8,12,0.95)); border-radius:18px; padding:6px 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); z-index:9999; }
     .bottom-nav button{ background:transparent;border:0;color:var(--neon-yellow);font-weight:700; display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;cursor:pointer; padding:6px 8px; border-radius:10px; }
     .bottom-nav button.active, .bottom-nav button:hover{ color:var(--neon-red); transform:translateY(-2px); background: rgba(255,255,255,0.01); }
 
@@ -219,20 +219,11 @@
       margin-bottom: 8px;
     }
 
-    .order-items { display:flex; flex-direction:column; gap:10px; max-height:320px; overflow:auto; padding-right:6px; -webkit-overflow-scrolling: touch; }
+    .order-items { display:flex; flex-direction:column; gap:10px; max-height:320px; overflow:auto; padding-right:6px; }
     .order-total-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px; }
-    .order-title { text-align:center; font-weight:800; color: #fff; font-size:18px; } /* changed from neon-yellow to white */
+    .order-title { text-align:center; font-weight:800; color: #fff; font-size:18px; }
     .order-pay-btn { margin-top:16px; width:100%; padding:12px 14px; border-radius:12px; font-weight:900; color:#fff; }
     .small-muted { color:var(--muted); font-size:13px; }
-
-    /* checkout visual tweaks: make subtotal/total visually distinct but not too yellow */
-    #order-subtotal { color: var(--neon-cyan); font-weight:900; }
-    #order-discount { color: #9ff0b0; font-weight:900; }
-    #order-final { color: var(--neon-yellow); font-weight:900; }
-
-    /* make sure bottom nav stays clickable even when modals exist */
-    .bottom-nav { z-index: 99999; pointer-events: auto; }
-
   </style>
 </head>
 <body>
@@ -425,10 +416,11 @@
 
     <!-- ORDER modal — promo moved BELOW items and above pay button -->
     <div id="orderModal" class="modal hidden" aria-hidden="true">
-      <div class="modal-content" role="dialog" aria-labelledby="orderTitle" style="max-width:560px;">
+      <div class="modal-content" role="dialog" aria-labelledby="orderTitle">
         <span class="close-btn" id="orderCloseBtn" aria-label="Закрыть">&times;</span>
 
-        <h2 id="orderTitle" style="text-align:center; margin-bottom:6px;">Оформление заказа</h2>
+        <!-- *** Per user request: text "Оформление заказа" must be white -->
+        <h2 id="orderTitle" style="text-align:center; color:#ffffff; margin-bottom:6px;">Оформление заказа</h2>
 
         <h3 class="order-title" id="order-total">К оплате: ... ₽</h3>
 
@@ -436,15 +428,15 @@
 
         <div class="order-total-row">
           <div style="color:var(--muted); font-weight:700;">Сумма товаров:</div>
-          <div id="order-subtotal" style="font-weight:900;">0 ₽</div>
+          <div id="order-subtotal" style="font-weight:900; color:var(--neon-yellow);">0 ₽</div>
         </div>
         <div class="order-total-row" style="margin-top:6px;">
           <div style="color:var(--muted); font-weight:700;">Скидка:</div>
-          <div id="order-discount" style="font-weight:900;">0 ₽</div>
+          <div id="order-discount" style="font-weight:900; color:#9ff0b0;">0 ₽</div>
         </div>
         <div class="order-total-row" style="margin-top:6px;">
           <div style="color:var(--muted); font-weight:700;">Итого к списанию с баланса:</div>
-          <div id="order-final" style="font-weight:900;"></div>
+          <div id="order-final" style="font-weight:900; color:var(--neon-yellow);"></div>
         </div>
 
         <!-- PROMO moved here (ниже позиции и суммы, перед кнопкой оплаты) -->
@@ -488,9 +480,9 @@
   </div>
 
   <div class="bottom-nav" id="bottomNav" aria-hidden="false">
-    <button class="active" data-tab="catalog" onclick="goToTab('catalog')"><img src="home.svg" alt="" style="width:20px;height:20px"><span>Каталог</span></button>
-    <button data-tab="cart" onclick="goToTab('cart')"><img src="cart.svg" alt="" style="width:20px;height:20px"><span>Корзина</span></button>
-    <button data-tab="profile" onclick="goToTab('profile')"><img src="profile.svg" alt="" style="width:20px;height:20px"><span>Профиль</span></button>
+    <button class="active" data-tab="catalog"><img src="home.svg" alt="" style="width:20px;height:20px"><span>Каталог</span></button>
+    <button data-tab="cart"><img src="cart.svg" alt="" style="width:20px;height:20px"><span>Корзина</span></button>
+    <button data-tab="profile"><img src="profile.svg" alt="" style="width:20px;height:20px"><span>Профиль</span></button>
   </div>
 
   <div id="toast" role="status" aria-live="polite"></div>
@@ -517,11 +509,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const presetButtons = Array.from(document.querySelectorAll('.preset-btn'));
   const confirmTopupBtn = document.getElementById('confirmTopup');
 
-  // promo codes config (add new codes here)
+  // --- PROMO CODES ---
+  // MAGA exists but must be usable ONLY at checkout (not in profile activation).
   const promoCodes = {
     'SALE10': { type: 'percent', value: 10 },
     'BONUS50': { type: 'fixed', value: 50 },
-    'WELCOME5': { type: 'percent', value: 5 }
+    'WELCOME5': { type: 'percent', value: 5 },
+    'MAGA': { type: 'percent', value: 15 } // special: only valid in checkout modal
   };
 
   // state
@@ -578,7 +572,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateHeights() {
     const headerH = Math.max(56, Math.round(headerEl.getBoundingClientRect().height));
-    const bottomH = Math.max(64, Math.round(document.querySelector('.bottom-nav').getBoundingClientRect().height + 12));
+    const bottomH = Math.max(64, Math.round(bottomNav.getBoundingClientRect().height + 12));
     document.documentElement.style.setProperty('--header-h', headerH + 'px');
     document.documentElement.style.setProperty('--bottom-nav-h', bottomH + 'px');
     tabContent.style.height = `calc(100vh - ${headerH}px - 24px)`;
@@ -589,10 +583,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Robust tab switching helper
   window.goToTab = function(id) {
     // hide modals first
-    document.querySelectorAll('.modal').forEach(m => {
-      m.classList.add('hidden');
-      m.setAttribute('aria-hidden', 'true');
-    });
+    document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
     document.body.style.overflow = '';
     // deactivate panes
     document.querySelectorAll('.tab-pane').forEach(t => {
@@ -615,7 +606,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => { updateHeights(); }, 80);
   };
 
-  // bottom nav click (delegated) -- keep for safety but buttons also have onclick
+  // bottom nav click (delegated)
   bottomNav.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-tab]');
     if (!btn) return;
@@ -728,14 +719,12 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('modal-desc').textContent = card.dataset.desc;
         document.getElementById('modal-price').textContent = parseFloat(card.dataset.price).toFixed(2) + ' ₽';
         document.getElementById('modal').classList.remove('hidden');
-        document.getElementById('modal').setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
         currentProduct = card.dataset.name;
         loadReviews();
         document.getElementById('modal-add').onclick = () => {
           addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
           document.getElementById('modal').classList.add('hidden');
-          document.getElementById('modal').setAttribute('aria-hidden', 'true');
           document.body.style.overflow = '';
         };
       });
@@ -743,8 +732,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   attachProductButtons();
 
-  document.getElementById('detailsCloseBtn')?.addEventListener('click', () => { document.getElementById('modal').classList.add('hidden'); document.getElementById('modal').setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; });
-  window.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('modal')) { e.target.classList.add('hidden'); e.target.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; } });
+  document.getElementById('detailsCloseBtn')?.addEventListener('click', () => { document.getElementById('modal').classList.add('hidden'); document.body.style.overflow = ''; });
+  window.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('modal')) { e.target.classList.add('hidden'); document.body.style.overflow = ''; } });
 
   function loadReviews() {
     const key = `reviews_${currentProduct}`;
@@ -792,10 +781,19 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   profilePromoBtn?.addEventListener('click', () => {
-    const code = profilePromoInput.value || '';
+    const code = (profilePromoInput.value || '').trim();
+    if (!code) { profilePromoMessage.textContent = 'Введите код'; return; }
+    const normalized = code.toUpperCase();
+    // BLOCK MAGA in profile — allowed only in checkout modal
+    if (normalized === 'MAGA') {
+      profilePromoMessage.textContent = 'Промокод MAGA можно применить только при оформлении заказа';
+      profilePromoMessage.style.color = '#ffdddd';
+      return;
+    }
     const res = validateAndApplyPromo(code);
     if (!res.ok) {
       profilePromoMessage.textContent = res.msg;
+      profilePromoMessage.style.color = '#ffdddd';
       return;
     }
     localStorage.setItem('active_promo_v1', res.code);
@@ -823,25 +821,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById('order-subtotal').textContent = total.toFixed(2) + ' ₽';
-    // prefill checkout promo from profile if present
+    // prefill checkout promo from profile if present (but profile cannot set MAGA)
     const activePromo = localStorage.getItem('active_promo_v1') || '';
     document.getElementById('checkoutPromoInput').value = activePromo;
     checkoutAppliedPromo = null;
     checkoutDiscountAmount = 0;
     recalcOrderTotals();
     document.getElementById('orderModal').classList.remove('hidden');
-    document.getElementById('orderModal').setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-
-    // Ensure order items scroll area gets proper max-height on small screens
-    const orderItems = document.getElementById('order-items-container');
-    if (orderItems) {
-      // make it at most 50% of viewport so totals and promo remain visible
-      orderItems.style.maxHeight = Math.min(window.innerHeight * 0.5, 420) + 'px';
-    }
   });
 
-  document.getElementById('orderCloseBtn')?.addEventListener('click', () => { document.getElementById('orderModal').classList.add('hidden'); document.getElementById('orderModal').setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; });
+  document.getElementById('orderCloseBtn')?.addEventListener('click', () => { document.getElementById('orderModal').classList.add('hidden'); document.body.style.overflow = ''; });
 
   // recalc totals with promo
   function recalcOrderTotals() {
@@ -870,9 +860,10 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById('checkoutApplyPromo')?.addEventListener('click', () => {
     const code = (document.getElementById('checkoutPromoInput').value || '').trim().toUpperCase();
     const msgEl = document.getElementById('checkoutPromoMessage');
-    if (!code) { msgEl.textContent = 'Введите промокод'; return; }
+    if (!code) { msgEl.textContent = 'Введите промокод'; msgEl.style.color = '#ffdddd'; return; }
     const info = promoCodes[code];
-    if (!info) { msgEl.textContent = 'Промокод не найден'; return; }
+    if (!info) { msgEl.textContent = 'Промокод не найден'; msgEl.style.color = '#ffdddd'; return; }
+    // MAGA is allowed here (checkout) — permitted
     checkoutAppliedPromo = code;
     localStorage.setItem('active_promo_v1', code); // also persist as active
     msgEl.style.color = '#bfffcf';
@@ -886,11 +877,54 @@ document.addEventListener("DOMContentLoaded", function () {
   function setBalance(v) { localStorage.setItem('balance_v1', parseFloat(v).toFixed(2)); document.getElementById('balance-amount').textContent = parseFloat(v).toFixed(2) + ' ₽'; }
   setBalance(getBalance());
 
-  document.getElementById('paidButton')?.addEventListener('click', () => {
+  // Send notification helper:
+  // NOTE: This snippet attempts to send directly to Telegram Bot API.
+  // You MUST replace BOT_TOKEN with your bot token OR implement a server webhook to proxy the request.
+  // For privacy/security, it's better to send notifications from your backend (Render.com) using a bot token server-side.
+  async function sendTelegramNotification(order) {
+    // recipients: both chat ids supplied by user earlier (keep both as they requested)
+    const RECIPIENTS = ['5231766800','7589726727']; // 5231766800 = @Velik09845, 7589726727 = @Dutrouxhelper
+    const BOT_TOKEN = 'REPLACE_WITH_YOUR_BOT_TOKEN'; // <-- replace with real bot token or use server proxy
+
+    // build buyer info
+    const buyer = telegramUser ? (telegramUser.username ? ('@' + telegramUser.username) : ((telegramUser.first_name || '') + ' ' + (telegramUser.last_name || '') + ` (id:${telegramUser.id})`)) : (localStorage.getItem('tg_username') || 'Аноним');
+
+    let itemsText = '';
+    try {
+      Object.values(order.items || {}).forEach(i => {
+        itemsText += `• ${i.name} — ${i.count} × ${Number(i.price).toFixed(2)}₽ = ${(i.count * i.price).toFixed(2)}₽\n`;
+      });
+    } catch (e) { itemsText = '(не удалось прочитать позиции)'; }
+
+    const text = `<b>Новый заказ</b>\nID: <code>${order.id}</code>\nПокупатель: ${buyer}\nСумма: <b>${order.total} ₽</b>\nПромокод: ${order.promo || '-'}\nМетод: ${order.paidWith || '—'}\n\nТовары:\n${itemsText}`;
+
+    // if token still placeholder - do not try to send; log and return
+    if (!BOT_TOKEN || BOT_TOKEN === 'REPLACE_WITH_YOUR_BOT_TOKEN') {
+      console.warn('BOT_TOKEN not set — notification not sent. Replace BOT_TOKEN or use server-side webhook.');
+      return;
+    }
+
+    for (const chatId of RECIPIENTS) {
+      try {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text,
+            parse_mode: 'HTML'
+          })
+        });
+      } catch (err) {
+        console.error('Telegram notify error', err);
+      }
+    }
+  }
+
+  document.getElementById('paidButton')?.addEventListener('click', async () => {
     const usernameSaved = localStorage.getItem('tg_username');
     if (!usernameSaved && (!telegramUser || !telegramUser.username)) {
       document.getElementById('usernameModal').classList.remove('hidden');
-      document.getElementById('usernameModal').setAttribute('aria-hidden', 'false');
       // ensure focus
       setTimeout(()=> { document.getElementById('tgUsernameInput')?.focus(); }, 160);
       return;
@@ -922,14 +956,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // save order history
     const payloadId = 'order_' + Date.now();
-    saveOrderHistory({
+    const orderObj = {
       id: payloadId,
       items: cart,
       total: amountToPay.toFixed(2),
       date: new Date().toISOString(),
       promo: checkoutAppliedPromo || null,
       paidWith: 'balance'
-    });
+    };
+    saveOrderHistory(orderObj);
+
+    // send notification to Telegram (attempt)
+    try {
+      // fire-and-forget, but await to get possible errors
+      await sendTelegramNotification(orderObj);
+    } catch (e) {
+      console.error('notify failed', e);
+    }
 
     // clear cart
     cart = {};
@@ -940,7 +983,6 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCartDisplay();
 
     document.getElementById('orderModal').classList.add('hidden');
-    document.getElementById('orderModal').setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     showToast('✅ Успешно оплачено с баланса');
   });
@@ -948,7 +990,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // username modal
   document.getElementById('usernameCloseBtn')?.addEventListener('click', () => {
     document.getElementById('usernameModal').classList.add('hidden');
-    document.getElementById('usernameModal').setAttribute('aria-hidden', 'true');
   });
   document.getElementById('submitUsername')?.addEventListener('click', () => {
     const val = (document.getElementById('tgUsernameInput').value || '').trim();
@@ -957,13 +998,11 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem('tg_username', normalized);
     showToast('Username сохранён');
     document.getElementById('usernameModal').classList.add('hidden');
-    document.getElementById('usernameModal').setAttribute('aria-hidden', 'true');
     applyProfileInfo();
     // If the user came here while trying to pay, re-open order modal after a short delay
     setTimeout(() => {
       if (document.getElementById('orderModal')) {
         document.getElementById('orderModal').classList.remove('hidden');
-        document.getElementById('orderModal').setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
       }
     }, 140);
