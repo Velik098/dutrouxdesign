@@ -127,7 +127,7 @@
 
     .modal{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.7)); z-index:3000; padding:20px; }
     .modal.hidden{ display:none; }
-    .modal-content{ width:100%; max-width:520px; background: linear-gradient(180deg, rgba(9,14,24,0.96), rgba(6,8,12,0.96)); border-radius:16px; padding:18px; color:#eaf6ff; box-shadow: 0 20px 60px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); position:relative; }
+    .modal-content{ width:100%; max-width:520px; background: linear-gradient(180deg, rgba(9,14,24,0.96), rgba(6,8,12,0.96)); border-radius:16px; padding:18px; color:#eaf6ff; box-shadow: 0 20px 60px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); position:relative; -webkit-overflow-scrolling: touch; }
     .modal-content h2, .modal-content h3{ margin-top:0; color:var(--neon-yellow); }
 
     .modal-content {
@@ -143,7 +143,7 @@
 
     .styled-card{ background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border:1px solid rgba(255,255,255,0.03); padding:12px;border-radius:12px;margin-bottom:12px; color: #eaf6ff; }
 
-    .bottom-nav{ position:fixed; left:12px;right:12px;bottom:12px; height:64px; display:flex; align-items:center; justify-content:space-around; gap:8px; background: linear-gradient(180deg, rgba(8,10,20,0.95), rgba(6,8,12,0.95)); border-radius:18px; padding:6px 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); z-index:9999; }
+    .bottom-nav{ position:fixed; left:12px;right:12px;bottom:12px; height:64px; display:flex; align-items:center; justify-content:space-around; gap:8px; background: linear-gradient(180deg, rgba(8,10,20,0.95), rgba(6,8,12,0.95)); border-radius:18px; padding:6px 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); z-index:99999; }
     .bottom-nav button{ background:transparent;border:0;color:var(--neon-yellow);font-weight:700; display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;cursor:pointer; padding:6px 8px; border-radius:10px; }
     .bottom-nav button.active, .bottom-nav button:hover{ color:var(--neon-red); transform:translateY(-2px); background: rgba(255,255,255,0.01); }
 
@@ -219,11 +219,20 @@
       margin-bottom: 8px;
     }
 
-    .order-items { display:flex; flex-direction:column; gap:10px; max-height:320px; overflow:auto; padding-right:6px; }
+    .order-items { display:flex; flex-direction:column; gap:10px; max-height:320px; overflow:auto; padding-right:6px; -webkit-overflow-scrolling: touch; }
     .order-total-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px; }
-    .order-title { text-align:center; font-weight:800; color: #fff; font-size:18px; }
+    .order-title { text-align:center; font-weight:800; color: #fff; font-size:18px; } /* changed from neon-yellow to white */
     .order-pay-btn { margin-top:16px; width:100%; padding:12px 14px; border-radius:12px; font-weight:900; color:#fff; }
     .small-muted { color:var(--muted); font-size:13px; }
+
+    /* checkout visual tweaks: make subtotal/total visually distinct but not too yellow */
+    #order-subtotal { color: var(--neon-cyan); font-weight:900; }
+    #order-discount { color: #9ff0b0; font-weight:900; }
+    #order-final { color: var(--neon-yellow); font-weight:900; }
+
+    /* make sure bottom nav stays clickable even when modals exist */
+    .bottom-nav { z-index: 99999; pointer-events: auto; }
+
   </style>
 </head>
 <body>
@@ -416,10 +425,10 @@
 
     <!-- ORDER modal — promo moved BELOW items and above pay button -->
     <div id="orderModal" class="modal hidden" aria-hidden="true">
-      <div class="modal-content" role="dialog" aria-labelledby="orderTitle">
+      <div class="modal-content" role="dialog" aria-labelledby="orderTitle" style="max-width:560px;">
         <span class="close-btn" id="orderCloseBtn" aria-label="Закрыть">&times;</span>
 
-        <h2 id="orderTitle" style="text-align:center; color:var(--neon-yellow); margin-bottom:6px;">Оформление заказа</h2>
+        <h2 id="orderTitle" style="text-align:center; margin-bottom:6px;">Оформление заказа</h2>
 
         <h3 class="order-title" id="order-total">К оплате: ... ₽</h3>
 
@@ -427,15 +436,15 @@
 
         <div class="order-total-row">
           <div style="color:var(--muted); font-weight:700;">Сумма товаров:</div>
-          <div id="order-subtotal" style="font-weight:900; color:var(--neon-yellow);">0 ₽</div>
+          <div id="order-subtotal" style="font-weight:900;">0 ₽</div>
         </div>
         <div class="order-total-row" style="margin-top:6px;">
           <div style="color:var(--muted); font-weight:700;">Скидка:</div>
-          <div id="order-discount" style="font-weight:900; color:#9ff0b0;">0 ₽</div>
+          <div id="order-discount" style="font-weight:900;">0 ₽</div>
         </div>
         <div class="order-total-row" style="margin-top:6px;">
           <div style="color:var(--muted); font-weight:700;">Итого к списанию с баланса:</div>
-          <div id="order-final" style="font-weight:900; color:var(--neon-yellow);"></div>
+          <div id="order-final" style="font-weight:900;"></div>
         </div>
 
         <!-- PROMO moved here (ниже позиции и суммы, перед кнопкой оплаты) -->
@@ -479,9 +488,9 @@
   </div>
 
   <div class="bottom-nav" id="bottomNav" aria-hidden="false">
-    <button class="active" data-tab="catalog"><img src="home.svg" alt="" style="width:20px;height:20px"><span>Каталог</span></button>
-    <button data-tab="cart"><img src="cart.svg" alt="" style="width:20px;height:20px"><span>Корзина</span></button>
-    <button data-tab="profile"><img src="profile.svg" alt="" style="width:20px;height:20px"><span>Профиль</span></button>
+    <button class="active" data-tab="catalog" onclick="goToTab('catalog')"><img src="home.svg" alt="" style="width:20px;height:20px"><span>Каталог</span></button>
+    <button data-tab="cart" onclick="goToTab('cart')"><img src="cart.svg" alt="" style="width:20px;height:20px"><span>Корзина</span></button>
+    <button data-tab="profile" onclick="goToTab('profile')"><img src="profile.svg" alt="" style="width:20px;height:20px"><span>Профиль</span></button>
   </div>
 
   <div id="toast" role="status" aria-live="polite"></div>
@@ -569,7 +578,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateHeights() {
     const headerH = Math.max(56, Math.round(headerEl.getBoundingClientRect().height));
-    const bottomH = Math.max(64, Math.round(bottomNav.getBoundingClientRect().height + 12));
+    const bottomH = Math.max(64, Math.round(document.querySelector('.bottom-nav').getBoundingClientRect().height + 12));
     document.documentElement.style.setProperty('--header-h', headerH + 'px');
     document.documentElement.style.setProperty('--bottom-nav-h', bottomH + 'px');
     tabContent.style.height = `calc(100vh - ${headerH}px - 24px)`;
@@ -580,7 +589,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Robust tab switching helper
   window.goToTab = function(id) {
     // hide modals first
-    document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
+    document.querySelectorAll('.modal').forEach(m => {
+      m.classList.add('hidden');
+      m.setAttribute('aria-hidden', 'true');
+    });
     document.body.style.overflow = '';
     // deactivate panes
     document.querySelectorAll('.tab-pane').forEach(t => {
@@ -603,7 +615,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => { updateHeights(); }, 80);
   };
 
-  // bottom nav click (delegated)
+  // bottom nav click (delegated) -- keep for safety but buttons also have onclick
   bottomNav.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-tab]');
     if (!btn) return;
@@ -716,12 +728,14 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('modal-desc').textContent = card.dataset.desc;
         document.getElementById('modal-price').textContent = parseFloat(card.dataset.price).toFixed(2) + ' ₽';
         document.getElementById('modal').classList.remove('hidden');
+        document.getElementById('modal').setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
         currentProduct = card.dataset.name;
         loadReviews();
         document.getElementById('modal-add').onclick = () => {
           addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
           document.getElementById('modal').classList.add('hidden');
+          document.getElementById('modal').setAttribute('aria-hidden', 'true');
           document.body.style.overflow = '';
         };
       });
@@ -729,8 +743,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   attachProductButtons();
 
-  document.getElementById('detailsCloseBtn')?.addEventListener('click', () => { document.getElementById('modal').classList.add('hidden'); document.body.style.overflow = ''; });
-  window.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('modal')) { e.target.classList.add('hidden'); document.body.style.overflow = ''; } });
+  document.getElementById('detailsCloseBtn')?.addEventListener('click', () => { document.getElementById('modal').classList.add('hidden'); document.getElementById('modal').setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; });
+  window.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('modal')) { e.target.classList.add('hidden'); e.target.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; } });
 
   function loadReviews() {
     const key = `reviews_${currentProduct}`;
@@ -816,10 +830,18 @@ document.addEventListener("DOMContentLoaded", function () {
     checkoutDiscountAmount = 0;
     recalcOrderTotals();
     document.getElementById('orderModal').classList.remove('hidden');
+    document.getElementById('orderModal').setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+
+    // Ensure order items scroll area gets proper max-height on small screens
+    const orderItems = document.getElementById('order-items-container');
+    if (orderItems) {
+      // make it at most 50% of viewport so totals and promo remain visible
+      orderItems.style.maxHeight = Math.min(window.innerHeight * 0.5, 420) + 'px';
+    }
   });
 
-  document.getElementById('orderCloseBtn')?.addEventListener('click', () => { document.getElementById('orderModal').classList.add('hidden'); document.body.style.overflow = ''; });
+  document.getElementById('orderCloseBtn')?.addEventListener('click', () => { document.getElementById('orderModal').classList.add('hidden'); document.getElementById('orderModal').setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; });
 
   // recalc totals with promo
   function recalcOrderTotals() {
@@ -868,6 +890,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const usernameSaved = localStorage.getItem('tg_username');
     if (!usernameSaved && (!telegramUser || !telegramUser.username)) {
       document.getElementById('usernameModal').classList.remove('hidden');
+      document.getElementById('usernameModal').setAttribute('aria-hidden', 'false');
       // ensure focus
       setTimeout(()=> { document.getElementById('tgUsernameInput')?.focus(); }, 160);
       return;
@@ -917,6 +940,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCartDisplay();
 
     document.getElementById('orderModal').classList.add('hidden');
+    document.getElementById('orderModal').setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     showToast('✅ Успешно оплачено с баланса');
   });
@@ -924,6 +948,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // username modal
   document.getElementById('usernameCloseBtn')?.addEventListener('click', () => {
     document.getElementById('usernameModal').classList.add('hidden');
+    document.getElementById('usernameModal').setAttribute('aria-hidden', 'true');
   });
   document.getElementById('submitUsername')?.addEventListener('click', () => {
     const val = (document.getElementById('tgUsernameInput').value || '').trim();
@@ -932,11 +957,13 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem('tg_username', normalized);
     showToast('Username сохранён');
     document.getElementById('usernameModal').classList.add('hidden');
+    document.getElementById('usernameModal').setAttribute('aria-hidden', 'true');
     applyProfileInfo();
     // If the user came here while trying to pay, re-open order modal after a short delay
     setTimeout(() => {
       if (document.getElementById('orderModal')) {
         document.getElementById('orderModal').classList.remove('hidden');
+        document.getElementById('orderModal').setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
       }
     }, 140);
