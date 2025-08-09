@@ -72,8 +72,8 @@
       margin: 6px 0 8px 0;
     }
 
-    /* --- Category marquee: keep it in document flow and low z so it won't overlap modals/tab content --- */
-    .category-marquee{ overflow:hidden; padding:8px 0; border-top:1px solid rgba(255,255,255,0.02); border-bottom:1px solid rgba(255,255,255,0.02); background: linear-gradient(90deg, rgba(0,0,0,0.12), transparent); position:relative; z-index:3; }
+    /* --- Category marquee: keep it behind content so it won't overlap modals/tab content --- */
+    .category-marquee{ overflow:hidden; padding:8px 0; border-top:1px solid rgba(255,255,255,0.02); border-bottom:1px solid rgba(255,255,255,0.02); background: linear-gradient(90deg, rgba(0,0,0,0.12), transparent); position:relative; z-index:2; }
     .category-track{ display:flex; gap:12px; animation: marquee 14s linear infinite; padding-left:6px; }
     @keyframes marquee{ 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
     .category{ border:1px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00)); color: #fff; padding:8px 12px; border-radius:999px; font-weight:600; font-size:13px; cursor:pointer; box-shadow: 0 6px 18px rgba(0,0,0,0.6); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
@@ -151,7 +151,8 @@
     .cart-body{ padding:8px 4px; color:var(--muted); min-height:80px; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
 
     .back-btn{ background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:6px 10px;border-radius:10px;cursor:pointer }
-    .checkout-btn{ display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--neon-yellow),var(--neon-red));border:none;color:#000;font-weight:800;cursor:pointer }
+    /* Make checkout button text readable (white) — user complaint about too-yellow text fixed here */
+    .checkout-btn{ display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--neon-yellow),var(--neon-red));border:none;color:#fff;font-weight:800;cursor:pointer }
 
     .promo-error{ margin-top:8px; color: #ffdddd; font-weight:700; }
 
@@ -221,7 +222,7 @@
     .order-items { display:flex; flex-direction:column; gap:10px; max-height:320px; overflow:auto; padding-right:6px; }
     .order-total-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px; }
     .order-title { text-align:center; font-weight:800; color: #fff; font-size:18px; }
-    .order-pay-btn { margin-top:16px; width:100%; padding:12px 14px; border-radius:12px; font-weight:900; }
+    .order-pay-btn { margin-top:16px; width:100%; padding:12px 14px; border-radius:12px; font-weight:900; color:#fff; }
     .small-muted { color:var(--muted); font-size:13px; }
   </style>
 </head>
@@ -235,8 +236,8 @@
   </div>
   <div class="divider-horizontal"></div>
 
-  <div class="category-marquee">
-    <div class="category-track">
+  <div class="category-marquee" aria-hidden="true">
+    <div class="category-track" aria-hidden="true">
       <button class="category">Приватка 💸</button>
       <button class="category">Превью 🚀</button>
       <button class="category">Оформление 🔥</button>
@@ -246,8 +247,8 @@
     </div>
   </div>
 
-  <div class="tab-content" id="tabContent">
-    <div id="catalog" class="tab-pane active">
+  <div class="tab-content" id="tabContent" role="main">
+    <div id="catalog" class="tab-pane active" data-tabname="catalog">
       <div class="catalog-header">
         <div class="bar"></div>
         <div class="title">Товары</div>
@@ -309,7 +310,7 @@
     <!-- DETAILS modal -->
     <div id="modal" class="modal hidden" aria-hidden="true">
       <div class="modal-content" role="dialog" aria-labelledby="detailsTitle">
-        <span class="close-btn" id="detailsCloseBtn">&times;</span>
+        <span class="close-btn" id="detailsCloseBtn" aria-label="Закрыть">&times;</span>
 
         <img id="modal-img" src="" alt="" style="max-width: 100%; border-radius: 8px; margin-bottom: 10px;">
         <h2 id="modal-title"></h2>
@@ -330,7 +331,7 @@
       </div>
     </div>
 
-    <div id="cart" class="tab-pane">
+    <div id="cart" class="tab-pane" data-tabname="cart" aria-hidden="true">
       <div class="cart-header">
         <button class="back-btn" onclick="goToTab('catalog')">← Назад</button>
         <div class="title">Корзина</div>
@@ -342,7 +343,7 @@
       </div>
     </div>
 
-    <div id="profile" class="tab-pane">
+    <div id="profile" class="tab-pane" data-tabname="profile" aria-hidden="true">
       <div class="profile-card styled-card">
         <div class="profile-header" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
           <div style="flex-shrink: 0;">
@@ -384,7 +385,7 @@
 
     </div>
 
-    <div id="avatarModal" class="modal hidden">
+    <div id="avatarModal" class="modal hidden" aria-hidden="true">
       <div class="modal-content">
         <span class="close-btn" onclick="document.getElementById('avatarModal').classList.add('hidden')">&times;</span>
         <h3>Выберите аватар</h3>
@@ -401,9 +402,9 @@
       </div>
     </div>
 
-    <div id="usernameModal" class="modal hidden">
+    <div id="usernameModal" class="modal hidden" aria-hidden="true">
       <div class="modal-content">
-        <span id="usernameCloseBtn" class="close-btn">&times;</span>
+        <span id="usernameCloseBtn" class="close-btn" aria-label="Закрыть">&times;</span>
         <h3>Укажите ваш Telegram username</h3>
         <p>Это нужно, чтобы мы могли найти ваш платёж и выслать товар.</p>
         <input type="text" id="tgUsernameInput" placeholder="@username" style="width: 100%; margin-top: 10px;">
@@ -416,7 +417,7 @@
     <!-- ORDER modal — promo moved BELOW items and above pay button -->
     <div id="orderModal" class="modal hidden" aria-hidden="true">
       <div class="modal-content" role="dialog" aria-labelledby="orderTitle">
-        <span class="close-btn" id="orderCloseBtn">&times;</span>
+        <span class="close-btn" id="orderCloseBtn" aria-label="Закрыть">&times;</span>
 
         <h2 id="orderTitle" style="text-align:center; color:var(--neon-yellow); margin-bottom:6px;">Оформление заказа</h2>
 
@@ -454,7 +455,7 @@
     <!-- Topup modal (note: removed external-payment hint text) -->
     <div id="topupModal" class="modal hidden" aria-hidden="true">
       <div class="modal-content" role="dialog" aria-labelledby="topupTitle" style="max-width:420px;">
-        <span class="close-btn" id="topupCloseBtn">&times;</span>
+        <span class="close-btn" id="topupCloseBtn" aria-label="Закрыть">&times;</span>
         <h3 class="topup-title" id="topupTitle">Пополнение баланса</h3>
         <div class="topup-subtitle">ПОПОЛНИТЬ БАЛАНС В РУБЛЯХ</div>
 
@@ -483,7 +484,7 @@
     <button data-tab="profile"><img src="profile.svg" alt="" style="width:20px;height:20px"><span>Профиль</span></button>
   </div>
 
-  <div id="toast"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -576,18 +577,33 @@ document.addEventListener("DOMContentLoaded", function () {
   updateHeights();
   window.addEventListener('resize', updateHeights);
 
+  // Robust tab switching helper
   window.goToTab = function(id) {
-    document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+    // hide modals first
+    document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
+    document.body.style.overflow = '';
+    // deactivate panes
+    document.querySelectorAll('.tab-pane').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-hidden', 'true');
+    });
+    // show requested pane
     const target = document.getElementById(id);
-    if (target) target.classList.add('active');
+    if (target) {
+      target.classList.add('active');
+      target.setAttribute('aria-hidden', 'false');
+      // ensure scroll top for better UX
+      try { target.scrollTop = 0; } catch(e){}
+    }
+    // update bottom nav active
     document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
     const navBtn = document.querySelector(`.bottom-nav button[data-tab="${id}"]`);
     if (navBtn) navBtn.classList.add('active');
-    document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
-    document.body.style.overflow = '';
-    if (tabContent) tabContent.scrollTop = 0;
+    // small reflow after switching (fix for mobile WebApp oddities)
+    setTimeout(() => { updateHeights(); }, 80);
   };
 
+  // bottom nav click (delegated)
   bottomNav.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-tab]');
     if (!btn) return;
@@ -608,7 +624,8 @@ document.addEventListener("DOMContentLoaded", function () {
     saveCart();
     updateCartDisplay();
     showToast(`🛒 «${name}» добавлен в корзину`);
-    goToTab('cart');
+    // Switch to cart — use a small delay to ensure UI updates properly (fixes case when coming from profile)
+    setTimeout(() => { goToTab('cart'); }, 120);
   }
 
   function updateCartDisplay() {
@@ -851,6 +868,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const usernameSaved = localStorage.getItem('tg_username');
     if (!usernameSaved && (!telegramUser || !telegramUser.username)) {
       document.getElementById('usernameModal').classList.remove('hidden');
+      // ensure focus
+      setTimeout(()=> { document.getElementById('tgUsernameInput')?.focus(); }, 160);
       return;
     }
 
@@ -914,6 +933,13 @@ document.addEventListener("DOMContentLoaded", function () {
     showToast('Username сохранён');
     document.getElementById('usernameModal').classList.add('hidden');
     applyProfileInfo();
+    // If the user came here while trying to pay, re-open order modal after a short delay
+    setTimeout(() => {
+      if (document.getElementById('orderModal')) {
+        document.getElementById('orderModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }, 140);
   });
 
   // avatar upload & presets
@@ -1024,6 +1050,17 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+  // ensure nav buttons reflect state on load
+  setTimeout(() => {
+    const activePane = document.querySelector('.tab-pane.active');
+    if (activePane) {
+      const id = activePane.id;
+      document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
+      const navBtn = document.querySelector(`.bottom-nav button[data-tab="${id}"]`);
+      if (navBtn) navBtn.classList.add('active');
+    }
+  }, 80);
 
   window.addEventListener('load', updateHeights);
 });
