@@ -419,8 +419,7 @@
       <div class="modal-content" role="dialog" aria-labelledby="orderTitle">
         <span class="close-btn" id="orderCloseBtn" aria-label="Закрыть">&times;</span>
 
-        <!-- *** Per user request: text "Оформление заказа" must be white -->
-        <h2 id="orderTitle" style="text-align:center; color:#ffffff; margin-bottom:6px;">Оформление заказа</h2>
+        <h2 id="orderTitle" style="text-align:center; color:var(--neon-yellow); margin-bottom:6px;">Оформление заказа</h2>
 
         <h3 class="order-title" id="order-total">К оплате: ... ₽</h3>
 
@@ -509,13 +508,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const presetButtons = Array.from(document.querySelectorAll('.preset-btn'));
   const confirmTopupBtn = document.getElementById('confirmTopup');
 
-  // --- PROMO CODES ---
-  // MAGA exists but must be usable ONLY at checkout (not in profile activation).
+  // promo codes config (add new codes here)
   const promoCodes = {
     'SALE10': { type: 'percent', value: 10 },
     'BONUS50': { type: 'fixed', value: 50 },
-    'WELCOME5': { type: 'percent', value: 5 },
-    'MAGA': { type: 'percent', value: 15 } // special: only valid in checkout modal
+    'WELCOME5': { type: 'percent', value: 5 }
   };
 
   // state
@@ -781,19 +778,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   profilePromoBtn?.addEventListener('click', () => {
-    const code = (profilePromoInput.value || '').trim();
-    if (!code) { profilePromoMessage.textContent = 'Введите код'; return; }
-    const normalized = code.toUpperCase();
-    // BLOCK MAGA in profile — allowed only in checkout modal
-    if (normalized === 'MAGA') {
-      profilePromoMessage.textContent = 'Промокод MAGA можно применить только при оформлении заказа';
-      profilePromoMessage.style.color = '#ffdddd';
-      return;
-    }
+    const code = profilePromoInput.value || '';
     const res = validateAndApplyPromo(code);
     if (!res.ok) {
       profilePromoMessage.textContent = res.msg;
-      profilePromoMessage.style.color = '#ffdddd';
       return;
     }
     localStorage.setItem('active_promo_v1', res.code);
@@ -821,7 +809,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById('order-subtotal').textContent = total.toFixed(2) + ' ₽';
-    // prefill checkout promo from profile if present (but profile cannot set MAGA)
+    // prefill checkout promo from profile if present
     const activePromo = localStorage.getItem('active_promo_v1') || '';
     document.getElementById('checkoutPromoInput').value = activePromo;
     checkoutAppliedPromo = null;
@@ -860,10 +848,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById('checkoutApplyPromo')?.addEventListener('click', () => {
     const code = (document.getElementById('checkoutPromoInput').value || '').trim().toUpperCase();
     const msgEl = document.getElementById('checkoutPromoMessage');
-    if (!code) { msgEl.textContent = 'Введите промокод'; msgEl.style.color = '#ffdddd'; return; }
+    if (!code) { msgEl.textContent = 'Введите промокод'; return; }
     const info = promoCodes[code];
-    if (!info) { msgEl.textContent = 'Промокод не найден'; msgEl.style.color = '#ffdddd'; return; }
-    // MAGA is allowed here (checkout) — permitted
+    if (!info) { msgEl.textContent = 'Промокод не найден'; return; }
     checkoutAppliedPromo = code;
     localStorage.setItem('active_promo_v1', code); // also persist as active
     msgEl.style.color = '#bfffcf';
@@ -877,51 +864,55 @@ document.addEventListener("DOMContentLoaded", function () {
   function setBalance(v) { localStorage.setItem('balance_v1', parseFloat(v).toFixed(2)); document.getElementById('balance-amount').textContent = parseFloat(v).toFixed(2) + ' ₽'; }
   setBalance(getBalance());
 
-  // Send notification helper:
-  // NOTE: This snippet attempts to send directly to Telegram Bot API.
-  // You MUST replace BOT_TOKEN with your bot token OR implement a server webhook to proxy the request.
-  // For privacy/security, it's better to send notifications from your backend (Render.com) using a bot token server-side.
-  async function sendTelegramNotification(order) {
-    // recipients: both chat ids supplied by user earlier (keep both as they requested)
-    const RECIPIENTS = ['5231766800','7589726727']; // 5231766800 = @Velik09845, 7589726727 = @Dutrouxhelper
-    const BOT_TOKEN = 'REPLACE_WITH_YOUR_BOT_TOKEN'; // <-- replace with real bot token or use server proxy
-
-    // build buyer info
-    const buyer = telegramUser ? (telegramUser.username ? ('@' + telegramUser.username) : ((telegramUser.first_name || '') + ' ' + (telegramUser.last_name || '') + ` (id:${telegramUser.id})`)) : (localStorage.getItem('tg_username') || 'Аноним');
-
-    let itemsText = '';
+  // Opens chat with owner and prefills message. Uses Telegram.WebApp.openLink when possible, otherwise window.open.
+  function openChatWithOwner(ownerUsername, message) {
     try {
-      Object.values(order.items || {}).forEach(i => {
-        itemsText += `• ${i.name} — ${i.count} × ${Number(i.price).toFixed(2)}₽ = ${(i.count * i.price).toFixed(2)}₽\n`;
-      });
-    } catch (e) { itemsText = '(не удалось прочитать позиции)'; }
-
-    const text = `<b>Новый заказ</b>\nID: <code>${order.id}</code>\nПокупатель: ${buyer}\nСумма: <b>${order.total} ₽</b>\nПромокод: ${order.promo || '-'}\nМетод: ${order.paidWith || '—'}\n\nТовары:\n${itemsText}`;
-
-    // if token still placeholder - do not try to send; log and return
-    if (!BOT_TOKEN || BOT_TOKEN === 'REPLACE_WITH_YOUR_BOT_TOKEN') {
-      console.warn('BOT_TOKEN not set — notification not sent. Replace BOT_TOKEN or use server-side webhook.');
-      return;
-    }
-
-    for (const chatId of RECIPIENTS) {
-      try {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: chatId,
-            text,
-            parse_mode: 'HTML'
-          })
-        });
-      } catch (err) {
-        console.error('Telegram notify error', err);
+      const encoded = encodeURIComponent(message);
+      // Try to open t.me link with text param — works on many platforms and opens chat with prefilled message
+      const url = `https://t.me/${ownerUsername}?text=${encoded}`;
+      if (window.Telegram && Telegram.WebApp && typeof Telegram.WebApp.openLink === 'function') {
+        Telegram.WebApp.openLink(url);
+      } else {
+        // fallback
+        window.open(url, '_blank');
       }
+    } catch (e) {
+      console.error('openChatWithOwner error', e);
+      // fallback even if error
+      window.open(`https://t.me/${ownerUsername}`, '_blank');
     }
   }
 
-  document.getElementById('paidButton')?.addEventListener('click', async () => {
+  // Compose a neat order message for the owner
+  function buildOrderMessage(order) {
+    // order: { id, items, total, date, promo, paidWith }
+    const items = order.items || {};
+    const lines = [];
+    Object.values(items).forEach(it => {
+      lines.push(`${it.name} × ${it.count} — ${ (it.price * it.count).toFixed(2) } ₽`);
+    });
+    const buyerHandle = (telegramUser && telegramUser.username) ? ('@' + telegramUser.username) : (localStorage.getItem('tg_username') || 'Не указан');
+    const date = new Date(order.date).toLocaleString();
+    const promoText = order.promo ? order.promo : '—';
+    const msg = [
+      `Новый заказ!`,
+      `Код заказа: ${order.id}`,
+      `Покупатель: ${buyerHandle}`,
+      `Дата: ${date}`,
+      ``,
+      `Товары:`,
+      `${lines.join('\n')}`,
+      ``,
+      `Сумма: ${Number(order.total).toFixed(2)} ₽`,
+      `Промокод: ${promoText}`,
+      `Оплачено: ${order.paidWith || '—'}`,
+      ``,
+      `Пожалуйста, обработайте заказ и свяжитесь с покупателем.`
+    ].join('\n');
+    return msg;
+  }
+
+  document.getElementById('paidButton')?.addEventListener('click', () => {
     const usernameSaved = localStorage.getItem('tg_username');
     if (!usernameSaved && (!telegramUser || !telegramUser.username)) {
       document.getElementById('usernameModal').classList.remove('hidden');
@@ -954,7 +945,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const newBalance = Number((currentBalance - amountToPay).toFixed(2));
     setBalance(newBalance);
 
-    // save order history
+    // build order object
     const payloadId = 'order_' + Date.now();
     const orderObj = {
       id: payloadId,
@@ -964,15 +955,12 @@ document.addEventListener("DOMContentLoaded", function () {
       promo: checkoutAppliedPromo || null,
       paidWith: 'balance'
     };
+
     saveOrderHistory(orderObj);
 
-    // send notification to Telegram (attempt)
-    try {
-      // fire-and-forget, but await to get possible errors
-      await sendTelegramNotification(orderObj);
-    } catch (e) {
-      console.error('notify failed', e);
-    }
+    // Prepare message and open chat with owner
+    const ownerUsername = 'Dutrouxhelper'; // <-- поменяйте на ваш @username если нужно
+    const message = buildOrderMessage(orderObj);
 
     // clear cart
     cart = {};
@@ -985,6 +973,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('orderModal').classList.add('hidden');
     document.body.style.overflow = '';
     showToast('✅ Успешно оплачено с баланса');
+
+    // Small delay to allow user to see toast, then open chat (no need to wait long)
+    setTimeout(() => {
+      openChatWithOwner(ownerUsername, message);
+    }, 650);
   });
 
   // username modal
