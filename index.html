@@ -317,6 +317,12 @@
         <p id="modal-desc" style="color:var(--muted)"></p>
         <div class="modal-price" id="modal-price" style="font-weight:800; color:var(--neon-yellow); margin-top:6px;"></div>
 
+        <!-- Prev/Next controls for "листание" -->
+        <div style="display:flex; justify-content:space-between; gap:8px; margin-top:10px;">
+          <button id="modalPrev" class="btn btn-outline btn-small">← Пред.</button>
+          <button id="modalNext" class="btn btn-outline btn-small">След. →</button>
+        </div>
+
         <div style="margin-top:12px; display:flex; gap:8px;">
           <button id="modal-add" class="btn btn-primary" style="flex:1">Добавить в корзину</button>
           <button class="btn btn-outline" onclick="document.getElementById('modal').classList.add('hidden'); document.body.style.overflow='';">Закрыть</button>
@@ -508,11 +514,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const presetButtons = Array.from(document.querySelectorAll('.preset-btn'));
   const confirmTopupBtn = document.getElementById('confirmTopup');
 
-  // promo codes config (add new codes here)
-  const promoCodes = {
-    'SALE10': { type: 'percent', value: 10 },
-    'BONUS50': { type: 'fixed', value: 50 },
-    'WELCOME5': { type: 'percent', value: 5 }
+  // PROMO: profile area has NO promo codes (removed SALE10, BONUS50, WELCOME5)
+  const profilePromoCodes = {}; // intentionally empty: profile promo codes removed
+  // Checkout-only promo codes:
+  const checkoutPromoCodes = {
+    'MAGA': { type: 'percent', value: 15 } // 15% — только при оформлении
   };
 
   // state
@@ -603,13 +609,15 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => { updateHeights(); }, 80);
   };
 
-  // bottom nav click (delegated)
-  bottomNav.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-tab]');
-    if (!btn) return;
-    const tab = btn.dataset.tab;
-    if (!tab) return;
-    goToTab(tab);
+  // attach click handlers for bottom nav individually (fix navigation bug)
+  document.querySelectorAll('.bottom-nav button[data-tab]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const tab = btn.dataset.tab;
+      // ensure cart gets refreshed when opening
+      if (tab === 'cart') updateCartDisplay();
+      goToTab(tab);
+    });
   });
 
   function saveCart() {
@@ -682,7 +690,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updateCartDisplay();
 
+  // product cards cache & modal navigation state (for "листание")
+  let productCards = Array.from(document.querySelectorAll('#catalog .product-card'));
+  let currentProductIndex = 0;
+
   function attachProductButtons() {
+    // refresh cache (in case products change)
+    productCards = Array.from(document.querySelectorAll('#catalog .product-card'));
+
     document.querySelectorAll('.add-btn').forEach(btn => {
       if (btn._attached) return;
       btn._attached = true;
@@ -711,23 +726,70 @@ document.addEventListener("DOMContentLoaded", function () {
       btn._attachedDetails = true;
       btn.addEventListener('click', () => {
         const card = btn.closest('.product-card');
-        document.getElementById('modal-img').src = card.dataset.image;
-        document.getElementById('modal-title').textContent = card.dataset.name;
-        document.getElementById('modal-desc').textContent = card.dataset.desc;
-        document.getElementById('modal-price').textContent = parseFloat(card.dataset.price).toFixed(2) + ' ₽';
-        document.getElementById('modal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        currentProduct = card.dataset.name;
-        loadReviews();
-        document.getElementById('modal-add').onclick = () => {
-          addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
-          document.getElementById('modal').classList.add('hidden');
-          document.body.style.overflow = '';
-        };
+        // set current index for navigation
+        productCards = Array.from(document.querySelectorAll('#catalog .product-card'));
+        currentProductIndex = productCards.findIndex(c => c.dataset.name === card.dataset.name);
+        openModalForCard(card);
       });
     });
   }
   attachProductButtons();
+
+  function openModalForCard(card) {
+    document.getElementById('modal-img').src = card.dataset.image;
+    document.getElementById('modal-title').textContent = card.dataset.name;
+    document.getElementById('modal-desc').textContent = card.dataset.desc;
+    document.getElementById('modal-price').textContent = parseFloat(card.dataset.price).toFixed(2) + ' ₽';
+    document.getElementById('modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    currentProduct = card.dataset.name;
+    loadReviews();
+    // assign modal add behavior
+    document.getElementById('modal-add').onclick = () => {
+      addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
+      document.getElementById('modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    };
+  }
+
+  // modal prev/next navigation
+  const modalPrev = document.getElementById('modalPrev');
+  const modalNext = document.getElementById('modalNext');
+
+  function navigateModal(delta) {
+    productCards = Array.from(document.querySelectorAll('#catalog .product-card'));
+    if (!productCards.length) return;
+    currentProductIndex = (currentProductIndex + delta + productCards.length) % productCards.length;
+    const card = productCards[currentProductIndex];
+    openModalForCard(card);
+  }
+
+  modalPrev?.addEventListener('click', () => navigateModal(-1));
+  modalNext?.addEventListener('click', () => navigateModal(1));
+
+  // swipe support for modal (left/right)
+  let modalTouchStartX = 0;
+  const modalContentEl = document.querySelector('#modal .modal-content');
+  modalContentEl?.addEventListener('touchstart', (e) => {
+    if (!e.touches || !e.touches.length) return;
+    modalTouchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  modalContentEl?.addEventListener('touchend', (e) => {
+    if (!e.changedTouches || !e.changedTouches.length) return;
+    const dx = e.changedTouches[0].clientX - modalTouchStartX;
+    if (Math.abs(dx) > 40) {
+      if (dx < 0) navigateModal(1);
+      else navigateModal(-1);
+    }
+  }, { passive: true });
+
+  // keyboard arrow navigation (when modal is visible)
+  document.addEventListener('keydown', (e) => {
+    const m = document.getElementById('modal');
+    if (!m || m.classList.contains('hidden')) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); navigateModal(-1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); navigateModal(1); }
+  });
 
   document.getElementById('detailsCloseBtn')?.addEventListener('click', () => { document.getElementById('modal').classList.add('hidden'); document.body.style.overflow = ''; });
   window.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('modal')) { e.target.classList.add('hidden'); document.body.style.overflow = ''; } });
@@ -764,30 +826,26 @@ document.addEventListener("DOMContentLoaded", function () {
     showToast('Спасибо за отзыв!');
   });
 
-  // Promo handling (profile)
+  // Promo handling (profile) — profile promo codes removed; checkout-only codes exist
   const profilePromoInput = document.getElementById('promo-input');
   const profilePromoBtn = document.getElementById('promo-btn');
   const profilePromoMessage = document.getElementById('promo-message');
 
-  function validateAndApplyPromo(code) {
-    if (!code) return { ok:false, msg:'Введите код' };
-    const normalized = code.trim().toUpperCase();
-    const info = promoCodes[normalized];
-    if (!info) return { ok:false, msg:'Промокод не найден' };
-    return { ok:true, code: normalized, info };
-  }
-
   profilePromoBtn?.addEventListener('click', () => {
-    const code = profilePromoInput.value || '';
-    const res = validateAndApplyPromo(code);
-    if (!res.ok) {
-      profilePromoMessage.textContent = res.msg;
+    const code = (profilePromoInput.value || '').trim();
+    if (!code) { profilePromoMessage.textContent = 'Введите код'; return; }
+    const normalized = code.toUpperCase();
+    // If the code belongs to checkout-only, inform user
+    if (checkoutPromoCodes[normalized]) {
+      profilePromoMessage.style.color = '#ffd8b3';
+      profilePromoMessage.textContent = 'Этот промокод можно применить только при оформлении заказа';
+      setTimeout(()=> profilePromoMessage.textContent = '', 2500);
       return;
     }
-    localStorage.setItem('active_promo_v1', res.code);
-    profilePromoMessage.style.color = '#bfffcf';
-    profilePromoMessage.textContent = `Промокод ${res.code} активирован`;
-    setTimeout(()=> profilePromoMessage.textContent = '', 2500);
+    // otherwise, profile has no promo codes
+    profilePromoMessage.style.color = '#ffcccc';
+    profilePromoMessage.textContent = 'Промокод не найден';
+    setTimeout(()=> profilePromoMessage.textContent = '', 2000);
   });
 
   // Checkout flow
@@ -809,10 +867,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById('order-subtotal').textContent = total.toFixed(2) + ' ₽';
-    // prefill checkout promo from profile if present
-    const activePromo = localStorage.getItem('active_promo_v1') || '';
-    document.getElementById('checkoutPromoInput').value = activePromo;
-    checkoutAppliedPromo = null;
+    // prefill checkout promo from checkout-specific storage if present
+    const activeCheckoutPromo = localStorage.getItem('checkout_active_promo_v1') || '';
+    document.getElementById('checkoutPromoInput').value = activeCheckoutPromo;
+    checkoutAppliedPromo = activeCheckoutPromo || null;
     checkoutDiscountAmount = 0;
     recalcOrderTotals();
     document.getElementById('orderModal').classList.remove('hidden');
@@ -821,15 +879,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById('orderCloseBtn')?.addEventListener('click', () => { document.getElementById('orderModal').classList.add('hidden'); document.body.style.overflow = ''; });
 
-  // recalc totals with promo
+  // recalc totals with checkout-only promo
   function recalcOrderTotals() {
     const subtotal = parseFloat(total || 0);
     let discount = 0;
     if (checkoutAppliedPromo) {
-      const info = promoCodes[checkoutAppliedPromo];
+      const info = checkoutPromoCodes[checkoutAppliedPromo];
       if (info) {
         if (info.type === 'percent') {
-          discount = Math.round((subtotal * info.value) ) / 100;
+          discount = subtotal * info.value / 100;
         } else if (info.type === 'fixed') {
           discount = info.value;
         }
@@ -844,15 +902,15 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('order-total').textContent = 'К оплате: ' + final.toFixed(2) + ' ₽';
   }
 
-  // apply promo in checkout
+  // apply promo in checkout (only checkoutPromoCodes allowed)
   document.getElementById('checkoutApplyPromo')?.addEventListener('click', () => {
     const code = (document.getElementById('checkoutPromoInput').value || '').trim().toUpperCase();
     const msgEl = document.getElementById('checkoutPromoMessage');
     if (!code) { msgEl.textContent = 'Введите промокод'; return; }
-    const info = promoCodes[code];
+    const info = checkoutPromoCodes[code];
     if (!info) { msgEl.textContent = 'Промокод не найден'; return; }
     checkoutAppliedPromo = code;
-    localStorage.setItem('active_promo_v1', code); // also persist as active
+    localStorage.setItem('checkout_active_promo_v1', code); // persist only checkout promo
     msgEl.style.color = '#bfffcf';
     msgEl.textContent = `Промокод ${code} применён`;
     recalcOrderTotals();
@@ -967,6 +1025,7 @@ document.addEventListener("DOMContentLoaded", function () {
     total = 0;
     checkoutAppliedPromo = null;
     checkoutDiscountAmount = 0;
+    localStorage.removeItem('checkout_active_promo_v1'); // clear persisted checkout promo after use
     saveCart();
     updateCartDisplay();
 
