@@ -579,10 +579,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentProduct = '';
   let checkoutAppliedPromo = null;
   let checkoutDiscountAmount = 0;
-  let telegramUser = null;
-  try { telegramUser = (Telegram.WebApp && Telegram.WebApp.initDataUnsafe) ? Telegram.WebApp.initDataUnsafe.user : null; } catch(e){ telegramUser = null; }
-
-  function applyProfileInfo() {
+function applyProfileInfo() {
     const profileNameEl = document.getElementById('profile-username');
     const profileTgEl = document.getElementById('profile-tg');
     const profileIdEl = document.getElementById('profile-id');
