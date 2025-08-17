@@ -514,7 +514,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!res.ok) throw new Error('state fetch failed');
       const state = await res.json();
       if (typeof state.balance === 'number') localStorage.setItem('balance_v1', String(state.balance));
-      if (state.cart && typeof state.cart === 'object') localStorage.setItem('cart_v2', JSON.stringify(state.cart));
+      if (state.cart && typeof state.cart === 'object') localStorage.setItem('cart_v1', JSON.stringify(state.cart));
       if (Array.isArray(state.orders)) localStorage.setItem('orders_v1', JSON.stringify(state.orders));
       // update balance UI immediately if element exists
       try {
@@ -547,7 +547,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (key === 'balance_v1') {
         const balance = parseFloat(value || '0') || 0;
         pushPartialState({ balance });
-      } else if (key === 'cart_v2') {
+      } else if (key === 'cart_v1') {
         try { pushPartialState({ cart: JSON.parse(value || '{}') || {} }); } catch {}
       } else if (key === 'orders_v1') {
         try { pushPartialState({ orders: JSON.parse(value || '[]') || [] }); } catch {}
