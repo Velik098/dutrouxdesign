@@ -469,7 +469,7 @@
 
           <div class="topup-footer">
             <!-- ВКЛЮЧЕНО: реальная оплата через /api/create-payment -->
-            <button id="confirmTopup" class="btn btn-primary" style="width:100%;">Пополнить через T-Pay</button>
+            <button id="confirmTopup" class="btn btn-primary" style="width:100%;">Пополнить баланс</button>
           </div>
         </div>
       </div>
@@ -501,6 +501,64 @@ document.addEventListener("DOMContentLoaded", function () {
   const submitReview = document.getElementById('submitReview');
   const tabContent = document.getElementById('tabContent');
   const headerEl = document.getElementById('appHeader');
+
+  // === Account-wide sync (balance, cart, orders) across devices ===
+  const apiBase = window.location.origin;
+  let telegramUser = null;
+  try { telegramUser = Telegram?.WebApp?.initDataUnsafe?.user || null; } catch(e){ telegramUser = null; }
+  const USER_ID = String(telegramUser?.id || telegramUser?.username || 'guest');
+  
+  async function pullStateFromServer() {
+    try {
+      const res = await fetch(`${apiBase}/api/state/${encodeURIComponent(USER_ID)}`);
+      if (!res.ok) throw new Error('state fetch failed');
+      const state = await res.json();
+      if (typeof state.balance === 'number') localStorage.setItem('balance_v1', String(state.balance));
+      if (state.cart && typeof state.cart === 'object') localStorage.setItem('cart_v2', JSON.stringify(state.cart));
+      if (Array.isArray(state.orders)) localStorage.setItem('orders_v1', JSON.stringify(state.orders));
+      // update balance UI immediately if element exists
+      try {
+        const bal = parseFloat(localStorage.getItem('balance_v1') || '0');
+        const balEl = document.getElementById('balance-amount');
+        if (balEl) balEl.textContent = bal.toFixed(2) + ' ₽';
+      } catch(e){}
+    } catch (e) {
+      console.warn('State sync: failed to pull from server', e);
+    }
+  }
+
+  async function pushPartialState(partial) {
+    try {
+      await fetch(`${apiBase}/api/state/${encodeURIComponent(USER_ID)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(partial)
+      });
+    } catch (e) {
+      console.warn('State sync: failed to push to server', e);
+    }
+  }
+
+  // Mirror localStorage updates to server (only selected keys)
+  (function patchLocalStorage(){
+    const _setItem = localStorage.setItem.bind(localStorage);
+    localStorage.setItem = function(key, value) {
+      _setItem(key, value);
+      if (key === 'balance_v1') {
+        const balance = parseFloat(value || '0') || 0;
+        pushPartialState({ balance });
+      } else if (key === 'cart_v2') {
+        try { pushPartialState({ cart: JSON.parse(value || '{}') || {} }); } catch {}
+      } else if (key === 'orders_v1') {
+        try { pushPartialState({ orders: JSON.parse(value || '[]') || [] }); } catch {}
+      }
+    };
+  })();
+
+  // Initial pull from server on load
+  pullStateFromServer();
+  // === /Account-wide sync ===
+
 
   const topupModal = document.getElementById('topupModal');
   const topupCloseBtn = document.getElementById('topupCloseBtn');
@@ -1089,7 +1147,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const userId = getUserIdForPayment();
 
       try {
-        const res = await fetch('/api/create-payment', {
+        const res = await fetch(`${apiBase}/api/create-payment`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId, amount })
