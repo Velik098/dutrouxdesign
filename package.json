@@ -1,17 +1,19 @@
 {
-  "name": "nexus-style-bot",
+  "name": "dutroux-sell",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
+  "type": "module",
+  "main": "SERVER.JS.txt",
+  "license": "MIT",
   "dependencies": {
-  "express": "^4.18.2",
-  "axios": "^1.6.7",
-  "dotenv": "^16.3.1",
-  "telegraf": "^4.16.2",
-  "lowdb": "^6.0.1",
-  "nanoid": "^5.0.2",
-  "node-fetch": "^3.3.2"
-}
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node SERVER.JS.txt"
+  }
 }
