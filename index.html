@@ -1151,12 +1151,12 @@ function applyProfileInfo() {
 });
 
         const data = await res.json();
-        if (res.ok && data && data.paymentUrl) {
+        if (res.ok && data && (data.PaymentURL || data.paymentUrl)) {
           showToast('Переход на T-Pay…');
           // закрываем модалку перед редиректом, чтобы не залипала
           topupModal.classList.add('hidden');
           document.body.style.overflow = '';
-          openExternal(data.PaymentUrl);
+          openExternal(data.PaymentURL || data.paymentUrl);
         } else {
           const err = (data && (data.error || data.details?.Message)) || 'Не удалось создать платёж';
           showToast('Ошибка: ' + err);
