@@ -18,8 +18,9 @@ function generateToken(params) {
   const sorted = Object.keys(params)
     .filter(key => key !== 'DATA' && key !== 'Receipt' && key !== 'Token')
     .sort()
-    .map(key => params[key])
+    .map(key => `${key}=${params[key]}`)
     .join('') + PASSWORD;
+
   return crypto.createHash('sha256').update(sorted).digest('hex');
 }
 
