@@ -16,7 +16,7 @@ const NOTIFY_URL = 'https://dutroux-1.onrender.com/webhook'; // колбэк
 // === ФУНКЦИЯ ГЕНЕРАЦИИ ТОКЕНА ===
 function generateToken(params) {
   const sorted = Object.keys(params)
-    .filter(key => key !== 'DATA' && key !== 'Receipt')
+    .filter(key => key !== 'DATA' && key !== 'Receipt' && key !== 'Token')
     .sort()
     .map(key => params[key])
     .join('') + PASSWORD;
@@ -44,7 +44,7 @@ function generateToken(params) {
     ctx.reply(
       'Добро пожаловать в Dutroux Sell! Нажми кнопку ниже',
       Markup.inlineKeyboard([
-        Markup.button.webApp('�� Открыть магазин', `${WEBAPP_URL}`)
+        Markup.button.webApp('🛒 Открыть магазин', `${WEBAPP_URL}`)
       ])
     );
   });
@@ -61,7 +61,7 @@ function generateToken(params) {
 
       const params = {
         TerminalKey: TERMINAL_KEY,
-        Amount: amount * 100, // копейки
+        Amount: amt * 100, // копейки
         OrderId: nanoid(),
         Description: "Пополнение баланса",
         NotificationURL: NOTIFY_URL
@@ -81,18 +81,30 @@ function generateToken(params) {
 
   // === Колбэк от Тинькофф (после оплаты) ===
   app.post('/webhook', async (req, res) => {
-    // verify T-Bank signature
     try {
       const body = req.body || {};
-      const tokenOk = body.Token ? (generateToken({ **{k: v for k, v in body.items() if k != 'Token'}** })) : null
-    } catch(e) {}
-    const { Status, OrderId, Amount } = req.body;
 
-    if (Status === "CONFIRMED") {
-      await db.read();
-      db.data.balance += Amount / 100; // прибавляем рубли
-      await db.write();
-      console.log("✅ Баланс пополнен на", Amount / 100, "руб.");
+      // Проверяем подпись
+      let tokenOk = false;
+      if (body.Token) {
+        const data = { ...body };
+        delete data.Token;
+        const localToken = generateToken(data);
+        tokenOk = (localToken === body.Token);
+      }
+
+      const { Status, Amount } = body;
+
+      if (Status === "CONFIRMED" && tokenOk) {
+        await db.read();
+        db.data.balance += Amount / 100; // копейки → рубли
+        await db.write();
+        console.log("✅ Баланс пополнен на", Amount / 100, "руб.");
+      } else {
+        console.log("❌ Подпись не совпала или статус не CONFIRMED");
+      }
+    } catch (e) {
+      console.error("Ошибка в webhook:", e.message);
     }
 
     res.sendStatus(200);
