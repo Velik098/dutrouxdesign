@@ -203,9 +203,9 @@ app.post("/api/state/:userId", (req, res) => {
   res.json({ ok: true });
 });
 
-// ====== Раздаём статику (INDEX.HTML.txt => /) ======
+// ====== Раздаём статику (INDEX.HTML => /) ======
 app.get("/", (req, res) => {
-  const indexPath = path.join(__dirname, "INDEX.HTML.txt");
+  const indexPath = path.join(__dirname, "index.html");
   res.send(fs.readFileSync(indexPath, "utf8"));
 });
 
