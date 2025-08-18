@@ -2,7 +2,7 @@
   "name": "dutroux-sell",
   "version": "1.0.0",
   "type": "module",
-  "main": "SERVER.JS.txt",
+  "main": "server.js",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -14,6 +14,6 @@
     "node": ">=18"
   },
   "scripts": {
-    "start": "node SERVER.JS.txt"
+    "start": "node server.js"
   }
 }
