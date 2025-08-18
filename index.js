@@ -9,9 +9,9 @@ const crypto = require('crypto');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
-const TERMINAL_KEY = '1754495953908DEMO'; // ⚠️ Замени на боевой из Т-Бизнес
-const PASSWORD = '%woQMJBy3fIovnft';     // ⚠️ Замени на боевой из Т-Бизнес
-const NOTIFY_URL = 'https://dutroux-1.onrender.com/webhook'; // колбэк
+const TERMINAL_KEY = '1754495953908DEMO'; // ⚠️ Замени на боевой
+const PASSWORD = '%woQMJBy3fIovnft';     // ⚠️ Замени на боевой
+const NOTIFY_URL = 'https://dutroux-1.onrender.com/webhook';
 
 // === ФУНКЦИЯ ГЕНЕРАЦИИ ТОКЕНА ===
 function generateToken(params) {
@@ -36,7 +36,6 @@ function generateToken(params) {
   if (!db.data) db.data = { orders: [], balance: 0 };
   await db.write();
 
-  // === BODY PARSER ===
   app.use(bodyParser.json());
 
   // === Telegram старт ===
@@ -69,12 +68,16 @@ function generateToken(params) {
 
       params.Token = generateToken(params);
 
+      console.log("📤 Отправляем в Т-Банк:", params); // Логируем запрос
+
       const response = await axios.post("https://securepay.tinkoff.ru/v2/Init", params);
+      console.log("📥 Ответ от Т-Банк:", response.data); // Логируем ответ
+
       const d = response.data || {};
       if (d.PaymentURL && !d.paymentUrl) d.paymentUrl = d.PaymentURL;
       res.json(d);
     } catch (err) {
-      console.error("Ошибка при создании платежа:", err.message);
+      console.error("❌ Ошибка при создании платежа:", err.message);
       res.status(500).json({ error: "Ошибка соединения с сервером" });
     }
   });
@@ -83,8 +86,8 @@ function generateToken(params) {
   app.post('/webhook', async (req, res) => {
     try {
       const body = req.body || {};
+      console.log("📩 Вебхук:", body);
 
-      // Проверяем подпись
       let tokenOk = false;
       if (body.Token) {
         const data = { ...body };
@@ -115,5 +118,5 @@ function generateToken(params) {
 
   // === Запуск ===
   bot.launch();
-  app.listen(PORT, () => console.log(`Сервер запущен на порту ${PORT}`));
+  app.listen(PORT, () => console.log(`🚀 Сервер запущен на порту ${PORT}`));
 })();
