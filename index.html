@@ -1156,7 +1156,7 @@ function applyProfileInfo() {
           // закрываем модалку перед редиректом, чтобы не залипала
           topupModal.classList.add('hidden');
           document.body.style.overflow = '';
-          openExternal(data.paymentUrl);
+          openExternal(data.PaymentUrl);
         } else {
           const err = (data && (data.error || data.details?.Message)) || 'Не удалось создать платёж';
           showToast('Ошибка: ' + err);
