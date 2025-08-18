@@ -9,9 +9,9 @@ const crypto = require('crypto');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
-const TERMINAL_KEY = '1754495953908DEMO';
-const PASSWORD = '%woQMJBy3fIovnft';
-const NOTIFY_URL = 'https://dutroux-1.onrender.com/webhook'; // твой Notify URL
+const TERMINAL_KEY = '1754495953908DEMO'; // ⚠️ Замени на боевой из Т-Бизнес
+const PASSWORD = '%woQMJBy3fIovnft';     // ⚠️ Замени на боевой из Т-Бизнес
+const NOTIFY_URL = 'https://dutroux-1.onrender.com/webhook'; // колбэк
 
 // === ФУНКЦИЯ ГЕНЕРАЦИИ ТОКЕНА ===
 function generateToken(params) {
@@ -33,62 +33,63 @@ function generateToken(params) {
   const adapter = new JSONFile('db.json');
   const db = new Low(adapter, { orders: [], balance: 0 });
   await db.read();
-  db.data ||= { orders: [], balance: 0 };
+  if (!db.data) db.data = { orders: [], balance: 0 };
   await db.write();
 
   // === BODY PARSER ===
   app.use(bodyParser.json());
 
-  // === /start ===
+  // === Telegram старт ===
   bot.start((ctx) => {
     ctx.reply(
-      'Добро пожаловать в Dutroux Sell! Нажми кнопку ниже:',
+      'Добро пожаловать в Dutroux Sell! Нажми кнопку ниже',
       Markup.inlineKeyboard([
-        Markup.button.webApp('🛒 Открыть магазин', `${WEBAPP_URL}/`)
+        Markup.button.webApp('🛒 Открыть магазин', `${WEBAPP_URL}`)
       ])
     );
   });
 
-  // === МАРШРУТ ДЛЯ ОПЛАТЫ ===
-  app.post('/api/pay', async (req, res) => {
-    const { amount, username, userId, items } = req.body;
-
-    const orderId = 'ORD-' + Date.now();
-
-    const requestData = {
-      TerminalKey: TERMINAL_KEY,
-      Amount: amount * 100,
-      OrderId: orderId,
-      Description: `Покупка от ${username || 'гость'} (Telegram ID: ${userId})`,
-      SuccessURL: 'https://securepay.tinkoff.ru/html/payForm/success.html',
-      FailURL: 'https://securepay.tinkoff.ru/html/payForm/fail.html',
-      NotificationURL: NOTIFY_URL,
-    };
-
-    requestData.Token = generateToken(requestData);
-
+  // === Роут для фронта (создание платежа) ===
+  app.post('/create-payment', async (req, res) => {
     try {
-      const response = await axios.post('https://securepay.tinkoff.ru/v2/Init', requestData);
-      return res.json({ paymentUrl: response.data.PaymentURL, orderId });
+      const { amount, userId } = req.body;
+
+      const params = {
+        TerminalKey: TERMINAL_KEY,
+        Amount: amount * 100, // копейки
+        OrderId: nanoid(),
+        Description: "Пополнение баланса",
+        NotificationURL: NOTIFY_URL
+      };
+
+      params.Token = generateToken(params);
+
+      const response = await axios.post("https://securepay.tinkoff.ru/v2/Init", params);
+      res.json(response.data);
     } catch (err) {
-      console.error(err.response?.data || err.message);
-      return res.status(500).json({ error: 'Ошибка при создании платежа' });
+      console.error("Ошибка при создании платежа:", err.message);
+      res.status(500).json({ error: "Ошибка соединения с сервером" });
     }
   });
 
-  // === ОБРАБОТКА WEBHOOK (если будешь использовать) ===
+  // === Колбэк от Тинькофф (после оплаты) ===
   app.post('/webhook', async (req, res) => {
-    console.log('📥 Webhook получен:', req.body);
+    const { Status, OrderId, Amount } = req.body;
+
+    if (Status === "CONFIRMED") {
+      await db.read();
+      db.data.balance += Amount / 100; // прибавляем рубли
+      await db.write();
+      console.log("✅ Баланс пополнен на", Amount / 100, "руб.");
+    }
+
     res.sendStatus(200);
-    // Здесь можно обновить статус заказа в БД
   });
 
-  // === STATIC + BOT ===
-  app.use(bot.webhookCallback('/bot'));
-  bot.telegram.setWebhook(`${WEBAPP_URL}/bot`);
-  app.use('/', express.static(path.join(__dirname)));
+  // === Отдаём фронт (index.html) ===
+  app.use(express.static(path.join(__dirname)));
 
-  app.listen(PORT, () => {
-    console.log(`✅ WebApp доступен: http://localhost:${PORT}`);
-  });
+  // === Запуск ===
+  bot.launch();
+  app.listen(PORT, () => console.log(`Сервер запущен на порту ${PORT}`));
 })();
