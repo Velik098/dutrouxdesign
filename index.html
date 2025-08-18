@@ -1144,11 +1144,12 @@ function applyProfileInfo() {
       const userId = getUserIdForPayment();
 
       try {
-        const res = await fetch(`${apiBase}/api/create-payment`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId, amount })
-        });
+        const res = await fetch(`${apiBase}/create-payment`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ userId, amount })
+});
+
         const data = await res.json();
         if (res.ok && data && data.paymentUrl) {
           showToast('Переход на T-Pay…');
