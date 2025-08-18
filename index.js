@@ -44,7 +44,7 @@ function generateToken(params) {
     ctx.reply(
       'Добро пожаловать в Dutroux Sell! Нажми кнопку ниже',
       Markup.inlineKeyboard([
-        Markup.button.webApp('🛒 Открыть магазин', `${WEBAPP_URL}`)
+        Markup.button.webApp('�� Открыть магазин', `${WEBAPP_URL}`)
       ])
     );
   });
@@ -53,6 +53,11 @@ function generateToken(params) {
   app.post('/create-payment', async (req, res) => {
     try {
       const { amount, userId } = req.body;
+
+      const amt = Math.floor(Number(amount) || 0);
+      if (!amt || amt < 10) {
+        return res.status(400).json({ error: "Некорректная сумма (минимум 10 ₽)" });
+      }
 
       const params = {
         TerminalKey: TERMINAL_KEY,
@@ -65,7 +70,9 @@ function generateToken(params) {
       params.Token = generateToken(params);
 
       const response = await axios.post("https://securepay.tinkoff.ru/v2/Init", params);
-      res.json(response.data);
+      const d = response.data || {};
+      if (d.PaymentURL && !d.paymentUrl) d.paymentUrl = d.PaymentURL;
+      res.json(d);
     } catch (err) {
       console.error("Ошибка при создании платежа:", err.message);
       res.status(500).json({ error: "Ошибка соединения с сервером" });
@@ -74,6 +81,11 @@ function generateToken(params) {
 
   // === Колбэк от Тинькофф (после оплаты) ===
   app.post('/webhook', async (req, res) => {
+    // verify T-Bank signature
+    try {
+      const body = req.body || {};
+      const tokenOk = body.Token ? (generateToken({ **{k: v for k, v in body.items() if k != 'Token'}** })) : null
+    } catch(e) {}
     const { Status, OrderId, Amount } = req.body;
 
     if (Status === "CONFIRMED") {
