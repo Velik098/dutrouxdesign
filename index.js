@@ -11,7 +11,7 @@ require('dotenv').config();
 
 const TERMINAL_KEY = '1754495953908DEMO'; // ⚠️ Замени на боевой
 const PASSWORD = '%woQMJBy3fIovnft';     // ⚠️ Замени на боевой
-const NOTIFY_URL = 'https://dutroux-1.onrender.com/webhook';
+const NOTIFY_URL = 'https://dutrouxdesign.onrender.com/webhook';
 
 // === ФУНКЦИЯ ГЕНЕРАЦИИ ТОКЕНА ===
 function generateToken(params) {
@@ -28,7 +28,7 @@ function generateToken(params) {
   const bot = new Telegraf(process.env.BOT_TOKEN);
   const app = express();
   const PORT = process.env.PORT || 10000;
-  const WEBAPP_URL = 'https://dutroux-1.onrender.com';
+  const WEBAPP_URL = 'https://dutrouxdesign.onrender.com';
 
   // === ИНИЦИАЛИЗАЦИЯ DB ===
   const adapter = new JSONFile('db.json');
@@ -42,9 +42,9 @@ function generateToken(params) {
   // === Telegram старт ===
   bot.start((ctx) => {
     ctx.reply(
-      'Добро пожаловать в Dutroux Sell! Нажми кнопку ниже',
+      'Добро пожаловать в Dutroux Design! Нажми кнопку ниже',
       Markup.inlineKeyboard([
-        Markup.button.webApp('🛒 Открыть магазин', `${WEBAPP_URL}`)
+        Markup.button.webApp('🛒 Открыть', `${WEBAPP_URL}`)
       ])
     );
   });
