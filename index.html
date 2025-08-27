@@ -101,26 +101,42 @@ main {
   background: #131b3a;
   border-top: 1px solid #1f2a48;
 }
+
 .bottom-nav button {
   background: none;
   border: none;
-  color: #fff;
-  font-size: 20px;
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 60px;
 }
+
+.bottom-nav button svg {
+  margin-bottom: 4px;
+  fill: currentColor;
+  width: 28px;
+  height: 28px;
+}
+
+.bottom-nav button span {
+  color: currentColor;
+  font-size: 12px;
+}
+
 .bottom-nav button.active {
   color: #fff;
 }
+
 .bottom-nav button:not(:last-child)::after {
   content: '';
   position: absolute;
-  right: -25px;
+  right: 0;
   height: 50%;
   width: 1px;
   background: #fff;
@@ -191,22 +207,22 @@ main {
 <!-- Нижнее меню -->
 <div class="bottom-nav">
   <button onclick="showSection('portfolio', this)" class="active">
-    <!-- SVG белая иконка портфолио -->
-    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 24 24" width="24" height="24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <path d="M3 4h18v2H3V4zm0 4h18v2H3V8zm0 4h18v2H3v-2zm0 4h18v2H3v-2zm0 4h18v2H3v-2z"/>
     </svg>
+    <span>Портфолио</span>
   </button>
   <button onclick="showSection('reviews', this)">
-    <!-- SVG белая иконка отзывы -->
-    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 24 24" width="24" height="24">
-      <path d="M20 2H4a2 2 0 0 0-2 2v16l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M21 6h-18a1 1 0 0 0-1 1v11l4-4h15a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1z"/>
     </svg>
+    <span>Отзывы</span>
   </button>
   <button onclick="showSection('contacts', this)">
-    <!-- SVG белая иконка контакты -->
-    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 24 24" width="24" height="24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
     </svg>
+    <span>Контакты</span>
   </button>
 </div>
 
