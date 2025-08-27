@@ -1,1182 +1,214 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dutroux Sell🔥</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DutrouxDesign</title>
   <style>
-    :root{
-      --bg-1: #07060a;
-      --bg-2: #0f1724;
-      --neon-yellow: #ffd800;
-      --neon-red: #ff385c;
-      --neon-cyan: #00d4ff;
-      --muted: rgba(255,255,255,0.6);
-      --header-h: 72px;
-      --bottom-nav-h: 92px;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d1b2a;
+      color: white;
     }
-
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; padding: 0; }
-    body{
-      margin:0;
-      min-height:100vh;
-      font-family:"Poppins", "Montserrat", system-ui, Arial, sans-serif;
-      background:
-        radial-gradient(900px 500px at 10% 10%, rgba(0,212,255,0.035), transparent 8%),
-        radial-gradient(900px 500px at 90% 90%, rgba(186,255,0,0.02), transparent 8%),
-        linear-gradient(180deg,var(--bg-1),var(--bg-2));
-      color:#eaf6ff;
-      -webkit-font-smoothing:antialiased;
-      padding:0;
-      overflow-x:hidden;
+    header {
+      padding: 15px;
+      text-align: center;
+      background: #1b263b;
+      font-size: 20px;
+      font-weight: bold;
     }
-
-    .header{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:14px 16px;
-      position:relative;
-      z-index:30;
-      backdrop-filter: blur(6px);
-      border-bottom: 1px solid rgba(255,255,255,0.03);
-      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-      height: var(--header-h);
-      min-height: 56px;
-      justify-content: center;
+    .content {
+      padding: 15px;
+      margin-bottom: 60px;
     }
-    .header-inner{
-      display:flex;
-      align-items:center;
-      gap:12px;
+    .tabs {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      background: #1b263b;
+      border-top: 1px solid #415a77;
     }
-    .header img{height:44px;border-radius:12px;box-shadow:0 6px 30px rgba(0,0,0,0.6)}
-    .header h1{
-      font-size:18px;
-      margin:0;
-      line-height:1;
-      letter-spacing:0.2px;
-      color:var(--neon-cyan);
-      font-weight:700;
-      text-align:center;
-    }
-
-    .divider-horizontal{
-      height:1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
-      margin: 6px 0 8px 0;
-    }
-
-    /* --- Category marquee: keep it behind content so it won't overlap modals/tab content --- */
-    .category-marquee{ overflow:hidden; padding:8px 0; border-top:1px solid rgba(255,255,255,0.02); border-bottom:1px solid rgba(255,255,255,0.02); background: linear-gradient(90deg, rgba(0,0,0,0.12), transparent); position:relative; z-index:2; }
-    .category-track{ display:flex; gap:12px; animation: marquee 14s linear infinite; padding-left:6px; }
-    @keyframes marquee{ 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-    .category{ border:1px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00)); color: #fff; padding:8px 12px; border-radius:999px; font-weight:600; font-size:13px; cursor:pointer; box-shadow: 0 6px 18px rgba(0,0,0,0.6); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
-    .category:hover{ transform: translateY(-3px); border-color: rgba(186,255,0,0.9); box-shadow: 0 10px 30px rgba(186,255,0,0.06); }
-
-    /* Ensure tab content sits above marquee to avoid overlap */
-    .tab-content{ padding:12px 14px; height: calc(100vh - var(--header-h) - 24px); overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; padding-bottom: calc(var(--bottom-nav-h) + 20px); display: block; position:relative; z-index:20; }
-
-    .catalog-header{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-    .catalog-header .bar{ width:4px;height:28px;border-radius:4px; background: linear-gradient(180deg,var(--neon-cyan),var(--neon-yellow)); box-shadow: 0 6px 20px rgba(0,212,255,0.06); }
-    .catalog-header .title{ font-weight:700; font-size:18px; color:#fff; }
-
-    .product-card{ display:flex; gap:10px; align-items:flex-start; padding:10px; margin-bottom:12px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border: 1px solid rgba(255,255,255,0.03); transition: transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .22s ease, border-color .22s ease; position:relative; overflow:hidden; align-items:center; }
-    .product-card img{ width:84px; height:84px; object-fit:cover; border-radius:10px; flex-shrink:0; box-shadow: 0 8px 30px rgba(0,0,0,0.6); background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)); }
-    #catalog .product-card:hover{ transform: translateY(-6px); border-color: rgba(186,255,0,0.7); }
-
-    .product-info{ flex:1; min-width:0; display:flex; flex-direction:column; }
-    .product-title{ font-weight:700; font-size:16px; color:#fff; margin-bottom:6px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; }
-    .product-description{ color:var(--muted); font-size:13px; margin-bottom:8px; display:block; }
-    .product-price{ color:var(--neon-yellow); font-weight:700; font-size:14px; display:inline-block; }
-
-    .btn {
-      margin-top:10px;
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding:8px 12px;
-      border-radius:10px;
-      border:none;
-      font-weight:700;
-      cursor:pointer;
-      transition: transform .14s ease, box-shadow .14s ease;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-    }
-    .btn-outline {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
-      color:#cfefff;
-      border:1px solid rgba(255,255,255,0.04);
-    }
-    .btn-primary {
-      background: linear-gradient(90deg, var(--neon-yellow), var(--neon-red));
-      color:#000;
-      border: none;
-    }
-    .btn-accent {
-      background: linear-gradient(90deg, #0b5fff, #0077ff);
-      color:#fff;
-      border: none;
-    }
-    .btn-small { padding:6px 10px; border-radius:8px; font-weight:700; font-size:13px; }
-
-    .modal{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.7)); z-index:3000; padding:20px; }
-    .modal.hidden{ display:none; }
-    .modal-content{ width:100%; max-width:520px; background: linear-gradient(180deg, rgba(9,14,24,0.96), rgba(6,8,12,0.96)); border-radius:16px; padding:18px; color:#eaf6ff; box-shadow: 0 20px 60px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); position:relative; }
-    .modal-content h2, .modal-content h3{ margin-top:0; color:var(--neon-yellow); }
-
-    .modal-content {
-      max-height: calc(100vh - 120px);
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .modal-content button{ cursor:pointer; }
-    .modal-content input, .modal-content textarea{ background:#0f1724; border:1px solid rgba(255,255,255,0.04); color:#eaf6ff; padding:10px; border-radius:10px; width:100%; outline:none; }
-
-    .close-btn{ position:absolute; top:12px; right:14px; font-size:22px; color:#fff; opacity:0.95; cursor:pointer; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); width:36px;height:36px;border-radius:10px; display:flex;align-items:center;justify-content:center; border:1px solid rgba(255,255,255,0.03); }
-
-    .styled-card{ background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border:1px solid rgba(255,255,255,0.03); padding:12px;border-radius:12px;margin-bottom:12px; color: #eaf6ff; }
-
-    .bottom-nav{ position:fixed; left:12px;right:12px;bottom:12px; height:64px; display:flex; align-items:center; justify-content:space-around; gap:8px; background: linear-gradient(180deg, rgba(8,10,20,0.95), rgba(6,8,12,0.95)); border-radius:18px; padding:6px 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); z-index:9999; }
-    .bottom-nav button{ background:transparent;border:0;color:var(--neon-yellow);font-weight:700; display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;cursor:pointer; padding:6px 8px; border-radius:10px; }
-    .bottom-nav button.active, .bottom-nav button:hover{ color:var(--neon-red); transform:translateY(-2px); background: rgba(255,255,255,0.01); }
-
-    .cart-header{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 4px 12px 4px;}
-    .cart-body{ padding:8px 4px; color:var(--muted); min-height:80px; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
-
-    .back-btn{ background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:6px 10px;border-radius:10px;cursor:pointer }
-    /* Make checkout button text readable (white) — user complaint about too-yellow text fixed here */
-    .checkout-btn{ display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--neon-yellow),var(--neon-red));border:none;color:#fff;font-weight:800;cursor:pointer }
-
-    .promo-error{ margin-top:8px; color: #ffdddd; font-weight:700; }
-
-    .promocode-card input#promo-input {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
-      border: 1px solid rgba(255,255,255,0.04);
-      color: #eaf6ff;
+    .tab {
+      flex: 1;
       padding: 10px;
+      text-align: center;
+      color: white;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: #415a77;
+    }
+    .portfolio-card {
+      background: #1b263b;
       border-radius: 10px;
+      margin-bottom: 15px;
+      padding: 15px;
+    }
+    .portfolio-card h3 {
+      margin: 0 0 10px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 8px 12px;
+      margin-right: 10px;
+      background: #00b894;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .btn.secondary {
+      background: #0984e3;
+    }
+    .reviews {
+      margin-top: 15px;
+    }
+    .review {
+      background: #1b263b;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .review-form {
+      margin-top: 15px;
+    }
+    .review-form textarea {
       width: 100%;
+      height: 60px;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
       outline: none;
-      transition: box-shadow .12s ease, transform .08s ease;
+      resize: none;
     }
-    .promocode-card input#promo-input:focus {
-      box-shadow: 0 8px 30px rgba(0,212,255,0.06);
-      transform: translateY(-2px);
-    }
-
-    .topup-presets { display:flex; gap:8px; margin-top:8px; }
-    .preset-btn {
-      flex:1;
-      padding:10px 12px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.04);
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
-      cursor:pointer;
-      font-weight:700;
-      text-align:center;
-      /* Force blue text for presets as requested */
-      color: #0b84ff;
-    }
-    .preset-btn.active { border-color: rgba(255,215,0,0.9); box-shadow: 0 8px 30px rgba(255,215,0,0.06); transform:translateY(-2px); color: #fff; }
-
-    .topup-footer { display:flex; gap:8px; margin-top:14px; }
-    .topup-amount-input { font-size:18px; font-weight:700; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:#07101a; color:#eaf6ff; width:100%; text-align:center; }
-
-    @media (min-width:720px){ .modal-content{ max-width:640px; } .product-card{ gap:14px; padding:14px } .product-card img{ width:110px; height:110px; border-radius:12px; } :root { --bottom-nav-h: 80px; } }
-    @media (max-width:420px){ .header h1{ font-size:16px } .category{ padding:7px 10px; font-size:12px } .bottom-nav{ height:72px; left:8px; right:8px; bottom:8px; border-radius:14px;} :root { --bottom-nav-h: 110px; } }
-
-    .tab-pane { opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .18s ease, transform .18s ease; display: none; }
-    .tab-pane.active { opacity: 1; transform: translateY(0); pointer-events: auto; display: block; }
-
-    #toast{ border-radius:12px; padding:12px 18px; font-weight:600; letter-spacing:0.2px; box-shadow: 0 12px 30px rgba(0,0,0,0.6); position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:99999; opacity:0; transition:opacity .25s ease; background: rgba(0,0,0,0.85); color: #fff; }
-    #toast.show{ opacity:1; pointer-events:auto; }
-
-    .btn.disabled, .btn[disabled] {
-      opacity: 0.55;
-      cursor: not-allowed;
-      transform: none !important;
-      box-shadow: none !important;
-    }
-
-    .topup-title {
-      font-size: 15px;
-      font-weight: 700;
+    .contacts a {
+      display: block;
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #1b263b;
+      border-radius: 5px;
+      text-decoration: none;
+      color: white;
       text-align: center;
-      color: #fff;
-      margin: 0 0 6px 0;
     }
-    .topup-subtitle {
-      font-size: 13px;
-      text-align: center;
-      color: var(--muted);
-      margin-bottom: 8px;
+    /* Модальное окно */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
     }
-
-    .order-items { display:flex; flex-direction:column; gap:10px; max-height:320px; overflow:auto; padding-right:6px; }
-    .order-total-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px; }
-    .order-title { text-align:center; font-weight:800; color: #fff; font-size:18px; }
-    .order-pay-btn { margin-top:16px; width:100%; padding:12px 14px; border-radius:12px; font-weight:900; color:#fff; }
-    .small-muted { color:var(--muted); font-size:13px; }
+    .modal-content {
+      background: #1b263b;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+    }
+    .modal-content h3 {
+      margin-top: 0;
+    }
+    .close {
+      float: right;
+      cursor: pointer;
+      font-size: 18px;
+      color: #ccc;
+    }
   </style>
 </head>
 <body>
 
-  <div class="header" id="appHeader">
-    <div class="header-inner">
-      <img src="logo.png" alt="Logo" id="logoImg" style="height: 40px; border-radius: 12px;">
-      <h1 id="appTitle">Dutroux Sell 🔥</h1>
+  <header>DutrouxDesign</header>
+
+  <div class="content" id="portfolio">
+    <div class="portfolio-card">
+      <h3>Пример работы #1</h3>
+      <p>Описание моей первой работы. Очень красиво и качественно.</p>
+      <span class="btn secondary" onclick="openModal('Пример работы #1', 'Подробное описание моей первой работы...')">Подробнее</span>
+      <a href="https://t.me/yourusername" class="btn">Связаться</a>
+    </div>
+    <div class="portfolio-card">
+      <h3>Пример работы #2</h3>
+      <p>Описание второй работы. Дизайн, проект или арт.</p>
+      <span class="btn secondary" onclick="openModal('Пример работы #2', 'Детали второй работы, процесс и результат...')">Подробнее</span>
+      <a href="https://vk.com/yourgroup" class="btn">Связаться</a>
     </div>
   </div>
-  <div class="divider-horizontal"></div>
 
-  <div class="category-marquee" aria-hidden="true">
-    <div class="category-track" aria-hidden="true">
-      <button class="category">Приватка 💸</button>
-      <button class="category">Превью 🚀</button>
-      <button class="category">Оформление 🔥</button>
-      <button class="category">Приватка 💸</button>
-      <button class="category">Превью 🚀</button>
-      <button class="category">Оформление 🔥</button>
+  <div class="content" id="reviews" style="display: none;">
+    <h3>Отзывы</h3>
+    <div class="reviews" id="reviewsList">
+      <div class="review">🔥 Отличная работа, всё быстро и качественно!</div>
+      <div class="review">👍 Очень доволен сотрудничеством.</div>
+    </div>
+    <div class="review-form">
+      <textarea id="reviewText" placeholder="Оставьте свой отзыв..."></textarea>
+      <div class="btn" onclick="addReview()">Отправить</div>
     </div>
   </div>
 
-  <div class="tab-content" id="tabContent" role="main">
-    <div id="catalog" class="tab-pane active" data-tabname="catalog">
-      <div class="catalog-header">
-        <div class="bar"></div>
-        <div class="title">Товары</div>
-      </div>
-
-      <div class="product-card" data-name="Превью" data-price="200" data-image="preview.png" data-desc="Красочное превью для Вашего канала">
-        <img src="preview.png" alt="Preview">
-        <div class="product-info">
-          <div class="product-title">Превью</div>
-          <div class="product-description">Красочное превью для Вашего канала</div>
-          <div class="product-price">200 ₽</div>
-          <div style="margin-top:auto">
-            <button class="btn btn-outline details-btn">Подробнее</button>
-            <button class="btn btn-primary add-btn">Добавить в корзину</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-name="Приватка" data-price="300" data-image="privatka.png" data-desc="Доступ к приватному контенту для подписчиков">
-        <img src="privatka.png" alt="Приватка">
-        <div class="product-info">
-          <div class="product-title">Приватка</div>
-          <div class="product-description">Доступ к приватному контенту для подписчиков</div>
-          <div class="product-price">300 ₽</div>
-          <div style="margin-top:auto">
-            <button class="btn btn-outline details-btn">Подробнее</button>
-            <button class="btn btn-primary add-btn">Добавить в корзину</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-name="Оформление для YT канала" data-price="500" data-image="yt-design.png" data-desc="Профессиональное оформление для вашего YouTube-канала (баннер, аватар, стиль)">
-        <img src="yt-design.png" alt="Оформление для YT канала">
-        <div class="product-info">
-          <div class="product-title">Оформление для YT канала</div>
-          <div class="product-description">Профессиональное оформление для вашего YouTube-канала (баннер, аватар, стиль)</div>
-          <div class="product-price">500 ₽</div>
-          <div style="margin-top:auto">
-            <button class="btn btn-outline details-btn">Подробнее</button>
-            <button class="btn btn-primary add-btn">Добавить в корзину</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-name="3 Превью по цене 2" data-price="400" data-image="2for1.png" data-desc="Получите три уникальных превью по цене двух — выгодное предложение!">
-        <img src="2for1.png" alt="3 Превью по цене 2">
-        <div class="product-info">
-          <div class="product-title">3 Превью по цене 2</div>
-          <div class="product-description">Получите три уникальных превью по цене двух — выгодное предложение!</div>
-          <div class="product-price">400 ₽</div>
-          <div style="margin-top:auto">
-            <button class="btn btn-outline details-btn">Подробнее</button>
-            <button class="btn btn-primary add-btn">Добавить в корзину</button>
-          </div>
-        </div>
-      </div>
+  <div class="content" id="contacts" style="display: none;">
+    <h3>Контакты</h3>
+    <div class="contacts">
+      <a href="https://t.me/yourusername">Мой Telegram</a>
+      <a href="https://vk.com/yourgroup">Группа ВКонтакте</a>
     </div>
-
-    <!-- DETAILS modal -->
-    <div id="modal" class="modal hidden" aria-hidden="true">
-      <div class="modal-content" role="dialog" aria-labelledby="detailsTitle">
-        <span class="close-btn" id="detailsCloseBtn" aria-label="Закрыть">&times;</span>
-
-        <img id="modal-img" src="" alt="" style="max-width: 100%; border-radius: 8px; margin-bottom: 10px;">
-        <h2 id="modal-title"></h2>
-        <p id="modal-desc" style="color:var(--muted)"></p>
-        <div class="modal-price" id="modal-price" style="font-weight:800; color:var(--neon-yellow); margin-top:6px;"></div>
-
-        <div style="margin-top:12px; display:flex; gap:8px;">
-          <button id="modal-add" class="btn btn-primary" style="flex:1">Добавить в корзину</button>
-          <button class="btn btn-outline" onclick="document.getElementById('modal').classList.add('hidden'); document.body.style.overflow='';">Закрыть</button>
-        </div>
-
-        <div id="reviews-container" style="margin-top:12px">
-          <h3 style="margin-bottom:6px;">Отзывы:</h3>
-          <div id="modal-reviews" style="color:var(--muted);"></div>
-          <textarea id="reviewInput" rows="3" placeholder="Напишите ваш отзыв..." style="margin-top:8px"></textarea>
-          <button id="submitReview" class="btn btn-accent" style="margin-top:8px">Оставить отзыв</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="cart" class="tab-pane" data-tabname="cart" aria-hidden="true">
-      <div class="cart-header">
-        <button class="back-btn" onclick="goToTab('catalog')">← Назад</button>
-        <div class="title">Корзина</div>
-        <div class="total" id="total">0,00 ₽</div>
-      </div>
-      <div class="cart-body" id="cart-body">Здесь будут ваши товары.</div>
-      <div style="padding:10px;">
-        <button class="checkout-btn" id="checkout-btn" style="display: none;">Перейти к оформлению</button>
-      </div>
-    </div>
-
-    <div id="profile" class="tab-pane" data-tabname="profile" aria-hidden="true">
-      <div class="profile-card styled-card">
-        <div class="profile-header" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-          <div style="flex-shrink: 0;">
-            <div style="position: relative; width: 70px; height: 70px; cursor: pointer;" onclick="document.getElementById('avatarModal').classList.remove('hidden')">
-              <img id="user-avatar" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="Avatar"
-                   style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 10px rgba(0,0,0,0.4);" />
-              <img src="https://cdn-icons-png.flaticon.com/512/84/84380.png" alt="Edit" title="Изменить аватар"
-                   style="position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; padding: 2px;" />
-            </div>
-          </div>
-          <div style="text-align: right;">
-            <div id="profile-username" style="font-size: 18px; font-weight: bold;">Имя пользователя</div>
-            <div id="profile-tg" style="font-size: 14px; color: #ccc;"></div>
-            <div id="profile-id" style="font-size: 14px; color: #888;">ID: —</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="balance-card styled-card">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>Ваш баланс:</div>
-          <div id="balance-amount" style="font-weight: bold; font-size: 18px;">0 ₽</div>
-        </div>
-        <div style="display:flex; gap:8px; margin-top:10px;">
-          <button id="topup-btn" class="btn btn-accent">Пополнить баланс</button>
-        </div>
-      </div>
-
-      <hr style="margin: 18px 0; border-color: #333;">
-
-      <div class="promocode-card styled-card">
-        <div>Промокод:</div>
-        <input type="text" id="promo-input" placeholder="Введите промокод" style="margin-top: 8px;">
-        <div style="display:flex; gap:8px; margin-top:8px;">
-          <button id="promo-btn" class="btn btn-primary">Активировать</button>
-        </div>
-        <div id="promo-message" class="promo-error"></div>
-      </div>
-
-    </div>
-
-    <div id="avatarModal" class="modal hidden" aria-hidden="true">
-      <div class="modal-content">
-        <span class="close-btn" onclick="document.getElementById('avatarModal').classList.add('hidden')">&times;</span>
-        <h3>Выберите аватар</h3>
-        <p>Можно загрузить свой (PNG/JPG):</p>
-        <input type="file" id="avatarUpload" accept="image/png, image/jpeg" />
-        <hr style="margin: 15px 0;">
-        <p>Или выбрать из готовых:</p>
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <img src="blue.png" class="preset-avatar" alt="blue" width="60" style="cursor:pointer;border-radius:8px">
-          <img src="green.png" class="preset-avatar" alt="green" width="60" style="cursor:pointer;border-radius:8px">
-          <img src="purple.png" class="preset-avatar" alt="purple" width="60" style="cursor:pointer;border-radius:8px">
-          <img src="red.png" class="preset-avatar" alt="red" width="60" style="cursor:pointer;border-radius:8px">
-        </div>
-      </div>
-    </div>
-
-    <div id="usernameModal" class="modal hidden" aria-hidden="true">
-      <div class="modal-content">
-        <span id="usernameCloseBtn" class="close-btn" aria-label="Закрыть">&times;</span>
-        <h3>Укажите ваш Telegram username</h3>
-        <p>Это нужно, чтобы мы могли найти ваш платёж и выслать товар.</p>
-        <input type="text" id="tgUsernameInput" placeholder="@username" style="width: 100%; margin-top: 10px;">
-        <div style="margin-top: 15px;">
-          <button id="submitUsername" class="btn btn-accent">ОК</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ORDER modal — promo moved BELOW items and above pay button -->
-    <div id="orderModal" class="modal hidden" aria-hidden="true">
-      <div class="modal-content" role="dialog" aria-labelledby="orderTitle">
-        <span class="close-btn" id="orderCloseBtn" aria-label="Закрыть">&times;</span>
-
-        <h2 id="orderTitle" style="text-align:center; color:var(--neon-yellow); margin-bottom:6px;">Оформление заказа</h2>
-
-        <h3 class="order-title" id="order-total">К оплате: ... ₽</h3>
-
-        <div id="order-items-container" class="order-items" aria-live="polite" style="margin-bottom:8px;"></div>
-
-        <div class="order-total-row">
-          <div style="color:var(--muted); font-weight:700;">Сумма товаров:</div>
-          <div id="order-subtotal" style="font-weight:900; color:var(--neon-yellow);">0 ₽</div>
-        </div>
-        <div class="order-total-row" style="margin-top:6px;">
-          <div style="color:var(--muted); font-weight:700;">Скидка:</div>
-          <div id="order-discount" style="font-weight:900; color:#9ff0b0;">0 ₽</div>
-        </div>
-        <div class="order-total-row" style="margin-top:6px;">
-          <div style="color:var(--muted); font-weight:700;">Итого к списанию с баланса:</div>
-          <div id="order-final" style="font-weight:900; color:var(--neon-yellow);"></div>
-        </div>
-
-        <!-- PROMO moved here (ниже позиции и суммы, перед кнопкой оплаты) -->
-        <div style="margin-top:12px;">
-          <div class="small-muted">Промокод (можно применить прямо здесь):</div>
-          <div style="display:flex; gap:8px; margin-top:8px;">
-            <input id="checkoutPromoInput" placeholder="Введите промокод" style="flex:1;">
-            <button id="checkoutApplyPromo" class="btn btn-outline btn-small">Применить</button>
-          </div>
-          <div id="checkoutPromoMessage" class="promo-error" style="margin-top:6px;"></div>
-        </div>
-
-        <button id="paidButton" class="btn btn-primary order-pay-btn" style="background: linear-gradient(90deg,var(--neon-yellow),var(--neon-red));">Оплатить с баланса</button>
-      </div>
-    </div>
-
-    <!-- Topup modal -->
-    <div id="topupModal" class="modal hidden" aria-hidden="true">
-      <div class="modal-content" role="dialog" aria-labelledby="topupTitle" style="max-width:420px;">
-        <span class="close-btn" id="topupCloseBtn" aria-label="Закрыть">&times;</span>
-        <h3 class="topup-title" id="topupTitle">Пополнение баланса</h3>
-        <div class="topup-subtitle">ПОПОЛНИТЬ БАЛАНС В РУБЛЯХ</div>
-
-        <div style="margin-top:8px;">
-          <input id="topupAmount" class="topup-amount-input" type="number" min="1" placeholder="Введите сумму для пополнения" />
-          <div class="topup-presets" style="margin-top:10px;">
-            <button class="preset-btn" data-amount="100">+100 ₽</button>
-            <button class="preset-btn" data-amount="300">+300 ₽</button>
-            <button class="preset-btn" data-amount="500">+500 ₽</button>
-          </div>
-
-          <div class="topup-footer">
-            <!-- ВКЛЮЧЕНО: реальная оплата через /api/create-payment -->
-            <button id="confirmTopup" class="btn btn-primary" style="width:100%;">Пополнить баланс</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- ===== end topup modal ===== -->
-
   </div>
 
-  <div class="bottom-nav" id="bottomNav" aria-hidden="false">
-    <button class="active" data-tab="catalog"><img src="home.svg" alt="" style="width:20px;height:20px"><span>Каталог</span></button>
-    <button data-tab="cart"><img src="cart.svg" alt="" style="width:20px;height:20px"><span>Корзина</span></button>
-    <button data-tab="profile"><img src="profile.svg" alt="" style="width:20px;height:20px"><span>Профиль</span></button>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('portfolio', this)">Портфолио</div>
+    <div class="tab" onclick="switchTab('reviews', this)">Отзывы</div>
+    <div class="tab" onclick="switchTab('contacts', this)">Контакты</div>
   </div>
 
-  <div id="toast" role="status" aria-live="polite"></div>
+  <!-- Модалка -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+    </div>
+  </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  try { Telegram.WebApp?.ready?.(); Telegram.WebApp?.expand?.(); } catch(e){/*ignore*/}
-
-  const toast = document.getElementById('toast');
-  const bottomNav = document.getElementById('bottomNav');
-  const totalText = document.getElementById('total');
-  const cartBody = document.getElementById('cart-body');
-  const modal = document.getElementById('modal');
-  const checkoutBtn = document.getElementById('checkout-btn');
-  const modalReviews = document.getElementById('modal-reviews');
-  const reviewInput = document.getElementById('reviewInput');
-  const submitReview = document.getElementById('submitReview');
-  const tabContent = document.getElementById('tabContent');
-  const headerEl = document.getElementById('appHeader');
-
-  // === Account-wide sync (balance, cart, orders) across devices ===
-  const apiBase = window.location.origin;
-  let telegramUser = null;
-  try { telegramUser = Telegram?.WebApp?.initDataUnsafe?.user || null; } catch(e){ telegramUser = null; }
-  const USER_ID = String(telegramUser?.id || telegramUser?.username || 'guest');
-  
-  async function pullStateFromServer() {
-    try {
-      const res = await fetch(`${apiBase}/api/state/${encodeURIComponent(USER_ID)}`);
-      if (!res.ok) throw new Error('state fetch failed');
-      const state = await res.json();
-      if (typeof state.balance === 'number') localStorage.setItem('balance_v1', String(state.balance));
-      if (state.cart && typeof state.cart === 'object') localStorage.setItem('cart_v1', JSON.stringify(state.cart));
-      if (Array.isArray(state.orders)) localStorage.setItem('orders_v1', JSON.stringify(state.orders));
-      // update balance UI immediately if element exists
-      try {
-        const bal = parseFloat(localStorage.getItem('balance_v1') || '0');
-        const balEl = document.getElementById('balance-amount');
-        if (balEl) balEl.textContent = bal.toFixed(2) + ' ₽';
-      } catch(e){}
-    } catch (e) {
-      console.warn('State sync: failed to pull from server', e);
-    }
-  }
-
-  async function pushPartialState(partial) {
-    try {
-      await fetch(`${apiBase}/api/state/${encodeURIComponent(USER_ID)}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(partial)
-      });
-    } catch (e) {
-      console.warn('State sync: failed to push to server', e);
-    }
-  }
-
-  // Mirror localStorage updates to server (only selected keys)
-  (function patchLocalStorage(){
-    const _setItem = localStorage.setItem.bind(localStorage);
-    localStorage.setItem = function(key, value) {
-      _setItem(key, value);
-      if (key === 'balance_v1') {
-        const balance = parseFloat(value || '0') || 0;
-        pushPartialState({ balance });
-      } else if (key === 'cart_v1') {
-        try { pushPartialState({ cart: JSON.parse(value || '{}') || {} }); } catch {}
-      } else if (key === 'orders_v1') {
-        try { pushPartialState({ orders: JSON.parse(value || '[]') || [] }); } catch {}
-      }
-    };
-  })();
-
-  // Initial pull from server on load
-  pullStateFromServer();
-  // === /Account-wide sync ===
-
-
-  const topupModal = document.getElementById('topupModal');
-  const topupCloseBtn = document.getElementById('topupCloseBtn');
-  const topupAmountInput = document.getElementById('topupAmount');
-  const presetButtons = Array.from(document.querySelectorAll('.preset-btn'));
-  const confirmTopupBtn = document.getElementById('confirmTopup');
-
-  // promo codes config (add new codes here)
-  const promoCodes = {
-    'SALE10': { type: 'percent', value: 10 },
-    'BONUS50': { type: 'fixed', value: 50 },
-    'WELCOME5': { type: 'percent', value: 5 }
-  };
-
-  // state
-  let cart = JSON.parse(localStorage.getItem('cart_v1') || '{}');
-  let total = parseFloat(localStorage.getItem('cart_total_v1') || '0');
-  let currentProduct = '';
-  let checkoutAppliedPromo = null;
-  let checkoutDiscountAmount = 0;
-function applyProfileInfo() {
-    const profileNameEl = document.getElementById('profile-username');
-    const profileTgEl = document.getElementById('profile-tg');
-    const profileIdEl = document.getElementById('profile-id');
-    const userAvatarEl = document.getElementById('user-avatar');
-    const storedAvatar = localStorage.getItem('customAvatar');
-
-    let fullName = '';
-    if (telegramUser) {
-      const fn = telegramUser.first_name || '';
-      const ln = telegramUser.last_name || '';
-      fullName = (fn + (ln ? (' ' + ln) : '')).trim();
-    }
-    if (!fullName && localStorage.getItem('tg_username')) {
-      const su = localStorage.getItem('tg_username');
-      fullName = su.startsWith('@') ? su.substring(1) : su;
-    }
-    if (!fullName) fullName = 'Имя пользователя';
-
-    let handle = '';
-    if (telegramUser && telegramUser.username) handle = '@' + telegramUser.username;
-    else if (localStorage.getItem('tg_username')) handle = localStorage.getItem('tg_username').startsWith('@') ? localStorage.getItem('tg_username') : ('@' + localStorage.getItem('tg_username'));
-
-    const idText = 'ID: ' + (telegramUser && telegramUser.id ? telegramUser.id : '—');
-
-    profileNameEl.textContent = fullName;
-    profileTgEl.textContent = handle || '';
-    profileIdEl.textContent = idText;
-
-    if (storedAvatar) {
-      userAvatarEl.src = storedAvatar;
-    }
-  }
-
-  applyProfileInfo();
-
-  function showToast(message, ms = 1800) {
-    toast.textContent = message;
-    toast.classList.add('show');
-    clearTimeout(toast._t);
-    toast._t = setTimeout(()=> toast.classList.remove('show'), ms);
-  }
-
-  function updateHeights() {
-    const headerH = Math.max(56, Math.round(headerEl.getBoundingClientRect().height));
-    const bottomH = Math.max(64, Math.round(bottomNav.getBoundingClientRect().height + 12));
-    document.documentElement.style.setProperty('--header-h', headerH + 'px');
-    document.documentElement.style.setProperty('--bottom-nav-h', bottomH + 'px');
-    tabContent.style.height = `calc(100vh - ${headerH}px - 24px)`;
-  }
-  updateHeights();
-  window.addEventListener('resize', updateHeights);
-
-  // Robust tab switching helper
-  window.goToTab = function(id) {
-    // hide modals first
-    document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
-    document.body.style.overflow = '';
-    // deactivate panes
-    document.querySelectorAll('.tab-pane').forEach(t => {
-      t.classList.remove('active');
-      t.setAttribute('aria-hidden', 'true');
-    });
-    // show requested pane
-    const target = document.getElementById(id);
-    if (target) {
-      target.classList.add('active');
-      target.setAttribute('aria-hidden', 'false');
-      // ensure scroll top for better UX
-      try { target.scrollTop = 0; } catch(e){}
-    }
-    // update bottom nav active
-    document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
-    const navBtn = document.querySelector(`.bottom-nav button[data-tab="${id}"]`);
-    if (navBtn) navBtn.classList.add('active');
-    // small reflow after switching (fix for mobile WebApp oddities)
-    setTimeout(() => { updateHeights(); }, 80);
-  };
-
-  // bottom nav click (delegated)
-  bottomNav.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-tab]');
-    if (!btn) return;
-    const tab = btn.dataset.tab;
-    if (!tab) return;
-    goToTab(tab);
-  });
-
-  function saveCart() {
-    localStorage.setItem('cart_v1', JSON.stringify(cart));
-    localStorage.setItem('cart_total_v1', total.toFixed(2));
-  }
-
-  function addToCart(name, price, image) {
-    if (!cart[name]) cart[name] = { name, price: parseFloat(price), image, count: 0 };
-    cart[name].count++;
-    total = parseFloat((total + parseFloat(price)).toFixed(2));
-    saveCart();
-    updateCartDisplay();
-    showToast(`🛒 «${name}» добавлен в корзину`);
-    // Switch to cart — use a small delay to ensure UI updates properly (fixes case when coming from profile)
-    setTimeout(() => { goToTab('cart'); }, 120);
-  }
-
-  function updateCartDisplay() {
-    cartBody.innerHTML = '';
-    const keys = Object.keys(cart || {});
-    if (!keys.length) {
-      cartBody.textContent = 'Здесь будут ваши товары.';
-      totalText.textContent = '0,00 ₽';
-      checkoutBtn.style.display = 'none';
-      return;
+  <script>
+    function switchTab(tabId, element) {
+      document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
+      document.querySelector('#' + tabId).style.display = 'block';
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      element.classList.add('active');
     }
 
-    keys.forEach(k => {
-      const item = cart[k];
-      const div = document.createElement('div');
-      div.className = 'product-card';
-      div.innerHTML = `
-        <img src="${item.image}" alt="">
-        <div class="product-info">
-          <div class="product-title">${item.name}</div>
-          <div class="product-price">${item.price.toFixed(2)} ₽ × ${item.count}</div>
-          <div class="cart-controls" style="margin-top:8px">
-            <button class="btn btn-outline dec btn-small" data-name="${item.name}">−</button>
-            <button class="btn btn-outline inc btn-small" data-name="${item.name}">+</button>
-          </div>
-        </div>`;
-      cartBody.appendChild(div);
-    });
-
-    totalText.textContent = total.toFixed(2) + ' ₽';
-    checkoutBtn.style.display = 'block';
-
-    cartBody.querySelectorAll('.inc').forEach(btn => {
-      btn.onclick = () => {
-        const name = btn.dataset.name;
-        cart[name].count++;
-        total = parseFloat((total + cart[name].price).toFixed(2));
-        saveCart();
-        updateCartDisplay();
-      };
-    });
-    cartBody.querySelectorAll('.dec').forEach(btn => {
-      btn.onclick = () => {
-        const name = btn.dataset.name;
-        if (!cart[name]) return;
-        cart[name].count--;
-        total = parseFloat((total - cart[name].price).toFixed(2));
-        if (cart[name].count <= 0) delete cart[name];
-        saveCart();
-        updateCartDisplay();
-      };
-    });
-  }
-
-  updateCartDisplay();
-
-  function attachProductButtons() {
-    document.querySelectorAll('.add-btn').forEach(btn => {
-      if (btn._attached) return;
-      btn._attached = true;
-      btn.addEventListener('click', () => {
-        const card = btn.closest('.product-card');
-        const name = card.dataset.name;
-        const price = parseFloat(card.dataset.price);
-        const image = card.dataset.image;
-        addToCart(name, price, image);
-        btn.disabled = true;
-        const original = btn.textContent;
-        btn.textContent = '✅ Добавлено!';
-        btn.classList.add('pulse-animate');
-        btn.style.background = 'linear-gradient(90deg, #8cff00, #ff5a75)';
-        setTimeout(() => {
-          btn.textContent = original;
-          btn.disabled = false;
-          btn.classList.remove('pulse-animate');
-          btn.style.background = '';
-        }, 1200);
-      });
-    });
-
-    document.querySelectorAll('.details-btn').forEach(btn => {
-      if (btn._attachedDetails) return;
-      btn._attachedDetails = true;
-      btn.addEventListener('click', () => {
-        const card = btn.closest('.product-card');
-        document.getElementById('modal-img').src = card.dataset.image;
-        document.getElementById('modal-title').textContent = card.dataset.name;
-        document.getElementById('modal-desc').textContent = card.dataset.desc;
-        document.getElementById('modal-price').textContent = parseFloat(card.dataset.price).toFixed(2) + ' ₽';
-        document.getElementById('modal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        currentProduct = card.dataset.name;
-        loadReviews();
-        document.getElementById('modal-add').onclick = () => {
-          addToCart(card.dataset.name, +card.dataset.price, card.dataset.image);
-          document.getElementById('modal').classList.add('hidden');
-          document.body.style.overflow = '';
-        };
-      });
-    });
-  }
-  attachProductButtons();
-
-  document.getElementById('detailsCloseBtn')?.addEventListener('click', () => { document.getElementById('modal').classList.add('hidden'); document.body.style.overflow = ''; });
-  window.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('modal')) { e.target.classList.add('hidden'); document.body.style.overflow = ''; } });
-
-  function loadReviews() {
-    const key = `reviews_${currentProduct}`;
-    const reviews = JSON.parse(localStorage.getItem(key) || '[]');
-    modalReviews.innerHTML = '';
-    if (!reviews.length) {
-      modalReviews.innerHTML = '<p>Отзывов пока нет.</p>';
-    } else {
-      reviews.forEach(r => {
+    function addReview() {
+      const text = document.getElementById('reviewText').value.trim();
+      if (text) {
         const div = document.createElement('div');
-        div.className = 'review-item';
-        div.style.marginTop = '10px';
-        div.style.borderTop = '1px dashed rgba(255,255,255,0.04)';
-        div.style.paddingTop = '8px';
-        div.innerHTML = `<span style="color:var(--neon-yellow); font-weight:700">${r.name}</span>: ${r.text}`;
-        modalReviews.appendChild(div);
-      });
-    }
-  }
-
-  submitReview?.addEventListener('click', () => {
-    const text = reviewInput.value.trim();
-    if (!text) return alert('Напишите отзыв!');
-    const name = telegramUser ? (`${telegramUser.first_name || ''} ${(telegramUser.last_name || '').trim()}`.trim() || (telegramUser.username ? '@'+telegramUser.username : 'Аноним')) : (localStorage.getItem('tg_username') || 'Аноним');
-    const key = `reviews_${currentProduct}`;
-    const reviews = JSON.parse(localStorage.getItem(key) || '[]');
-    reviews.push({ name, text });
-    localStorage.setItem(key, JSON.stringify(reviews));
-    reviewInput.value = '';
-    loadReviews();
-    showToast('Спасибо за отзыв!');
-  });
-
-  // Promo handling (profile)
-  const profilePromoInput = document.getElementById('promo-input');
-  const profilePromoBtn = document.getElementById('promo-btn');
-  const profilePromoMessage = document.getElementById('promo-message');
-
-  function validateAndApplyPromo(code) {
-    if (!code) return { ok:false, msg:'Введите код' };
-    const normalized = code.trim().toUpperCase();
-    const info = promoCodes[normalized];
-    if (!info) return { ok:false, msg:'Промокод не найден' };
-    return { ok:true, code: normalized, info };
-    }
-
-  profilePromoBtn?.addEventListener('click', () => {
-    const code = profilePromoInput.value || '';
-    const res = validateAndApplyPromo(code);
-    if (!res.ok) {
-      profilePromoMessage.textContent = res.msg;
-      return;
-    }
-    localStorage.setItem('active_promo_v1', res.code);
-    profilePromoMessage.style.color = '#bfffcf';
-    profilePromoMessage.textContent = `Промокод ${res.code} активирован`;
-    setTimeout(()=> profilePromoMessage.textContent = '', 2500);
-  });
-
-  // Checkout flow
-  checkoutBtn?.addEventListener('click', () => {
-    const container = document.getElementById('order-items-container');
-    container.innerHTML = '';
-    Object.values(cart).forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'product-card';
-      div.innerHTML = `
-        <img src="${item.image}" alt="${item.name}">
-        <div class="product-info">
-          <div class="product-title">${item.name}</div>
-          <div class="product-description">Количество: ${item.count}</div>
-          <div class="product-price">${item.price.toFixed(2)} ₽ × ${item.count} = ${(item.price * item.count).toFixed(2)} ₽</div>
-        </div>
-      `;
-      container.appendChild(div);
-    });
-
-    document.getElementById('order-subtotal').textContent = total.toFixed(2) + ' ₽';
-    // prefill checkout promo from profile if present
-    const activePromo = localStorage.getItem('active_promo_v1') || '';
-    document.getElementById('checkoutPromoInput').value = activePromo;
-    checkoutAppliedPromo = null;
-    checkoutDiscountAmount = 0;
-    recalcOrderTotals();
-    document.getElementById('orderModal').classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-  });
-
-  document.getElementById('orderCloseBtn')?.addEventListener('click', () => { document.getElementById('orderModal').classList.add('hidden'); document.body.style.overflow = ''; });
-
-  // recalc totals with promo
-  function recalcOrderTotals() {
-    const subtotal = parseFloat(total || 0);
-    let discount = 0;
-    if (checkoutAppliedPromo) {
-      const info = promoCodes[checkoutAppliedPromo];
-      if (info) {
-        if (info.type === 'percent') {
-          discount = Math.round((subtotal * info.value) ) / 100;
-        } else if (info.type === 'fixed') {
-          discount = info.value;
-        }
-        if (discount > subtotal) discount = subtotal;
-      } else discount = 0;
-    }
-    checkoutDiscountAmount = Number(discount.toFixed(2));
-    const final = Number((subtotal - checkoutDiscountAmount).toFixed(2));
-    document.getElementById('order-subtotal').textContent = subtotal.toFixed(2) + ' ₽';
-    document.getElementById('order-discount').textContent = (-checkoutDiscountAmount).toFixed(2) + ' ₽';
-    document.getElementById('order-final').textContent = final.toFixed(2) + ' ₽';
-    document.getElementById('order-total').textContent = 'К оплате: ' + final.toFixed(2) + ' ₽';
-  }
-
-  // apply promo in checkout
-  document.getElementById('checkoutApplyPromo')?.addEventListener('click', () => {
-    const code = (document.getElementById('checkoutPromoInput').value || '').trim().toUpperCase();
-    const msgEl = document.getElementById('checkoutPromoMessage');
-    if (!code) { msgEl.textContent = 'Введите промокод'; return; }
-    const info = promoCodes[code];
-    if (!info) { msgEl.textContent = 'Промокод не найден'; return; }
-    checkoutAppliedPromo = code;
-    localStorage.setItem('active_promo_v1', code); // also persist as active
-    msgEl.style.color = '#bfffcf';
-    msgEl.textContent = `Промокод ${code} применён`;
-    recalcOrderTotals();
-    setTimeout(()=> msgEl.textContent = '', 2200);
-  });
-
-  // Payment WITH BALANCE (no external payment)
-  function getBalance() { return parseFloat(localStorage.getItem('balance_v1') || '0'); }
-  function setBalance(v) { localStorage.setItem('balance_v1', parseFloat(v).toFixed(2)); document.getElementById('balance-amount').textContent = parseFloat(v).toFixed(2) + ' ₽'; }
-  setBalance(getBalance());
-
-  // Opens chat with owner and prefills message
-  function openChatWithOwner(ownerUsername, message) {
-    try {
-      const encoded = encodeURIComponent(message);
-      const url = `https://t.me/${ownerUsername}?text=${encoded}`;
-      if (window.Telegram && Telegram.WebApp && typeof Telegram.WebApp.openLink === 'function') {
-        Telegram.WebApp.openLink(url);
-      } else {
-        window.open(url, '_blank');
+        div.className = 'review';
+        div.textContent = text;
+        document.getElementById('reviewsList').appendChild(div);
+        document.getElementById('reviewText').value = '';
       }
-    } catch (e) {
-      console.error('openChatWithOwner error', e);
-      window.open(`https://t.me/${ownerUsername}`, '_blank');
-    }
-  }
-
-  function buildOrderMessage(order) {
-    const items = order.items || {};
-    const lines = [];
-    Object.values(items).forEach(it => {
-      lines.push(`${it.name} × ${it.count} — ${ (it.price * it.count).toFixed(2) } ₽`);
-    });
-    const buyerHandle = (telegramUser && telegramUser.username) ? ('@' + telegramUser.username) : (localStorage.getItem('tg_username') || 'Не указан');
-    const date = new Date(order.date).toLocaleString();
-    const promoText = order.promo ? order.promo : '—';
-    const msg = [
-      `Новый заказ!`,
-      `Код заказа: ${order.id}`,
-      `Покупатель: ${buyerHandle}`,
-      `Дата: ${date}`,
-      ``,
-      `Товары:`,
-      `${lines.join('\n')}`,
-      ``,
-      `Сумма: ${Number(order.total).toFixed(2)} ₽`,
-      `Промокод: ${promoText}`,
-      `Оплачено: ${order.paidWith || '—'}`,
-      ``,
-      `Пожалуйста, обработайте заказ и свяжитесь с покупателем.`
-    ].join('\n');
-    return msg;
-  }
-
-  document.getElementById('paidButton')?.addEventListener('click', () => {
-    const usernameSaved = localStorage.getItem('tg_username');
-    if (!usernameSaved && (!telegramUser || !telegramUser.username)) {
-      document.getElementById('usernameModal').classList.remove('hidden');
-      setTimeout(()=> { document.getElementById('tgUsernameInput')?.focus(); }, 160);
-      return;
     }
 
-    const finalText = document.getElementById('order-final').textContent || '0';
-    const amountToPay = parseFloat(finalText.replace(/[^\d.,-]/g, '').replace(',', '.')) || 0;
-
-    if (amountToPay <= 0) {
-      showToast("Сумма должна быть больше 0");
-      return;
+    function openModal(title, desc) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDesc').textContent = desc;
+      document.getElementById('modal').style.display = 'flex';
     }
 
-    const currentBalance = getBalance();
-    if (currentBalance < amountToPay) {
-      const need = (amountToPay - currentBalance);
-      topupModal.classList.remove('hidden');
-      topupModal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      topupAmountInput.value = Math.ceil(need);
-      showToast('Недостаточно средств — предложено пополнить баланс');
-      return;
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
     }
+  </script>
 
-    const newBalance = Number((currentBalance - amountToPay).toFixed(2));
-    setBalance(newBalance);
-
-    const payloadId = 'order_' + Date.now();
-    const orderObj = {
-      id: payloadId,
-      items: cart,
-      total: amountToPay.toFixed(2),
-      date: new Date().toISOString(),
-      promo: checkoutAppliedPromo || null,
-      paidWith: 'balance'
-    };
-
-    saveOrderHistory(orderObj);
-
-    const ownerUsername = 'Dutrouxhelper'; // <-- поменяйте на ваш @username если нужно
-    const message = buildOrderMessage(orderObj);
-
-    cart = {};
-    total = 0;
-    checkoutAppliedPromo = null;
-    checkoutDiscountAmount = 0;
-    saveCart();
-    updateCartDisplay();
-
-    document.getElementById('orderModal').classList.add('hidden');
-    document.body.style.overflow = '';
-    showToast('✅ Успешно оплачено с баланса');
-
-    setTimeout(() => {
-      openChatWithOwner(ownerUsername, message);
-    }, 650);
-  });
-
-  // username modal
-  document.getElementById('usernameCloseBtn')?.addEventListener('click', () => {
-    document.getElementById('usernameModal').classList.add('hidden');
-  });
-  document.getElementById('submitUsername')?.addEventListener('click', () => {
-    const val = (document.getElementById('tgUsernameInput').value || '').trim();
-    if (!val) { showToast('Введите username'); return; }
-    const normalized = val.startsWith('@') ? val : ('@' + val);
-    localStorage.setItem('tg_username', normalized);
-    showToast('Username сохранён');
-    document.getElementById('usernameModal').classList.add('hidden');
-    applyProfileInfo();
-    setTimeout(() => {
-      if (document.getElementById('orderModal')) {
-        document.getElementById('orderModal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-      }
-    }, 140);
-  });
-
-  // avatar upload & presets
-  document.getElementById('avatarUpload')?.addEventListener('change', (e) => {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    if (!file.type.startsWith('image/')) { alert('Только изображения'); return; }
-    const reader = new FileReader();
-    reader.onload = function(ev) {
-      const dataUrl = ev.target.result;
-      localStorage.setItem('customAvatar', dataUrl);
-      document.getElementById('user-avatar').src = dataUrl;
-      showToast('Аватар сохранён');
-      document.getElementById('avatarModal').classList.add('hidden');
-      applyProfileInfo();
-    };
-    reader.readAsDataURL(file);
-  });
-
-  document.querySelectorAll('.preset-avatar').forEach(img => {
-    img.addEventListener('click', () => {
-      const src = img.src;
-      localStorage.setItem('customAvatar', src);
-      document.getElementById('user-avatar').src = src;
-      showToast('Аватар выбран');
-      document.getElementById('avatarModal').classList.add('hidden');
-      applyProfileInfo();
-    });
-  });
-
-  // Topup modal open
-  document.getElementById('topup-btn')?.addEventListener('click', () => {
-    topupAmountInput.value = '';
-    presetButtons.forEach(b => b.classList.remove('active'));
-    topupModal.classList.remove('hidden');
-    topupModal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    setTimeout(()=> topupAmountInput.focus(), 120);
-  });
-
-  topupCloseBtn?.addEventListener('click', () => {
-    topupModal.classList.add('hidden');
-    topupModal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  });
-
-  presetButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const amount = parseFloat(btn.dataset.amount || '0');
-      if (isNaN(amount) || amount <= 0) return;
-      topupAmountInput.value = amount;
-      presetButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-
-  // ======== Реальная оплата через ваш server.js (/api/create-payment) ========
-  function getUserIdForPayment() {
-    try {
-      const tgId = Telegram.WebApp?.initDataUnsafe?.user?.id;
-      if (tgId) return String(tgId);
-    } catch(e){}
-    let saved = localStorage.getItem('tg_user_id');
-    if (!saved) {
-      saved = 'guest_' + Date.now();
-      localStorage.setItem('tg_user_id', saved);
-    }
-    return saved;
-  }
-
-  function openExternal(url) {
-    try {
-      if (window.Telegram && Telegram.WebApp && typeof Telegram.WebApp.openLink === 'function') {
-        Telegram.WebApp.openLink(url);
-      } else {
-        window.location.href = url;
-      }
-    } catch(e) {
-      window.location.href = url;
-    }
-  }
-
-  if (confirmTopupBtn) {
-    confirmTopupBtn.disabled = false;
-    confirmTopupBtn.classList.remove('disabled');
-    confirmTopupBtn.onclick = async (e) => {
-      e.preventDefault();
-      const raw = (topupAmountInput.value || '').replace(',', '.').trim();
-      const amount = parseFloat(raw);
-      if (!amount || amount <= 0) {
-        showToast('Введите корректную сумму (₽)');
-        topupAmountInput.focus();
-        return false;
-      }
-
-      // визуальный лоадер
-      const originalText = confirmTopupBtn.textContent;
-      confirmTopupBtn.textContent = 'Создаём платёж...';
-      confirmTopupBtn.disabled = true;
-
-      const userId = getUserIdForPayment();
-
-      try {
-        const res = await fetch(`${apiBase}/create-payment`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ userId, amount })
-});
-
-        const data = await res.json();
-        if (res.ok && data && (data.PaymentURL || data.paymentUrl)) {
-          showToast('Переход на T-Pay…');
-          // закрываем модалку перед редиректом, чтобы не залипала
-          topupModal.classList.add('hidden');
-          document.body.style.overflow = '';
-          openExternal(data.PaymentURL || data.paymentUrl);
-        } else {
-          const err = (data && (data.error || data.details?.Message)) || 'Не удалось создать платёж';
-          showToast('Ошибка: ' + err);
-          confirmTopupBtn.textContent = originalText;
-          confirmTopupBtn.disabled = false;
-        }
-      } catch (err) {
-        console.error('create-payment error', err);
-        showToast('Ошибка соединения с сервером');
-        confirmTopupBtn.textContent = originalText;
-        confirmTopupBtn.disabled = false;
-      }
-      return false;
-    };
-  }
-  // ==========================================================================
-
-  //
-
-}); 
-</script>
 </body>
 </html>
