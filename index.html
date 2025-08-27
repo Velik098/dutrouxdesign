@@ -95,11 +95,12 @@ main {
 /* ===== Нижнее меню ===== */
 .bottom-nav {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding: 10px 0;
   background: #131b3a;
   border-top: 1px solid #1f2a48;
+  position: relative;
 }
 
 .bottom-nav button {
@@ -112,8 +113,8 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex: 1;
   position: relative;
-  width: 80px;
   height: 60px;
 }
 
@@ -133,16 +134,20 @@ main {
   color: #fff;
 }
 
-.bottom-nav button:not(:last-child)::after {
+.bottom-nav::before,
+.bottom-nav::after,
+.bottom-nav .divider {
   content: '';
   position: absolute;
-  right: 0;
-  height: 50%;
+  top: 10px;
+  bottom: 10px;
   width: 1px;
   background: #fff;
   opacity: 0.2;
-  top: 25%;
 }
+
+.bottom-nav .divider:nth-child(1) { left: 33.33%; }
+.bottom-nav .divider:nth-child(2) { left: 66.66%; }
 
 /* Модалка */
 .modal {
@@ -206,19 +211,25 @@ main {
 
 <!-- Нижнее меню -->
 <div class="bottom-nav">
+  <div class="divider"></div>
+  <div class="divider"></div>
+
   <button onclick="showSection('portfolio', this)" class="active">
+    <!-- Новая иконка Портфолио -->
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M3 4h18v2H3V4zm0 4h18v2H3V8zm0 4h18v2H3v-2zm0 4h18v2H3v-2zm0 4h18v2H3v-2z"/>
+      <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/>
     </svg>
     <span>Портфолио</span>
   </button>
   <button onclick="showSection('reviews', this)">
+    <!-- Новая иконка Отзывы -->
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M21 6h-18a1 1 0 0 0-1 1v11l4-4h15a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1z"/>
+      <path d="M2 2h20v16H6l-4 4V2z"/>
     </svg>
     <span>Отзывы</span>
   </button>
   <button onclick="showSection('contacts', this)">
+    <!-- Иконка Контакты -->
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
     </svg>
