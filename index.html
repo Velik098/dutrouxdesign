@@ -1,167 +1,166 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Портфолио 🔥</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0a0f24;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dutroux Design</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0a0f24;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 
-    header {
-      background: linear-gradient(90deg, #1a1f3c, #0d1331);
-      padding: 20px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-      color: #fff;
-      border-bottom: 1px solid #1f2a48;
-      text-shadow: 0 0 8px #00f0ff;
-    }
+header {
+  background: #131b3a;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  border-bottom: 1px solid #1f2a48;
+}
 
-    main {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-    }
+main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
 
-    .card {
-      background: #131b3a;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 15px rgba(0,255,255,0.15);
-      transition: 0.3s;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 20px rgba(0,255,255,0.3);
-    }
+.card {
+  background: #131b3a;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(255,255,255,0.05);
+}
+.card h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: #fff;
+}
+.card p {
+  margin: 0;
+  font-size: 14px;
+  color: #ccc;
+}
 
-    .card h3 {
-      margin: 0 0 10px 0;
-      font-size: 18px;
-      color: #00f0ff;
-    }
-    .card p {
-      margin: 0;
-      font-size: 14px;
-      color: #ccc;
-    }
+.btn {
+  display: inline-block;
+  padding: 10px 15px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
+.btn:hover {
+  opacity: 0.85;
+}
 
-    .btn {
-      display: inline-block;
-      padding: 10px 15px;
-      background: linear-gradient(90deg, #00f0ff, #007bff);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      transition: 0.3s;
-      margin-top: 10px;
-      text-align: center;
-    }
-    .btn:hover {
-      background: linear-gradient(90deg, #007bff, #00f0ff);
-      box-shadow: 0 0 10px #00f0ff;
-    }
+.review {
+  border-top: 1px solid #1f2a48;
+  padding-top: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #aaa;
+}
 
-    .review {
-      border-top: 1px solid #1f2a48;
-      padding-top: 10px;
-      margin-top: 10px;
-      font-size: 14px;
-      color: #aaa;
-    }
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.contact a {
+  color: #fff;
+  text-decoration: none;
+}
+.contact a:hover {
+  opacity: 0.8;
+}
 
-    .contact {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .contact a {
-      color: #00f0ff;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-    .contact a:hover {
-      color: #fff;
-      text-shadow: 0 0 6px #00f0ff;
-    }
+/* ===== Нижнее меню ===== */
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  background: #131b3a;
+  border-top: 1px solid #1f2a48;
+}
+.bottom-nav button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+.bottom-nav button.active {
+  color: #fff;
+}
+.bottom-nav button:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -25px;
+  height: 50%;
+  width: 1px;
+  background: #fff;
+  opacity: 0.2;
+  top: 25%;
+}
 
-    /* ===== Нижнее меню ===== */
-    .bottom-nav {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 10px 0;
-      background: #0d1331;
-      border-top: 1px solid #1f2a48;
-    }
-    .bottom-nav button {
-      background: none;
-      border: none;
-      color: #ccc;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.3s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .bottom-nav button span {
-      font-size: 18px; /* иконка */
-    }
-    .bottom-nav button.active {
-      color: #00f0ff;
-      text-shadow: 0 0 8px #00f0ff;
-    }
-
-    /* ===== Модалка ===== */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background: #131b3a;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 400px;
-      width: 80%;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(0,255,255,0.4);
-    }
-    .modal-content h2 {
-      margin-top: 0;
-      color: #00f0ff;
-    }
-  </style>
+/* Модалка */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: #131b3a;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 80%;
+  text-align: center;
+}
+.modal-content h2 {
+  margin-top: 0;
+  color: #fff;
+}
+</style>
 </head>
 <body>
 
-<header>🔥 Портфолио 🔥</header>
+<header>Dutroux Design</header>
 
 <main id="content">
-  <!-- Портфолио -->
   <section id="portfolio">
     <div class="card">
       <h3>Проект 1</h3>
-      <p>Описание первого проекта в стиле Dutroux Sell🔥.</p>
+      <p>Описание первого проекта.</p>
       <button class="btn" onclick="openModal('Проект 1')">Подробнее</button>
     </div>
     <div class="card">
@@ -171,22 +170,20 @@
     </div>
   </section>
 
-  <!-- Отзывы -->
   <section id="reviews" style="display:none;">
     <div class="card">
       <h3>Отзывы клиентов</h3>
-      <div class="review">🔥 Отличная работа, всё супер!</div>
-      <div class="review">⚡ Быстро и качественно.</div>
+      <div class="review">Отличная работа!</div>
+      <div class="review">Быстро и качественно.</div>
       <button class="btn" onclick="openModal('Оставить отзыв')">Оставить отзыв</button>
     </div>
   </section>
 
-  <!-- Контакты -->
   <section id="contacts" style="display:none;">
     <div class="card contact">
-      <h3>Связаться со мной</h3>
-      <a href="https://t.me/yourusername">📩 Telegram</a>
-      <a href="mailto:example@mail.com">📧 Email</a>
+      <h3>Связаться</h3>
+      <a href="https://t.me/yourusername">Telegram</a>
+      <a href="mailto:example@mail.com">Email</a>
     </div>
   </section>
 </main>
@@ -194,42 +191,48 @@
 <!-- Нижнее меню -->
 <div class="bottom-nav">
   <button onclick="showSection('portfolio', this)" class="active">
-    <span>📁</span> Портфолио
+    <!-- SVG белая иконка портфолио -->
+    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 24 24" width="24" height="24">
+      <path d="M3 4h18v2H3V4zm0 4h18v2H3V8zm0 4h18v2H3v-2zm0 4h18v2H3v-2zm0 4h18v2H3v-2z"/>
+    </svg>
   </button>
   <button onclick="showSection('reviews', this)">
-    <span>💬</span> Отзывы
+    <!-- SVG белая иконка отзывы -->
+    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 24 24" width="24" height="24">
+      <path d="M20 2H4a2 2 0 0 0-2 2v16l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+    </svg>
   </button>
   <button onclick="showSection('contacts', this)">
-    <span>📞</span> Контакты
+    <!-- SVG белая иконка контакты -->
+    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 24 24" width="24" height="24">
+      <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+    </svg>
   </button>
 </div>
 
-<!-- Модалка -->
 <div id="modal" class="modal">
   <div class="modal-content">
     <h2 id="modal-title"></h2>
-    <p>Здесь будет подробная информация...</p>
+    <p>Подробная информация о проекте...</p>
     <button class="btn" onclick="closeModal()">Закрыть</button>
   </div>
 </div>
 
 <script>
-  // Переключение вкладок
-  function showSection(id, el) {
-    document.querySelectorAll("main section").forEach(s => s.style.display = "none");
-    document.getElementById(id).style.display = "block";
-    document.querySelectorAll(".bottom-nav button").forEach(b => b.classList.remove("active"));
-    el.classList.add("active");
-  }
+function showSection(id, el) {
+  document.querySelectorAll("main section").forEach(s => s.style.display = "none");
+  document.getElementById(id).style.display = "block";
+  document.querySelectorAll(".bottom-nav button").forEach(b => b.classList.remove("active"));
+  el.classList.add("active");
+}
 
-  // Модалка
-  function openModal(title) {
-    document.getElementById("modal-title").textContent = title;
-    document.getElementById("modal").style.display = "flex";
-  }
-  function closeModal() {
-    document.getElementById("modal").style.display = "none";
-  }
+function openModal(title) {
+  document.getElementById("modal-title").textContent = title;
+  document.getElementById("modal").style.display = "flex";
+}
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
 </script>
 
 </body>
