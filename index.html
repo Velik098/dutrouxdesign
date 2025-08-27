@@ -3,212 +3,234 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DutrouxDesign</title>
+  <title>Портфолио 🔥</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d1b2a;
-      color: white;
-    }
-    header {
-      padding: 15px;
-      text-align: center;
-      background: #1b263b;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .content {
-      padding: 15px;
-      margin-bottom: 60px;
-    }
-    .tabs {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0a0f24;
+      color: #fff;
       display: flex;
-      background: #1b263b;
-      border-top: 1px solid #415a77;
+      flex-direction: column;
+      height: 100vh;
     }
-    .tab {
-      flex: 1;
-      padding: 10px;
+
+    header {
+      background: linear-gradient(90deg, #1a1f3c, #0d1331);
+      padding: 20px;
       text-align: center;
-      color: white;
-      cursor: pointer;
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      border-bottom: 1px solid #1f2a48;
+      text-shadow: 0 0 8px #00f0ff;
     }
-    .tab.active {
-      background: #415a77;
+
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
     }
-    .portfolio-card {
-      background: #1b263b;
-      border-radius: 10px;
-      margin-bottom: 15px;
+
+    .card {
+      background: #131b3a;
+      border-radius: 12px;
       padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.15);
+      transition: 0.3s;
     }
-    .portfolio-card h3 {
-      margin: 0 0 10px;
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0,255,255,0.3);
     }
+
+    .card h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      color: #00f0ff;
+    }
+    .card p {
+      margin: 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+
     .btn {
       display: inline-block;
-      padding: 8px 12px;
-      margin-right: 10px;
-      background: #00b894;
-      border-radius: 5px;
-      color: white;
+      padding: 10px 15px;
+      background: linear-gradient(90deg, #00f0ff, #007bff);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 14px;
-      text-decoration: none;
-    }
-    .btn.secondary {
-      background: #0984e3;
-    }
-    .reviews {
-      margin-top: 15px;
-    }
-    .review {
-      background: #1b263b;
-      padding: 10px;
-      border-radius: 5px;
-      margin-bottom: 10px;
-    }
-    .review-form {
-      margin-top: 15px;
-    }
-    .review-form textarea {
-      width: 100%;
-      height: 60px;
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-      outline: none;
-      resize: none;
-    }
-    .contacts a {
-      display: block;
-      margin-bottom: 10px;
-      padding: 10px;
-      background: #1b263b;
-      border-radius: 5px;
-      text-decoration: none;
-      color: white;
+      font-weight: bold;
+      transition: 0.3s;
+      margin-top: 10px;
       text-align: center;
     }
-    /* Модальное окно */
+    .btn:hover {
+      background: linear-gradient(90deg, #007bff, #00f0ff);
+      box-shadow: 0 0 10px #00f0ff;
+    }
+
+    .review {
+      border-top: 1px solid #1f2a48;
+      padding-top: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .contact {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .contact a {
+      color: #00f0ff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .contact a:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #00f0ff;
+    }
+
+    /* ===== Нижнее меню ===== */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      background: #0d1331;
+      border-top: 1px solid #1f2a48;
+    }
+    .bottom-nav button {
+      background: none;
+      border: none;
+      color: #ccc;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .bottom-nav button span {
+      font-size: 18px; /* иконка */
+    }
+    .bottom-nav button.active {
+      color: #00f0ff;
+      text-shadow: 0 0 8px #00f0ff;
+    }
+
+    /* ===== Модалка ===== */
     .modal {
       display: none;
       position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: rgba(0,0,0,0.7);
       justify-content: center;
       align-items: center;
     }
     .modal-content {
-      background: #1b263b;
+      background: #131b3a;
       padding: 20px;
-      border-radius: 10px;
-      width: 90%;
+      border-radius: 12px;
       max-width: 400px;
+      width: 80%;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,255,255,0.4);
     }
-    .modal-content h3 {
+    .modal-content h2 {
       margin-top: 0;
-    }
-    .close {
-      float: right;
-      cursor: pointer;
-      font-size: 18px;
-      color: #ccc;
+      color: #00f0ff;
     }
   </style>
 </head>
 <body>
 
-  <header>DutrouxDesign</header>
+<header>🔥 Портфолио 🔥</header>
 
-  <div class="content" id="portfolio">
-    <div class="portfolio-card">
-      <h3>Пример работы #1</h3>
-      <p>Описание моей первой работы. Очень красиво и качественно.</p>
-      <span class="btn secondary" onclick="openModal('Пример работы #1', 'Подробное описание моей первой работы...')">Подробнее</span>
-      <a href="https://t.me/yourusername" class="btn">Связаться</a>
+<main id="content">
+  <!-- Портфолио -->
+  <section id="portfolio">
+    <div class="card">
+      <h3>Проект 1</h3>
+      <p>Описание первого проекта в стиле Dutroux Sell🔥.</p>
+      <button class="btn" onclick="openModal('Проект 1')">Подробнее</button>
     </div>
-    <div class="portfolio-card">
-      <h3>Пример работы #2</h3>
-      <p>Описание второй работы. Дизайн, проект или арт.</p>
-      <span class="btn secondary" onclick="openModal('Пример работы #2', 'Детали второй работы, процесс и результат...')">Подробнее</span>
-      <a href="https://vk.com/yourgroup" class="btn">Связаться</a>
+    <div class="card">
+      <h3>Проект 2</h3>
+      <p>Описание второго проекта.</p>
+      <button class="btn" onclick="openModal('Проект 2')">Подробнее</button>
     </div>
+  </section>
+
+  <!-- Отзывы -->
+  <section id="reviews" style="display:none;">
+    <div class="card">
+      <h3>Отзывы клиентов</h3>
+      <div class="review">🔥 Отличная работа, всё супер!</div>
+      <div class="review">⚡ Быстро и качественно.</div>
+      <button class="btn" onclick="openModal('Оставить отзыв')">Оставить отзыв</button>
+    </div>
+  </section>
+
+  <!-- Контакты -->
+  <section id="contacts" style="display:none;">
+    <div class="card contact">
+      <h3>Связаться со мной</h3>
+      <a href="https://t.me/yourusername">📩 Telegram</a>
+      <a href="mailto:example@mail.com">📧 Email</a>
+    </div>
+  </section>
+</main>
+
+<!-- Нижнее меню -->
+<div class="bottom-nav">
+  <button onclick="showSection('portfolio', this)" class="active">
+    <span>📁</span> Портфолио
+  </button>
+  <button onclick="showSection('reviews', this)">
+    <span>💬</span> Отзывы
+  </button>
+  <button onclick="showSection('contacts', this)">
+    <span>📞</span> Контакты
+  </button>
+</div>
+
+<!-- Модалка -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h2 id="modal-title"></h2>
+    <p>Здесь будет подробная информация...</p>
+    <button class="btn" onclick="closeModal()">Закрыть</button>
   </div>
+</div>
 
-  <div class="content" id="reviews" style="display: none;">
-    <h3>Отзывы</h3>
-    <div class="reviews" id="reviewsList">
-      <div class="review">🔥 Отличная работа, всё быстро и качественно!</div>
-      <div class="review">👍 Очень доволен сотрудничеством.</div>
-    </div>
-    <div class="review-form">
-      <textarea id="reviewText" placeholder="Оставьте свой отзыв..."></textarea>
-      <div class="btn" onclick="addReview()">Отправить</div>
-    </div>
-  </div>
+<script>
+  // Переключение вкладок
+  function showSection(id, el) {
+    document.querySelectorAll("main section").forEach(s => s.style.display = "none");
+    document.getElementById(id).style.display = "block";
+    document.querySelectorAll(".bottom-nav button").forEach(b => b.classList.remove("active"));
+    el.classList.add("active");
+  }
 
-  <div class="content" id="contacts" style="display: none;">
-    <h3>Контакты</h3>
-    <div class="contacts">
-      <a href="https://t.me/yourusername">Мой Telegram</a>
-      <a href="https://vk.com/yourgroup">Группа ВКонтакте</a>
-    </div>
-  </div>
-
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('portfolio', this)">Портфолио</div>
-    <div class="tab" onclick="switchTab('reviews', this)">Отзывы</div>
-    <div class="tab" onclick="switchTab('contacts', this)">Контакты</div>
-  </div>
-
-  <!-- Модалка -->
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h3 id="modalTitle"></h3>
-      <p id="modalDesc"></p>
-    </div>
-  </div>
-
-  <script>
-    function switchTab(tabId, element) {
-      document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
-      document.querySelector('#' + tabId).style.display = 'block';
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      element.classList.add('active');
-    }
-
-    function addReview() {
-      const text = document.getElementById('reviewText').value.trim();
-      if (text) {
-        const div = document.createElement('div');
-        div.className = 'review';
-        div.textContent = text;
-        document.getElementById('reviewsList').appendChild(div);
-        document.getElementById('reviewText').value = '';
-      }
-    }
-
-    function openModal(title, desc) {
-      document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalDesc').textContent = desc;
-      document.getElementById('modal').style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
-  </script>
+  // Модалка
+  function openModal(title) {
+    document.getElementById("modal-title").textContent = title;
+    document.getElementById("modal").style.display = "flex";
+  }
+  function closeModal() {
+    document.getElementById("modal").style.display = "none";
+  }
+</script>
 
 </body>
 </html>
