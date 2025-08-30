@@ -6,7 +6,7 @@ const { Telegraf } = require('telegraf');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Telegram bot
+// ---------------- Telegram Bot ----------------
 const BOT_TOKEN = process.env.BOT_TOKEN;
 if (!BOT_TOKEN) {
   console.error('❌ BOT_TOKEN is missing!');
@@ -27,11 +27,17 @@ bot.start((ctx) => {
   });
 });
 
-// Запуск бота
-bot.launch().then(() => console.log('✅ Telegram bot запущен'));
+// ---------------- Webhook для Render ----------------
+const WEBHOOK_PATH = `/tg-webhook/${BOT_TOKEN}`;
+app.use(express.json());
+app.use(bot.webhookCallback(WEBHOOK_PATH));
 
-// ------------------- Express -------------------
+// Устанавливаем webhook
+bot.telegram.setWebhook(`${WEBAPP_URL}${WEBHOOK_PATH}`).then(() => {
+  console.log(`✅ Webhook установлен: ${WEBAPP_URL}${WEBHOOK_PATH}`);
+});
 
+// ---------------- Express -------------------
 const dbPath = path.join(__dirname, 'db.json');
 if (!fs.existsSync(dbPath)) fs.writeFileSync(dbPath, '{}');
 
@@ -83,4 +89,5 @@ app.get('/:code', (req, res) => {
   res.status(404).send('Link not found');
 });
 
+// Запуск сервера
 app.listen(PORT, () => console.log(`🌐 Server running on port ${PORT}`));
