@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const shortid = require('shortid');
 const { Telegraf } = require('telegraf');
 
 const app = express();
@@ -39,30 +38,47 @@ if (!fs.existsSync(dbPath)) fs.writeFileSync(dbPath, '{}');
 app.use(express.json());
 app.use(express.static(__dirname));
 
+// Генерация короткого кода 5 символов
+function generateCode(length = 5) {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  for (let i = 0; i < length; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
 // Главная страница
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Генерация короткой ссылки
+// Сокращение ссылки
 app.post('/shorten', (req, res) => {
   const { url } = req.body;
   if (!url) return res.status(400).json({ error: 'URL required' });
 
   const db = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
-  const code = shortid.generate();
-  db[code] = url;
+
+  // Генерируем уникальный код
+  let code;
+  do { code = generateCode(5); } while (db[code]);
+
+  db[code] = { original: url, clicks: 0 };
   fs.writeFileSync(dbPath, JSON.stringify(db));
 
-  res.json({ shortUrl: `${WEBAPP_URL}/r/${code}` });
+  const shortUrl = `${WEBAPP_URL}/${code}`; // <-- без /r/
+  res.json({ shortUrl });
 });
 
 // Редирект
-app.get('/r/:code', (req, res) => {
+app.get('/:code', (req, res) => {
   const db = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
-  const url = db[req.params.code];
-  if (url) {
-    return res.redirect(url);
+  const entry = db[req.params.code];
+  if (entry) {
+    entry.clicks++;
+    fs.writeFileSync(dbPath, JSON.stringify(db));
+    return res.redirect(entry.original);
   }
   res.status(404).send('Link not found');
 });
