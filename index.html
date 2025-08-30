@@ -1,266 +1,30 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dutroux Design</title>
+<title>Cutly</title>
 <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #0a0f24;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-header {
-  background: #131b3a;
-  padding: 20px;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: #fff;
-  border-bottom: 1px solid #1f2a48;
-}
-
-main {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-.card {
-  background: #131b3a;
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  transition: 0.3s;
-}
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 20px rgba(255,255,255,0.05);
-}
-.card h3 {
-  margin: 0 0 10px 0;
-  font-size: 18px;
-  color: #fff;
-}
-.card p {
-  margin: 0;
-  font-size: 14px;
-  color: #ccc;
-}
-
-.btn {
-  display: inline-block;
-  padding: 10px 15px;
-  background: #fff;
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 10px;
-  text-align: center;
-}
-.btn:hover {
-  opacity: 0.85;
-}
-
-.review {
-  border-top: 1px solid #1f2a48;
-  padding-top: 10px;
-  margin-top: 10px;
-  font-size: 14px;
-  color: #aaa;
-}
-
-.contact {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.contact a {
-  color: #fff;
-  text-decoration: none;
-}
-.contact a:hover {
-  opacity: 0.8;
-}
-
-/* ===== Нижнее меню ===== */
-.bottom-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  background: #131b3a;
-  border-top: 1px solid #1f2a48;
-  position: relative;
-}
-
-.bottom-nav button {
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.5);
-  font-size: 12px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  position: relative;
-  height: 60px;
-}
-
-.bottom-nav button svg {
-  margin-bottom: 4px;
-  fill: currentColor;
-  width: 28px;
-  height: 28px;
-}
-
-.bottom-nav button span {
-  color: currentColor;
-  font-size: 12px;
-}
-
-.bottom-nav button.active {
-  color: #fff;
-}
-
-.bottom-nav::before,
-.bottom-nav::after,
-.bottom-nav .divider {
-  content: '';
-  position: absolute;
-  top: 10px;
-  bottom: 10px;
-  width: 1px;
-  background: #fff;
-  opacity: 0.2;
-}
-
-.bottom-nav .divider:nth-child(1) { left: 33.33%; }
-.bottom-nav .divider:nth-child(2) { left: 66.66%; }
-
-/* Модалка */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
-  justify-content: center;
-  align-items: center;
-}
-.modal-content {
-  background: #131b3a;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 80%;
-  text-align: center;
-}
-.modal-content h2 {
-  margin-top: 0;
-  color: #fff;
-}
+body { font-family: sans-serif; padding: 20px; }
+input { width: 300px; padding: 8px; }
+button { padding: 8px 16px; margin-left: 10px; }
 </style>
 </head>
 <body>
-
-<header>Dutroux Design</header>
-
-<main id="content">
-  <section id="portfolio">
-    <div class="card">
-      <h3>Проект 1</h3>
-      <p>Описание первого проекта.</p>
-      <button class="btn" onclick="openModal('Проект 1')">Подробнее</button>
-    </div>
-    <div class="card">
-      <h3>Проект 2</h3>
-      <p>Описание второго проекта.</p>
-      <button class="btn" onclick="openModal('Проект 2')">Подробнее</button>
-    </div>
-  </section>
-
-  <section id="reviews" style="display:none;">
-    <div class="card">
-      <h3>Отзывы клиентов</h3>
-      <div class="review">Отличная работа!</div>
-      <div class="review">Быстро и качественно.</div>
-      <button class="btn" onclick="openModal('Оставить отзыв')">Оставить отзыв</button>
-    </div>
-  </section>
-
-  <section id="contacts" style="display:none;">
-    <div class="card contact">
-      <h3>Связаться</h3>
-      <a href="https://t.me/yourusername">Telegram</a>
-      <a href="mailto:example@mail.com">Email</a>
-    </div>
-  </section>
-</main>
-
-<!-- Нижнее меню -->
-<div class="bottom-nav">
-  <div class="divider"></div>
-  <div class="divider"></div>
-
-  <button onclick="showSection('portfolio', this)" class="active">
-    <!-- Новая иконка Портфолио -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/>
-    </svg>
-    <span>Портфолио</span>
-  </button>
-  <button onclick="showSection('reviews', this)">
-    <!-- Новая иконка Отзывы -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M2 2h20v16H6l-4 4V2z"/>
-    </svg>
-    <span>Отзывы</span>
-  </button>
-  <button onclick="showSection('contacts', this)">
-    <!-- Иконка Контакты -->
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-    </svg>
-    <span>Контакты</span>
-  </button>
-</div>
-
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <h2 id="modal-title"></h2>
-    <p>Подробная информация о проекте...</p>
-    <button class="btn" onclick="closeModal()">Закрыть</button>
-  </div>
-</div>
-
+<h1>Cutly</h1>
+<input type="text" id="url" placeholder="Введите ссылку">
+<button onclick="shorten()">Сократить</button>
+<p id="result"></p>
 <script>
-function showSection(id, el) {
-  document.querySelectorAll("main section").forEach(s => s.style.display = "none");
-  document.getElementById(id).style.display = "block";
-  document.querySelectorAll(".bottom-nav button").forEach(b => b.classList.remove("active"));
-  el.classList.add("active");
-}
-
-function openModal(title) {
-  document.getElementById("modal-title").textContent = title;
-  document.getElementById("modal").style.display = "flex";
-}
-function closeModal() {
-  document.getElementById("modal").style.display = "none";
+async function shorten() {
+  const url = document.getElementById('url').value;
+  const res = await fetch('/shorten', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url })
+  });
+  const data = await res.json();
+  document.getElementById('result').innerHTML = data.shortUrl || data.error;
 }
 </script>
-
 </body>
 </html>
