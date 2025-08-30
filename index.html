@@ -1,29 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Cutly</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cutly — короткие ссылки</title>
 <style>
-body { font-family: sans-serif; padding: 20px; }
-input { width: 300px; padding: 8px; }
-button { padding: 8px 16px; margin-left: 10px; }
+:root {
+  --primary: #0088cc;
+  --secondary: #e6f3fa;
+  --bg: #f7f9fc;
+  --text: #333;
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.container {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+h1 {
+  text-align: center;
+  color: var(--primary);
+  margin-bottom: 15px;
+}
+.form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+input {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid var(--secondary);
+  border-radius: var(--radius);
+  font-size: 16px;
+  outline: none;
+}
+input:focus { border-color: var(--primary); }
+button {
+  padding: 12px 18px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+button:hover { background: #0071aa; }
+.result, .history {
+  background: var(--secondary);
+  padding: 15px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+.result p, .history p { margin-bottom: 8px; }
+.link-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #ccc;
+}
+.link-item:last-child { border-bottom: none; }
+.short-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: bold;
+}
+.copy-btn {
+  background: #fff;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.copy-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.stats {
+  font-size: 14px;
+  color: #666;
+}
+footer {
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+  margin-top: 15px;
+}
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
 <body>
-<h1>Cutly</h1>
-<input type="text" id="url" placeholder="Введите ссылку">
-<button onclick="shorten()">Сократить</button>
-<p id="result"></p>
+<div class="container fade-in">
+  <h1>Cutly</h1>
+  <div class="form">
+    <input type="text" id="url" placeholder="Вставьте ссылку">
+    <button onclick="shorten()">Сократить</button>
+  </div>
+  <div class="result" id="result" style="display:none;"></div>
+  <div class="history">
+    <h3>История</h3>
+    <div id="history-list"></div>
+  </div>
+  <footer>Cutly © 2025</footer>
+</div>
+
 <script>
+// Загружаем историю из LocalStorage
+document.addEventListener('DOMContentLoaded', loadHistory);
+
 async function shorten() {
-  const url = document.getElementById('url').value;
-  const res = await fetch('/shorten', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url })
-  });
-  const data = await res.json();
-  document.getElementById('result').innerHTML = data.shortUrl || data.error;
+  const url = document.getElementById('url').value.trim();
+  if (!url) return alert('Введите ссылку');
+
+  try {
+    const res = await fetch('/shorten', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url })
+    });
+    const data = await res.json();
+    if (data.shortUrl) {
+      showResult(data.shortUrl);
+      saveToHistory(url, data.shortUrl);
+      addToHistory(url, data.shortUrl);
+    } else {
+      alert(data.error || 'Ошибка');
+    }
+  } catch (e) {
+    alert('Ошибка соединения');
+  }
+}
+
+function showResult(shortUrl) {
+  const result = document.getElementById('result');
+  result.style.display = 'block';
+  result.innerHTML = `
+    <p><strong>Короткая ссылка:</strong></p>
+    <a href="${shortUrl}" class="short-link" target="_blank">${shortUrl}</a>
+    <button class="copy-btn" onclick="copyText('${shortUrl}')">Копировать</button>
+  `;
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => alert('Ссылка скопирована!'));
+}
+
+function saveToHistory(original, short) {
+  let history = JSON.parse(localStorage.getItem('cutly-history')) || [];
+  history.unshift({ original, short, clicks: 0 });
+  localStorage.setItem('cutly-history', JSON.stringify(history));
+}
+
+function loadHistory() {
+  const history = JSON.parse(localStorage.getItem('cutly-history')) || [];
+  history.forEach(link => addToHistory(link.original, link.short, link.clicks));
+}
+
+function addToHistory(original, short, clicks = 0) {
+  const list = document.getElementById('history-list');
+  const div = document.createElement('div');
+  div.classList.add('link-item');
+  div.innerHTML = `
+    <div>
+      <a href="${short}" class="short-link" target="_blank">${short}</a>
+      <div class="stats">Кликов: ${clicks}</div>
+    </div>
+    <button class="copy-btn" onclick="copyText('${short}')">Копировать</button>
+  `;
+  list.appendChild(div);
 }
 </script>
 </body>
