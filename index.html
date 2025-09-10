@@ -5,48 +5,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Великоречин Максим</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .image-side {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f5f5f5;
+    }
+
+    .image-side img {
+      max-width: 100%;
+      max-height: 100vh;
+      object-fit: cover;
+    }
+
+    .row {
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>О себе</h1>
-  </header>
+  <div class="container">
+    <main>
+      <header>
+        <h1>О себе</h1>
+      </header>
 
-  <main>
-    <h2 id="person-name">Великоречин Максим Вячеславович</h2>
+      <h2 id="person-name">Великоречин Максим Вячеславович</h2>
 
-    <dl>
-      <div class="row">
-        <dt>Возраст</dt>
-        <dd>18 лет</dd>
-      </div>
+      <dl>
+        <div class="row">
+          <dt>Возраст</dt>
+          <dd>18 лет</dd>
+        </div>
 
-      <div class="row">
-        <dt>Учусь</dt>
-        <dd>Колледж Хекслет</dd>
-      </div>
+        <div class="row">
+          <dt>Учусь</dt>
+          <dd>Колледж Хекслет</dd>
+        </div>
 
-      <div class="row">
-        <dt>Специальность</dt>
-        <dd>ИСИП</dd>
-      </div>
+        <div class="row">
+          <dt>Специальность</dt>
+          <dd>ИСИП</dd>
+        </div>
 
-      <div class="row">
-        <dt>Хобби</dt>
-        <dd>Программирование, футбол, армрестлинг</dd>
-      </div>
+        <div class="row">
+          <dt>Хобби</dt>
+          <dd>Программирование, футбол, армрестлинг</dd>
+        </div>
 
-      <div class="row">
-        <dt>Интересный факт</dt>
-        <dd>Есть водительское удостоверение</dd>
-      </div>
+        <div class="row">
+          <dt>Интересный факт</dt>
+          <dd>Есть водительское удостоверение</dd>
+        </div>
 
-      <div class="row">
-        <dt>Цель в колледже</dt>
-        <dd>Получить образование и пойти на работу</dd>
-      </div>
-    </dl>
+        <div class="row">
+          <dt>Цель в колледже</dt>
+          <dd>Получить образование и пойти на работу</dd>
+        </div>
+      </dl>
 
-    <p>Контакт: TG: <a href="https://t.me/Velik09845" target="_blank" rel="noopener noreferrer">@Velik09845</a></p>
-  </main>
+      <p>Контакт: TG: <a href="https://t.me/Velik09845" target="_blank" rel="noopener noreferrer">@Velik09845</a></p>
+    </main>
+
+    <div class="image-side">
+      <img src="https://i.pinimg.com/736x/ab/45/c4/ab45c43d0301f11f2e856239aede0e9f.jpg" alt="Котик">
+    </div>
+  </div>
 </body>
 </html>
