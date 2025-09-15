@@ -13,25 +13,6 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="logo" href="#">
-        <div class="logo-mark">DG</div>
-        <div class="logo-text">
-          <div class="brand">DesignGPT</div>
-          <div class="tag">Нейроаватарки</div>
-        </div>
-      </a>
-
-      <nav class="nav">
-        <a href="#features">Возможности</a>
-        <a href="#how">Как работает</a>
-        <a href="#faq">FAQ</a>
-        <button class="btn btn-ghost" id="open-webapp">Открыть WebApp</button>
-      </nav>
-    </div>
-  </header>
-
   <main>
     <!-- Hero -->
     <section class="hero">
@@ -63,7 +44,6 @@
         </div>
 
         <div class="hero-right">
-          <!-- Композиция карточек/превью похожая на скрин -->
           <div class="preview-grid">
             <div class="preview big" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22></svg>');">
               <div class="badge">AI</div>
@@ -97,7 +77,8 @@
             <h3>Улучшение фото</h3>
             <p>Поднять качество, убрать шумы и улучшить детали — быстро и аккуратно.</p>
           </article>
-<article class="card">
+
+          <article class="card">
             <div class="card-media" style="background-image: linear-gradient(135deg,#b4ffdb,#9bd9ff);"></div>
             <h3>Замена лица</h3>
             <p>Меняй лица на фото аккуратно и с сохранением эмоций и освещения.</p>
@@ -132,25 +113,18 @@
   </footer>
 
   <script>
-    // Telegram WebApp (если открыт из бота)
     const tg = window.Telegram?.WebApp;
     if (tg) {
-      try { tg.ready(); } catch(e){ /* ignore */ }
-      document.getElementById('open-webapp')?.addEventListener('click', () => tg.open());
-      // отправка данных в бота: при генерации из мини-аппа можно отправить base64
+      try { tg.ready(); } catch(e){}
     }
 
-    // Заготовка: логика кнопки Генерировать — пока только показываем alert и логим файл/стиль
     document.getElementById('generate').addEventListener('click', () => {
       const file = document.getElementById('upload').files[0];
       const style = document.getElementById('style-select').value;
       if (!file) return alert('Загрузите фото перед генерацией');
-      // покажем пользователю быстрый фидбек
       alert('Запрос отправлен: стиль = ' + style + '\nФайл: ' + file.name);
-      // при желании: считать в base64 и отправить через tg.sendData(JSON.stringify(...))
     });
 
-    // CTA кнопки (плавный скролл к секции features)
     document.getElementById('start-free').addEventListener('click', () => {
       document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
     });
