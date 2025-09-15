@@ -72,3 +72,8 @@ html,body{ height:100%; margin:0; font-family:"Inter", system-ui, sans-serif; -w
   .hero-actions{ align-items:center; }
   .cta-inner{ flex-direction:column; align-items:center; text-align:center; }
 }
+
+/* Убираем возможные «гамбургеры» и лишние линии сверху */
+.nav, .btn-ghost, .logo-mark, .logo-text {
+    display: none !important;
+}
