@@ -14,7 +14,7 @@ if (!BOT_TOKEN) {
 const bot = new Telegraf(BOT_TOKEN);
 
 // URL твоего мини-аппа (например, Render/Vercel URL)
-const WEBAPP_URL = process.env.PUBLIC_URL || https://dutrouxdesign.onrender.com
+const WEBAPP_URL = process.env.PUBLIC_URL || "https://dutrouxdesign.onrender.com";
 
 // Кнопка при старте
 bot.start((ctx) => {
