@@ -1,51 +1,159 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Генератор Аватарок</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DesignGPT — Генератор аватарок</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+  <!-- Telegram WebApp SDK (если нужно) -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Создай свою аватарку 🎨</h1>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#">
+        <div class="logo-mark">DG</div>
+        <div class="logo-text">
+          <div class="brand">DesignGPT</div>
+          <div class="tag">Нейроаватарки</div>
+        </div>
+      </a>
 
-    <input type="file" id="upload" accept="image/*">
-    
-    <select id="style">
-      <option value="cartoon">Мультяшный</option>
-      <option value="cyberpunk">Киберпанк</option>
-      <option value="realistic">Реалистичный</option>
-    </select>
+      <nav class="nav">
+        <a href="#features">Возможности</a>
+        <a href="#how">Как работает</a>
+        <a href="#faq">FAQ</a>
+        <button class="btn btn-ghost" id="open-webapp">Открыть WebApp</button>
+      </nav>
+    </div>
+  </header>
 
-    <button id="generate">Сгенерировать</button>
-  </div>
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-left">
+          <p class="eyebrow">Творчество без границ</p>
+          <h1>Нейросеть для создания<br><span>картинок и аватарок</span></h1>
+          <p class="lead">Генерируй уникальные аватарки в стиле киберпанк, мульт, реализм и др. Быстро, красиво, персонально.</p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="start-free">Начать бесплатно</button>
+
+            <div class="mini-controls">
+              <label class="file-btn">
+                <input type="file" id="upload" accept="image/*" />
+                Загрузить фото
+              </label>
+
+              <select id="style-select" class="select">
+                <option value="cartoon">Мультяшный</option>
+                <option value="cyberpunk">Киберпанк</option>
+                <option value="realistic">Реалистичный</option>
+                <option value="vaporwave">Vaporwave</option>
+              </select>
+
+              <button class="btn btn-accent" id="generate">Сгенерировать</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <!-- Композиция карточек/превью похожая на скрин -->
+          <div class="preview-grid">
+            <div class="preview big" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22></svg>');">
+              <div class="badge">AI</div>
+            </div>
+            <div class="preview small" style="background-image: linear-gradient(135deg,#ff9acb,#8460ff);"></div>
+            <div class="preview small" style="background-image: linear-gradient(135deg,#5bd3ff,#9b8cff);"></div>
+            <div class="preview small" style="background-image: linear-gradient(135deg,#ffd67b,#ff8fb3);"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features / Cards -->
+    <section id="features" class="features">
+      <div class="container">
+        <div class="cards">
+          <article class="card">
+            <div class="card-media" style="background-image: linear-gradient(135deg,#ff6a88,#7f5aff);"></div>
+            <h3>Генерация изображений</h3>
+            <p>Создавай уникальные арты и аватарки в несколько кликов. Поддержка множества стилей и фильтров.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-media" style="background-image: linear-gradient(135deg,#8be2ff,#7d7dff);"></div>
+            <h3>Создание аватара</h3>
+            <p>Система подстраивается под черты лица и генерирует персонализированный аватар на основе твоей фотографии.</p>
+          </article>
+
+          <article class="card">
+            <div class="card-media" style="background-image: linear-gradient(135deg,#ffd0a8,#ff7fb0);"></div>
+            <h3>Улучшение фото</h3>
+            <p>Поднять качество, убрать шумы и улучшить детали — быстро и аккуратно.</p>
+          </article>
+<article class="card">
+            <div class="card-media" style="background-image: linear-gradient(135deg,#b4ffdb,#9bd9ff);"></div>
+            <h3>Замена лица</h3>
+            <p>Меняй лица на фото аккуратно и с сохранением эмоций и освещения.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="cta">
+      <div class="container cta-inner">
+        <div>
+          <h2>Готов начать? Сделай свою уникальную аватарку прямо сейчас</h2>
+          <p>DesignGPT делает сложное простым — попробуй бесплатно.</p>
+        </div>
+        <div>
+          <button class="btn btn-primary btn-lg" id="cta-generate">Создать аватарку</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>© <strong>DesignGPT</strong> — 2025</div>
+      <div class="footer-links">
+        <a href="#faq">FAQ</a>
+        <a href="#how">Помощь</a>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    const tg = window.Telegram.WebApp;
+    // Telegram WebApp (если открыт из бота)
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      try { tg.ready(); } catch(e){ /* ignore */ }
+      document.getElementById('open-webapp')?.addEventListener('click', () => tg.open());
+      // отправка данных в бота: при генерации из мини-аппа можно отправить base64
+    }
 
-    document.getElementById("generate").addEventListener("click", () => {
-      const style = document.getElementById("style").value;
-      const file = document.getElementById("upload").files[0];
-
-      if (!file) {
-        alert("Загрузи фото!");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const data = {
-          style: style,
-          image: e.target.result
-        };
-        tg.sendData(JSON.stringify(data)); // отправляем в бота
-      };
-      reader.readAsDataURL(file);
+    // Заготовка: логика кнопки Генерировать — пока только показываем alert и логим файл/стиль
+    document.getElementById('generate').addEventListener('click', () => {
+      const file = document.getElementById('upload').files[0];
+      const style = document.getElementById('style-select').value;
+      if (!file) return alert('Загрузите фото перед генерацией');
+      // покажем пользователю быстрый фидбек
+      alert('Запрос отправлен: стиль = ' + style + '\nФайл: ' + file.name);
+      // при желании: считать в base64 и отправить через tg.sendData(JSON.stringify(...))
     });
 
-    tg.ready();
+    // CTA кнопки (плавный скролл к секции features)
+    document.getElementById('start-free').addEventListener('click', () => {
+      document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+    });
   </script>
 </body>
 </html>
