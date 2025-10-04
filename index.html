@@ -1,137 +1,458 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DesignGPT — Генератор аватарок</title>
+  <title>DesignHub — маркетплейс дизайнеров превью и обложек</title>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Fonts & Icons (CDN — чтобы сайт был онлайн) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/yourfontawesomekit.js" crossorigin="anonymous"></script>
+  <!-- If you don't have a FontAwesome kit, replace icons with inline SVGs or use another icon CDN -->
 
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta name="description" content="DesignHub — найди дизайнера для превью, обложек и баннеров. Безопасные сделки и гарантия возврата средств.">
+  <style>
+    :root{
+      --bg:#0f0f12;
+      --card:#141418;
+      --muted:#9aa0a6;
+      --accent1:#8A2BE2; /* purple */
+      --accent2:#20C997; /* teal */
+      --cta:#FF6B35; /* orange */
+      --glass: rgba(255,255,255,0.04);
+      --glass-strong: rgba(255,255,255,0.06);
+      --radius:14px;
+      --maxw:1200px;
+      --ff-heading: "Poppins", "Inter", sans-serif;
+      --ff-body: "Inter", system-ui, sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 400px at 10% 10%, rgba(138,43,226,0.06), transparent),
+                  radial-gradient(900px 300px at 90% 90%, rgba(32,201,151,0.03), transparent),
+                  var(--bg);
+      color:#e6eef8;
+      font-family:var(--ff-body);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding-bottom:60px;
+    }
+
+    /* Container */
+    .wrap{
+      max-width:var(--maxw);
+      margin:0 auto;
+      padding:28px;
+    }
+
+    /* Header / Nav */
+    header.nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(8px) saturate(120%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .nav .wrap{display:flex;align-items:center;gap:18px}
+    .logo{
+      display:flex;align-items:center;gap:10px;font-family:var(--ff-heading);
+      font-weight:700; font-size:20px; color:linear-gradient(90deg,var(--accent1),var(--accent2));
+    }
+    .logo .mark{
+      width:44px;height:44px;border-radius:10px;
+      background: linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 6px 18px rgba(32,201,151,0.08), inset 0 -6px 16px rgba(0,0,0,0.2);
+      font-weight:800;color:#0b0b0b;
+      font-family:var(--ff-heading);
+    }
+
+    /* search center */
+    .search-wrap{flex:1;display:flex;justify-content:center}
+    .search{
+      width:60%;min-width:220px;max-width:720px;
+      background:var(--glass); border-radius:999px; padding:10px 16px; display:flex;align-items:center;gap:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 6px 20px rgba(8,8,8,0.6);
+    }
+    .search input{
+      background:transparent;border:0;outline:0;color:inherit;font-size:15px;width:100%;
+      font-family:var(--ff-body);
+    }
+    .nav-actions{display:flex;gap:10px;align-items:center}
+    .btn{
+      padding:10px 14px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.06);cursor:pointer;
+      font-weight:600;font-size:14px;color:var(--muted);
+    }
+    .btn.primary{
+      background:linear-gradient(90deg,var(--cta), #ff8a58);
+      color:#081013;border:0;box-shadow: 0 8px 30px rgba(255,107,53,0.14);
+    }
+
+    /* Hero */
+    .hero{
+      padding:48px 0 36px;
+      display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:top;
+    }
+    .hero-left h1{font-family:var(--ff-heading);font-size:42px;margin:0 0 12px;line-height:1.02}
+    .hero-left p{color:var(--muted);margin:0 0 20px;max-width:60%}
+    .cta-row{display:flex;gap:12px;align-items:center}
+    .pill{
+      background:linear-gradient(90deg, rgba(138,43,226,0.12), rgba(32,201,151,0.05));
+      padding:6px 10px;border-radius:999px;font-weight:600;color:var(--muted);display:inline-flex;gap:8px;align-items:center;
+    }
+
+    /* Right: featured designer preview */
+    .hero-right{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius); padding:18px; border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 10px 40px rgba(8,8,8,0.6);
+    }
+    .featured{
+      display:flex;gap:14px;align-items:center;
+    }
+    .featured .avatar{width:72px;height:72px;border-radius:12px;overflow:hidden;background:#222}
+    .featured .meta h4{margin:0;font-size:16px;font-weight:700}
+    .featured .meta p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .rating {color:var(--accent2); font-weight:700; margin-top:8px;font-size:13px}
+
+    /* How it works */
+    .how{
+      margin-top:18px;
+      display:flex;gap:18px;align-items:stretch;flex-wrap:wrap;
+    }
+    .step{
+      flex:1 1 200px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+    }
+    .step .icon{
+      width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      color:#041018;margin-bottom:10px;
+    }
+    .guarantee{
+      margin-top:12px;color:var(--muted);font-size:14px;padding:12px;border-radius:12px;background:rgba(32,201,151,0.03);border:1px solid rgba(32,201,151,0.04);
+    }
+
+    /* Why section */
+    .why{display:flex;gap:18px;margin-top:32px;flex-wrap:wrap}
+    .card{
+      flex:1 1 240px;background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+    }
+    .card h3{margin:0 0 8px}
+    .card p{margin:0;color:var(--muted)}
+
+    /* Reviews */
+    .reviews{
+      margin-top:32px;
+      display:grid;grid-template-columns:1fr 340px;gap:20px;
+    }
+    .reviews .slider{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .review{
+      padding:14px;border-radius:10px;margin-bottom:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .review .who{display:flex;gap:12px;align-items:center}
+    .review .who img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+    .review p{margin:10px 0 0;color:var(--muted);font-size:14px}
+
+    /* Sidebar: quick stats / call to action */
+    .side-cta{background:linear-gradient(180deg, rgba(138,43,226,0.06), rgba(32,201,151,0.03));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .side-cta h4{margin:0 0 10px}
+    .side-cta .small{color:var(--muted);font-size:13px;margin-bottom:12px}
+
+    /* Footer */
+    footer{margin-top:60px;padding:28px 0;color:var(--muted);border-top:1px solid rgba(255,255,255,0.03)}
+    footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    footer nav{display:flex;gap:14px}
+    footer a{color:var(--muted);text-decoration:none;font-size:14px}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;margin-top:12px}
+      .search{width:88%}
+      .hero-left p{max-width:100%}
+      .reviews{grid-template-columns:1fr}
+    }
+    @media (max-width:560px){
+      .search{width:100%}
+      .logo{font-size:16px}
+      .hero-left h1{font-size:28px}
+      .hero-right{display:none}
+      .how{flex-direction:column}
+    }
+
+    /* subtle hover animations */
+    .card, .step, .review{transition: transform .28s ease, box-shadow .28s ease}
+    .card:hover, .step:hover, .review:hover{transform: translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.6)}
+  </style>
 </head>
 <body>
-  <main>
-    <!-- Hero -->
-    <section class="hero">
-      <div class="container hero-inner">
+  <header class="nav" role="banner">
+    <div class="wrap">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div class="logo" aria-hidden="false">
+          <div class="mark">DH</div>
+          <div style="display:flex;flex-direction:column;line-height:1;">
+            <div style="font-weight:800;font-size:14px">DesignHub</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">Маркетплейс дизайнеров</div>
+          </div>
+        </div>
+      </div>
 
-        <div class="hero-left">
-          <!-- Новая иконка сверху вместо трех палок -->
-          <div class="hero-icon">🎨</div>
+      <div class="search-wrap" role="search">
+        <div class="search" aria-label="Поиск услуг">
+          <i class="fa fa-search" aria-hidden="true" style="opacity:0.7"></i>
+          <input id="q" placeholder="Найдите услугу — превью, обложки, баннеры..." />
+          <button class="btn" id="searchBtn" title="Поиск">Найти</button>
+        </div>
+      </div>
 
-          <p class="eyebrow">Творчество без границ</p>
-          <h1>Нейросеть для создания<br><span>картинок и аватарок</span></h1>
-          <p class="lead">Генерируй уникальные аватарки в стиле киберпанк, мульт, реализм и др. Быстро, красиво, персонально.</p>
+      <div class="nav-actions" role="navigation" aria-label="Навигация">
+        <button class="btn" id="loginBtn"><i class="fa fa-sign-in-alt"></i>&nbsp;Вход</button>
+        <button class="btn primary" id="signupBtn">Регистрация</button>
+      </div>
+    </div>
+  </header>
 
-          <div class="hero-actions">
-            <button class="btn btn-primary" id="start-free">Начать бесплатно</button>
+  <main class="wrap" role="main">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-left">
+        <div class="pill">Онлайн · Гарантия возврата</div>
+        <h1 id="hero-title">Найди своего дизайнера и получи вау-обложку</h1>
+        <p>DesignHub — маркетплейс, где дизайнеры продают превью, обложки, баннеры и графику под заказ. Безопасные сделки с гарантией возврата средств.</p>
 
-            <div class="mini-controls">
-              <label class="file-btn">
-                <input type="file" id="upload" accept="image/*" />
-                Загрузить фото
-              </label>
+        <div class="cta-row">
+          <button class="btn primary" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Начать поиск</button>
+          <button class="btn" onclick="openExamples()">Смотреть примеры</button>
+        </div>
 
-              <select id="style-select" class="select">
-                <option value="cartoon">Мультяшный</option>
-                <option value="cyberpunk">Киберпанк</option>
-                <option value="realistic">Реалистичный</option>
-                <option value="vaporwave">Vaporwave</option>
-              </select>
-
-              <button class="btn btn-accent" id="generate">Сгенерировать</button>
-            </div>
+        <!-- How it works -->
+        <div class="how" aria-hidden="false">
+          <div class="step">
+            <div class="icon">1</div>
+            <h3>Выберите услугу</h3>
+            <p class="muted">Ищите по категориям: превью, обложки, баннеры и т.д. Фильтруйте по рейтингу и цене.</p>
+          </div>
+          <div class="step">
+            <div class="icon">2</div>
+            <h3>Оплатите с гарантией</h3>
+            <p class="muted">Средства удерживаются системой. Дизайнеру платим только когда вы подтверждаете результат.</p>
+          </div>
+          <div class="step">
+            <div class="icon">3</div>
+            <h3>Получите результат</h3>
+            <p class="muted">Черновики, правки, финальный файл — всё в чате заказа. Не понравилось — деньги возвращаем.</p>
           </div>
         </div>
 
-        <div class="hero-right">
-          <div class="preview-grid">
-            <div class="preview big" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22></svg>');">
-              <div class="badge">AI</div>
-            </div>
-            <div class="preview small" style="background-image: linear-gradient(135deg,#ff9acb,#8460ff);"></div>
-            <div class="preview small" style="background-image: linear-gradient(135deg,#5bd3ff,#9b8cff);"></div>
-            <div class="preview small" style="background-image: linear-gradient(135deg,#ffd67b,#ff8fb3);"></div>
+        <div class="guarantee">
+          <strong>Гарантия возврата средств</strong> — если заказ не выполнен или нарушены условия — мы вернём полную оплату.
+        </div>
+      </div>
+
+      <aside class="hero-right" aria-label="Рекомендуемый дизайнер">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">Рекомендуем</div>
+          <div style="font-size:13px;color:var(--muted)">Топ недели</div>
+        </div>
+
+        <div style="height:14px"></div>
+        <div class="featured">
+          <div class="avatar" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=720&auto=format&fit=crop&ixlib=rb-4.0.3&s=01b9c8a1d8c1a1f9a6e1f8b5b9c6f8b2" alt="avatar" style="width:100%;height:100%;object-fit:cover">
+          </div>
+          <div class="meta">
+            <h4>Artem Kozlov</h4>
+            <p>Специалист по YouTube-превью и ретуши. Быстро, креативно, с правками.</p>
+            <div class="rating">⭐ 4.9 · 520 заказов</div>
           </div>
         </div>
 
+        <div style="height:16px"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn primary" style="flex:1">Заказать</button>
+          <button class="btn" style="flex:1">Портфолио</button>
+        </div>
+
+        <div style="height:12px"></div>
+        <div style="font-size:13px;color:var(--muted)">Примеры работ</div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=320&auto=format&fit=crop&ixlib=rb-4.0.3&s=24b63c7b1c7b6f8a3d8a5f4a2e7b3c5a" alt="work" style="width:60px;height:60px;border-radius:8px;object-fit:cover">
+          <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=320&auto=format&fit=crop&ixlib=rb-4.0.3&s=3e1f3b7a4f7b2e9b6a9f8d2b3c4a5d6e" alt="work" style="width:60px;height:60px;border-radius:8px;object-fit:cover">
+          <img src="https://images.unsplash.com/photo-1503602642458-232111445657?q=80&w=320&auto=format&fit=crop&ixlib=rb-4.0.3&s=7a8b9c3d2e1f4a5b6c7d8e9f0a1b2c3d" alt="work" style="width:60px;height:60px;border-radius:8px;object-fit:cover">
+        </div>
+      </aside>
+    </section>
+
+    <!-- Catalog placeholder -->
+    <section id="catalog" style="margin-top:26px">
+      <h2 style="margin:0 0 14px;font-family:var(--ff-heading)">Каталог дизайнеров</h2>
+      <p style="margin:0 0 18px;color:var(--muted)">Фильтры: <span style="color:var(--muted)">превью · обложки · баннеры · соцсети · цена</span></p>
+
+      <!-- sample grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+        <!-- card -->
+        <article class="card" role="article" aria-labelledby="d1">
+          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=1a2b3c4d5e6f7g8h9i0j" alt="work" style="width:100%;height:140px;object-fit:cover;border-radius:10px">
+          <h3 id="d1" style="margin-top:12px">Максим — Thumbnail pro</h3>
+          <p style="margin:6px 0;color:var(--muted);font-size:14px">Превью для YouTube — +2 правки, исходники в PNG/PSD.</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+            <div style="color:var(--accent2);font-weight:700">₽1,200</div>
+            <button class="btn" onclick="orderNow('Максим — Thumbnail pro')">Заказать</button>
+          </div>
+        </article>
+
+        <article class="card" role="article" aria-labelledby="d2">
+          <img src="https://images.unsplash.com/photo-1526318472351-c75fcf070b3f?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=9f8e7d6c5b4a3c2d1e0f" alt="work" style="width:100%;height:140px;object-fit:cover;border-radius:10px">
+          <h3 id="d2" style="margin-top:12px">Елена — Соцсети & баннеры</h3>
+          <p style="margin:6px 0;color:var(--muted);font-size:14px">Баннеры для рекламы, адаптив для 3 площадок.</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+            <div style="color:var(--accent2);font-weight:700">₽2,500</div>
+            <button class="btn" onclick="orderNow('Елена — Соцсети & баннеры')">Заказать</button>
+          </div>
+        </article>
+
+        <article class="card" role="article" aria-labelledby="d3">
+          <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=5b4a3c2d1e0f9a8b7c6d" alt="work" style="width:100%;height:140px;object-fit:cover;border-radius:10px">
+          <h3 id="d3" style="margin-top:12px">Igor — Минимализм & брендинг</h3>
+          <p style="margin:6px 0;color:var(--muted);font-size:14px">Чистые концепты, AI-ready файлы.</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+            <div style="color:var(--accent2);font-weight:700">₽3,100</div>
+            <button class="btn" onclick="orderNow('Igor — Минимализм & брендинг')">Заказать</button>
+          </div>
+        </article>
+
+        <!-- More cards can be loaded dynamically via API -->
       </div>
     </section>
 
-    <!-- Features / Cards -->
-    <section id="features" class="features">
-      <div class="container">
-        <div class="cards">
-          <article class="card">
-            <div class="card-media" style="background-image: linear-gradient(135deg,#ff6a88,#7f5aff);"></div>
-            <h3>Генерация изображений</h3>
-            <p>Создавай уникальные арты и аватарки в несколько кликов. Поддержка множества стилей и фильтров.</p>
-          </article>
-
-          <article class="card">
-            <div class="card-media" style="background-image: linear-gradient(135deg,#8be2ff,#7d7dff);"></div>
-            <h3>Создание аватара</h3>
-            <p>Система подстраивается под черты лица и генерирует персонализированный аватар на основе твоей фотографии.</p>
-          </article>
-
-          <article class="card">
-            <div class="card-media" style="background-image: linear-gradient(135deg,#ffd0a8,#ff7fb0);"></div>
-            <h3>Улучшение фото</h3>
-            <p>Поднять качество, убрать шумы и улучшить детали — быстро и аккуратно.</p>
-          </article>
-
-          <article class="card">
-            <div class="card-media" style="background-image: linear-gradient(135deg,#b4ffdb,#9bd9ff);"></div>
-            <h3>Замена лица</h3>
-            <p>Меняй лица на фото аккуратно и с сохранением эмоций и освещения.</p>
-          </article>
+    <!-- Why DesignHub -->
+    <section style="margin-top:36px">
+      <h2 style="font-family:var(--ff-heading)">Почему DesignHub</h2>
+      <div class="why">
+        <div class="card">
+          <h3>Безопасные сделки</h3>
+          <p>Оплата удерживается платформой до подтверждения заказа — вы платите только за результат.</p>
+        </div>
+        <div class="card">
+          <h3>Качественные исполнители</h3>
+          <p>Мы показываем рейтинг, отзывы и портфолио — выбирайте профессионалов с проверенной репутацией.</p>
+        </div>
+        <div class="card">
+          <h3>Удобный чат и правки</h3>
+          <p>Общение и передача файлов внутри заказа: черновики, правки и финальный экспорт в одном месте.</p>
+        </div>
+        <div class="card">
+          <h3>Поддержка 24/7</h3>
+          <p>Команда поддержки поможет решить спорные ситуации и при необходимости инициирует возврат средств.</p>
         </div>
       </div>
     </section>
 
-    <!-- Footer CTA -->
-    <section class="cta">
-      <div class="container cta-inner">
-        <div>
-          <h2>Готов начать? Сделай свою уникальную аватарку прямо сейчас</h2>
-          <p>DesignGPT делает сложное простым — попробуй бесплатно.</p>
+    <!-- Reviews -->
+    <section style="margin-top:36px" aria-labelledby="reviewsTitle">
+      <h2 id="reviewsTitle" style="font-family:var(--ff-heading)">Отзывы клиентов</h2>
+      <div class="reviews">
+        <div class="slider" id="reviewSlider">
+          <div class="review">
+            <div class="who"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="avatar"><div><strong>Алексей</strong><div style="font-size:13px;color:var(--muted)">5⭐ · 10 дней назад</div></div></div>
+            <p>Заказал превью — всё быстро и аккуратно. Дизайнер сделал три правки без доплат. Рекомендую!</p>
+          </div>
+
+          <div class="review">
+            <div class="who"><img src="https://randomuser.me/api/portraits/women/45.jpg" alt="avatar"><div><strong>Марина</strong><div style="font-size:13px;color:var(--muted)">5⭐ · 2 недели назад</div></div></div>
+            <p>Отличный сервис: оплата через платформу, можно не бояться мошенников. Деньги вернули, когда дизайнер пропал.</p>
+          </div>
+
+          <div class="review">
+            <div class="who"><img src="https://randomuser.me/api/portraits/men/52.jpg" alt="avatar"><div><strong>Иван</strong><div style="font-size:13px;color:var(--muted)">4.8⭐ · месяц назад</div></div></div>
+            <p>Крутые специалисты, нашёл дизайнера за 5 минут. Хорошая поддержка и понятная логика заказа.</p>
+          </div>
         </div>
-        <div>
-          <button class="btn btn-primary btn-lg" id="cta-generate">Создать аватарку</button>
-        </div>
+
+        <aside class="side-cta">
+          <h4>Готов начать?</h4>
+          <div class="small">Создай заказ и получи предложение от дизайнеров в течение часа. Гарантия возврата средств.</div>
+          <button class="btn primary" style="width:100%" onclick="document.getElementById('q').focus()">Создать заказ</button>
+
+          <div style="height:12px"></div>
+          <div style="font-size:13px;color:var(--muted)"><strong>Популярные категории</strong>: Превью YouTube · Баннеры · Логотипы · Соцсети</div>
+        </aside>
       </div>
+    </section>
+
+    <!-- FAQ / small note -->
+    <section style="margin-top:26px">
+      <h3 style="margin:0 0 8px">Частые вопросы</h3>
+      <p style="color:var(--muted);margin:0">Оплата хранится в системе до подтверждения: если результат не принят — деньги возвращаются. Поддержка помогает при спорах.</p>
     </section>
 
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div>© <strong>DesignGPT</strong> — 2025</div>
-      <div class="footer-links">
-        <a href="#faq">FAQ</a>
-        <a href="#how">Помощь</a>
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="wrap">
+      <div style="display:flex;gap:16px;align-items:center">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="mark" style="width:36px;height:36px;font-size:13px">DH</div>
+          <div style="font-weight:700">DesignHub</div>
+        </div>
+
+        <nav>
+          <a href="#catalog">Дизайнеры</a>
+          <a href="#reviewsTitle">Отзывы</a>
+          <a href="#contacts">Контакты</a>
+          <a href="#faq">FAQ</a>
+        </nav>
       </div>
+
+      <div style="text-align:right;color:var(--muted);font-size:13px">© 2025 DesignHub</div>
     </div>
   </footer>
 
+  <!-- Simple JS for interactivity -->
   <script>
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      try { tg.ready(); } catch(e){}
+    function openExamples(){
+      alert('Показ примеров: можно сделать галерею/модал с портфолио.');
     }
 
-    document.getElementById('generate').addEventListener('click', () => {
-      const file = document.getElementById('upload').files[0];
-      const style = document.getElementById('style-select').value;
-      if (!file) return alert('Загрузите фото перед генерацией');
-      alert('Запрос отправлен: стиль = ' + style + '\nФайл: ' + file.name);
+    function orderNow(name){
+      // Простая заглушка — позже сюда будет вести форма заказа
+      alert('Заказ: ' + name + '\\nОткроется окно оформления заказа (чат, оплата, гарантия).');
+    }
+
+    // Very small "reviews slider" loop
+    (function(){
+      const slider = document.getElementById('reviewSlider');
+      let index = 0;
+      const children = Array.from(slider.children);
+      function show(i){
+        children.forEach((c,idx)=> c.style.display = (idx===i ? 'block' : 'none'));
+      }
+      show(0);
+      setInterval(()=>{
+        index = (index + 1) % children.length;
+        show(index);
+      }, 4200);
+    })();
+
+    // Minimal search
+    document.getElementById('searchBtn').addEventListener('click', ()=>{
+      const q = document.getElementById('q').value.trim();
+      if(!q) return alert('Введите запрос для поиска услуг');
+      // Здесь будет запрос к API каталога
+      alert('Ищем: ' + q + '\\n(В рабочем проекте -> запрос к бэкенду)');
     });
 
-    document.getElementById('start-free').addEventListener('click', () => {
-      document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
-    });
+    // Login / Signup buttons (simple placeholders)
+    document.getElementById('loginBtn').addEventListener('click', ()=>alert('Вход (модальное окно).'));
+    document.getElementById('signupBtn').addEventListener('click', ()=>alert('Регистрация (модальное окно).'));
+
   </script>
 </body>
 </html>
