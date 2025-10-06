@@ -242,6 +242,37 @@
   main { padding-top: 12px; }
 }
 
+/* --- AUTH MODAL styles --- */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2,6,23,0.6);
+  z-index: 120;
+}
+.modal.open { display:flex; }
+.modal-dialog{
+  width: 420px;
+  max-width: calc(100% - 28px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:12px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,0.03);
+}
+.modal .modal-close{float:right;border:0;background:transparent;color:var(--muted);font-size:20px;cursor:pointer}
+.auth-buttons{display:flex;gap:10px;margin-bottom:12px}
+.auth-buttons .btn{flex:1}
+.auth-row{display:flex;gap:8px;align-items:center;margin-top:12px}
+.auth-note{color:var(--muted);font-size:13px;margin-top:8px}
+.input-row{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.input-row input{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;font-size:14px}
+.auth-error{color:#ffb3a7;margin-top:8px;font-size:13px}
+
+/* user badge */
+.user-badge{display:flex;gap:10px;align-items:center}
+.user-badge img{width:36px;height:36px;border-radius:8px;object-fit:cover}
   </style>
 </head>
 <body>
@@ -266,6 +297,7 @@
       </div>
 
       <div class="nav-actions" role="navigation" aria-label="Навигация">
+        <!-- эти кнопки будут заменяться JS'ом при входе -->
         <button class="btn" id="loginBtn"><i class="fa fa-sign-in-alt"></i>&nbsp;Вход</button>
         <button class="btn primary" id="signupBtn">Регистрация</button>
       </div>
@@ -469,18 +501,112 @@
     </div>
   </footer>
 
-  <!-- Simple JS for interactivity -->
+  <!-- AUTH MODAL (Google + Email/password) -->
+  <div id="authModal" class="modal" aria-hidden="true">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <button class="modal-close" id="closeAuth" title="Закрыть">✕</button>
+      <h3 id="authTitle">Вход</h3>
+
+      <div class="auth-buttons">
+        <button id="googleSignIn" class="btn" title="Войти через Google"><i class="fa fa-google" style="color:inherit"></i> &nbsp; Войти через Google</button>
+      </div>
+
+      <div style="height:6px"></div>
+      <div class="auth-note">Или используйте email и пароль</div>
+
+      <form id="emailForm" class="input-row" autocomplete="on">
+        <input id="authEmail" type="email" placeholder="Email" required />
+        <input id="authPass" type="password" placeholder="Пароль (мин. 6 символов)" minlength="6" required />
+        <div style="display:flex;gap:8px">
+          <button type="submit" id="emailSubmit" class="btn primary">Войти</button>
+          <button type="button" id="switchToSignup" class="btn">Регистрация</button>
+        </div>
+      </form>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+        <button id="forgotBtn" class="btn">Забыли пароль?</button>
+        <div id="authError" class="auth-error" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK (compat — проще для быстрой интеграции) -->
+  <!-- ЗАМЕНИТЕ НОМЕРА ВЕРСИИ на актуальные, если нужно -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <!-- Simple JS for interactivity + Auth -->
   <script>
-    function openExamples(){
-      alert('Показ примеров: можно сделать галерею/модал с портфолио.');
+    // ------------------------------
+    // 1) YOUR FIREBASE CONFIG: ЗАМЕНИТЕ НА СВОЙ
+    // ------------------------------
+    const firebaseConfig = {
+      apiKey: "REPLACE_WITH_YOUR_API_KEY",
+      authDomain: "REPLACE_WITH_YOUR_PROJECT.firebaseapp.com",
+      projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
+      appId: "REPLACE_WITH_YOUR_APP_ID",
+      // остальные поля (messagingSenderId, storageBucket) можно добавить, если есть
+    };
+    // ------------------------------
+    // End config
+    // ------------------------------
+
+    // If config not replaced, we still load page but auth will show message
+    let firebaseAvailable = true;
+    try {
+      firebase.initializeApp(firebaseConfig);
+    } catch (e) {
+      console.warn('Firebase init error', e);
+      firebaseAvailable = false;
     }
 
-    function orderNow(name){
-      // Простая заглушка — позже сюда будет вести форма заказа
-      alert('Заказ: ' + name + '\\nОткроется окно оформления заказа (чат, оплата, гарантия).');
-    }
+    // Helper DOM
+    const authModal = document.getElementById('authModal');
+    const closeAuth = document.getElementById('closeAuth');
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const googleSignIn = document.getElementById('googleSignIn');
+    const emailForm = document.getElementById('emailForm');
+    const authEmail = document.getElementById('authEmail');
+    const authPass = document.getElementById('authPass');
+    const emailSubmit = document.getElementById('emailSubmit');
+    const switchToSignup = document.getElementById('switchToSignup');
+    const forgotBtn = document.getElementById('forgotBtn');
+    const authError = document.getElementById('authError');
+    const navActions = document.querySelector('.nav-actions');
 
-    // Very small "reviews slider" loop
+    function openAuth(mode = 'login') {
+      authError.textContent = '';
+      authModal.classList.add('open');
+      authModal.setAttribute('aria-hidden','false');
+      document.getElementById('authTitle').textContent = mode === 'signup' ? 'Регистрация' : 'Вход';
+      emailSubmit.textContent = mode === 'signup' ? 'Зарегистрироваться' : 'Войти';
+      switchToSignup.textContent = mode === 'signup' ? 'Уже есть аккаунт' : 'Регистрация';
+      // if signup mode => clicking switchToSignup should toggle
+      switchToSignup.dataset.mode = (mode === 'signup' ? 'login' : 'signup');
+    }
+    function closeAuthModal() {
+      authModal.classList.remove('open');
+      authModal.setAttribute('aria-hidden','true');
+    }
+    closeAuth.addEventListener('click', closeAuthModal);
+    authModal.addEventListener('click', (e)=> { if (e.target === authModal) closeAuthModal(); });
+
+    // Open from header
+    loginBtn.addEventListener('click', ()=> openAuth('login'));
+    signupBtn.addEventListener('click', ()=> openAuth('signup'));
+
+    // switchToSignup acts as toggle
+    switchToSignup.addEventListener('click', ()=>{
+      const next = switchToSignup.dataset.mode === 'signup' ? 'signup' : 'login';
+      openAuth(next);
+    });
+
+    // Basic placeholders
+    function openExamples(){ alert('Показ примеров: можно сделать галерею/модал с портфолио.'); }
+    function orderNow(name){ alert('Заказ: ' + name + '\\nОткроется окно оформления заказа (чат, оплата, гарантия).'); }
+
+    // REVIEW slider (same as раньше)
     (function(){
       const slider = document.getElementById('reviewSlider');
       let index = 0;
@@ -495,17 +621,131 @@
       }, 4200);
     })();
 
-    // Minimal search
+    // Search minimal
     document.getElementById('searchBtn').addEventListener('click', ()=>{
       const q = document.getElementById('q').value.trim();
       if(!q) return alert('Введите запрос для поиска услуг');
-      // Здесь будет запрос к API каталога
       alert('Ищем: ' + q + '\\n(В рабочем проекте -> запрос к бэкенду)');
     });
 
-    // Login / Signup buttons (simple placeholders)
-    document.getElementById('loginBtn').addEventListener('click', ()=>alert('Вход (модальное окно).'));
-    document.getElementById('signupBtn').addEventListener('click', ()=>alert('Регистрация (модальное окно).'));
+    // ------------------------------
+    // Firebase Auth logic (compat)
+    // ------------------------------
+    if (!firebaseAvailable || !firebase.auth) {
+      // If Firebase not configured, show visual hint and keep placeholders working
+      console.warn('Firebase not configured or not available. Insert your firebaseConfig to enable auth.');
+      googleSignIn.addEventListener('click', ()=> alert('Firebase не настроен. Вставьте firebaseConfig в код.'));
+      emailForm.addEventListener('submit', (e)=> { e.preventDefault(); alert('Firebase не настроен. Вставьте firebaseConfig в код.'); });
+      forgotBtn.addEventListener('click', ()=> alert('Firebase не настроен. Вставьте firebaseConfig в код.'));
+    } else {
+      const auth = firebase.auth();
+
+      // Update UI on auth state change
+      auth.onAuthStateChanged(user => {
+        renderUser(user);
+      });
+
+      // Try to handle redirect result (if used)
+      auth.getRedirectResult().catch(err => {
+        console.warn('getRedirectResult error:', err);
+      });
+
+      // Google sign-in (popup, fallback to redirect)
+      googleSignIn.addEventListener('click', async ()=>{
+        authError.textContent = '';
+        const provider = new firebase.auth.GoogleAuthProvider();
+        try {
+          await auth.signInWithPopup(provider);
+          closeAuthModal();
+        } catch (err) {
+          // If popup blocked or fails, fallback to redirect
+          console.warn('signInWithPopup error, fallback to redirect:', err);
+          if (err && (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request' || err.code === 'auth/web-storage-unsupported')) {
+            try {
+              await auth.signInWithRedirect(provider);
+            } catch (r) {
+              authError.textContent = r.message || 'Ошибка входа через Google';
+            }
+          } else {
+            authError.textContent = err.message || 'Ошибка входа через Google';
+          }
+        }
+      });
+
+      // Email form: handles both login and signup depending on submit button text
+      emailForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        authError.textContent = '';
+        const email = authEmail.value.trim();
+        const pass = authPass.value;
+        if (!email || !pass) { authError.textContent = 'Введите email и пароль'; return; }
+        const isSignup = (emailSubmit.textContent || '').toLowerCase().includes('зарегистр');
+        try {
+          if (isSignup) {
+            // create user
+            const cred = await auth.createUserWithEmailAndPassword(email, pass);
+            // Optionally set displayName (not requested here) => can be updated by user profile flow
+            closeAuthModal();
+          } else {
+            // sign in
+            await auth.signInWithEmailAndPassword(email, pass);
+            closeAuthModal();
+          }
+        } catch (err) {
+          // show simple messages
+          let msg = err && err.message ? err.message : 'Ошибка авторизации';
+          authError.textContent = msg;
+          console.warn('Auth error', err);
+        }
+      });
+
+      // forgot password
+      forgotBtn.addEventListener('click', async ()=>{
+        const email = authEmail.value.trim();
+        if (!email) { authError.textContent = 'Введите email для сброса пароля'; return; }
+        try {
+          await auth.sendPasswordResetEmail(email);
+          authError.style.color = '#8ad5a8';
+          authError.textContent = 'Письмо для сброса пароля отправлено на ' + email;
+          setTimeout(()=> { authError.style.color = '#ffb3a7'; authError.textContent = ''; }, 5000);
+        } catch (err) {
+          authError.textContent = err.message || 'Ошибка отправки письма';
+        }
+      });
+
+      // Render user in nav
+      function renderUser(user) {
+        if (user) {
+          const img = user.photoURL ? `<img src="${user.photoURL}" alt="avatar">` : '';
+          const name = user.displayName || user.email || 'Пользователь';
+          navActions.innerHTML = `
+            <div class="user-badge">
+              ${img}
+              <div style="display:flex;flex-direction:column">
+                <strong style="font-size:13px">${name}</strong>
+                <span style="font-size:12px;color:var(--muted)">${user.email || ''}</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn" id="profileBtn">Профиль</button>
+              <button class="btn" id="signOutBtn">Выйти</button>
+            </div>
+          `;
+          // attach handlers
+          document.getElementById('signOutBtn').addEventListener('click', ()=> auth.signOut());
+          document.getElementById('profileBtn').addEventListener('click', ()=> alert('Откроется профиль пользователя (реализация далее).'));
+        } else {
+          // restore original buttons
+          navActions.innerHTML = `
+            <button class="btn" id="loginBtn"><i class="fa fa-sign-in-alt"></i>&nbsp;Вход</button>
+            <button class="btn primary" id="signupBtn">Регистрация</button>
+          `;
+          // reattach open modal handlers to the new buttons (since we replaced DOM)
+          document.getElementById('loginBtn').addEventListener('click', ()=> openAuth('login'));
+          document.getElementById('signupBtn').addEventListener('click', ()=> openAuth('signup'));
+        }
+      }
+    } // end firebaseAvailable true
 
     /* --- Telegram WebApp: аккуратно расширяем и поддерживаем Enter для поиска --- */
 (function () {
@@ -527,7 +767,6 @@
     });
   }
 })();
-
   </script>
 </body>
 </html>
