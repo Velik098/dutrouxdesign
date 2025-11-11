@@ -1,391 +1,464 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Replica — Структура сайта преподавателя</title>
-  <style>
-    /* ===== Reset & базовая типографика ===== */
-    :root{
-      --bg:#f7f8fb;
-      --card:#ffffff;
-      --muted:#707582;
-      --accent:#285ef4;
-      --accent-2:#00bfa6;
-      --radius:14px;
-      --max-w:1100px;
-      --container-gap:24px;
-      --shadow: 0 8px 30px rgba(17,24,39,0.08);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Helvetica Neue", monospace;
-      --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue";
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:var(--sans);
-      background:linear-gradient(180deg,#f7f8fb 0%, #eef3ff 100%);
-      color:#0f172a;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.45;
-    }
-    .wrap{max-width:var(--max-w);margin:0 auto;padding:28px;gap:var(--container-gap)}
-    a{color:inherit;text-decoration:none}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Draus Design — Replica</title>
 
-    /* ===== Header / Nav ===== */
-    header{
-      background:transparent;
-      position:sticky;
-      top:0;
-      z-index:40;
-      backdrop-filter: blur(6px);
-    }
-    .nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      padding:12px 0;
-    }
-    .logo{
-      display:flex;
-      gap:12px;
-      align-items:center;
-    }
-    .logo .mark{
-      width:44px;height:44px;border-radius:10px;
-      background:linear-gradient(135deg,var(--accent),var(--accent-2));
-      box-shadow:0 6px 18px rgba(41,82,255,0.18);
-      display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
-      font-family:var(--mono);letter-spacing:0.6px;
-    }
-    nav ul{display:flex;gap:18px;align-items:center;margin:0;padding:0;list-style:none}
-    nav a.nav-link{color:var(--muted);padding:8px 10px;border-radius:8px;transition:all .18s}
-    nav a.nav-link:hover{color:var(--accent);background:rgba(40,94,244,0.06)}
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
 
-    .cta{
-      padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#6f9cff);
-      color:#fff;font-weight:600;box-shadow:0 8px 20px rgba(41,82,255,0.14);
-    }
+<style>
+  :root{
+    --bg1: #040306;
+    --bg2: #0b0910;
+    --accent: #9b2cff; /* purple */
+    --accent-2: #5b22ff;
+    --muted: #cfcfe0;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: "Rubik", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(800px 400px at 50% 0%, rgba(155,44,255,0.12), transparent 12%),
+                radial-gradient(600px 300px at 80% 60%, rgba(91,34,255,0.06), transparent 12%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:#eae6f6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding-bottom:80px;
+  }
 
-    /* ===== Hero ===== */
-    .hero{
-      display:flex;
-      gap:30px;
-      align-items:center;
-      margin-top:18px;
-    }
-    .hero-left{flex:1;min-width:260px}
-    .eyebrow{display:inline-block;background:#e9f1ff;color:var(--accent);padding:6px 10px;border-radius:999px;font-weight:600;font-size:13px}
-    h1{font-size:40px;line-height:1.03;margin:18px 0 12px;font-weight:800;letter-spacing:-0.02em}
-    p.lead{color:var(--muted);margin-bottom:18px;font-size:16px}
-    .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
-    .btn{padding:12px 16px;border-radius:12px;font-weight:700;border:0;cursor:pointer}
-    .btn-ghost{background:transparent;border:1px solid rgba(15,23,42,0.06);color:var(--accent)}
-    .btn-primary{background:var(--accent);color:#fff;box-shadow:var(--shadow)}
+  /* Container */
+  .container{max-width:1100px;margin:0 auto;padding:30px;}
 
-    /* hero right (visual) */
-    .hero-right{width:420px;max-width:45%;display:flex;justify-content:center}
-    .mock{
-      width:100%;border-radius:18px;background:linear-gradient(180deg,#fff,#f6fbff);
-      box-shadow:var(--shadow);padding:18px;position:relative;
-      overflow:hidden;border:1px solid rgba(17,24,39,0.04);
-    }
-    .mock .thumb{height:220px;background:linear-gradient(135deg,#ffe6e6,#f3faff);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#10203a}
+  /* NAV */
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 0;
+  }
+  .logo{font-weight:800;font-family: "Montserrat",sans-serif;letter-spacing:0.6px;}
+  .nav-links{display:flex;gap:18px;align-items:center}
+  .nav-links a{
+    color: #cfcfe0;
+    text-decoration:none;
+    font-weight:500;
+    padding:8px 12px;
+    border-radius:6px;
+    font-size:14px;
+  }
+  .nav-links a.cta{
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    box-shadow: 0 6px 20px rgba(88,20,170,0.28);
+    color:white;
+    font-weight:700;
+  }
 
-    /* ===== Sections ===== */
-    section{margin-top:44px}
-    .grid{display:grid;gap:18px}
-    .services{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-    .card{
-      background:var(--card);padding:18px;border-radius:12px;box-shadow:var(--shadow);border:1px solid rgba(11,20,40,0.03)
-    }
-    .card h3{margin:0 0 10px;font-size:18px}
-    .card p{margin:0;color:var(--muted);font-size:14px}
+  /* HERO */
+  .hero{
+    text-align:center;
+    padding:40px 20px 70px;
+  }
+  .avatar{
+    width:150px;height:150px;border-radius:50%;
+    margin:0 auto 18px;
+    overflow:hidden;
+    border:6px solid rgba(255,255,255,0.06);
+    box-shadow: 0 20px 60px rgba(22,6,40,0.6), 0 0 60px rgba(155,44,255,0.12) inset;
+    background:linear-gradient(180deg,#111,#000);
+  }
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
 
-    /* portfolio / gallery */
-    .portfolio{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
-    .work{height:160px;border-radius:12px;background:#eef3ff;display:flex;align-items:center;justify-content:center;font-weight:700;color:#1740b6}
+  .hero h1{
+    margin:8px 0 10px;
+    font-family:"Montserrat",sans-serif;
+    font-size:36px;
+    letter-spacing:0.3px;
+    font-weight:800;
+  }
+  .hero p.lead{
+    max-width:760px;margin:0 auto 18px;color: #c9c5d8;font-size:15px;line-height:1.6;
+  }
+  .hero .btns{display:flex;gap:12px;justify-content:center;margin-top:18px}
+  .btn{
+    padding:10px 18px;border-radius:10px;border:0;cursor:pointer;font-weight:700;
+    background:rgba(255,255,255,0.06);color:#fff;
+  }
+  .btn.primary{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    box-shadow:0 8px 30px rgba(91,34,255,0.12);
+  }
 
-    /* testimonials */
-    .testimonials{grid-template-columns:1fr 1fr;align-items:stretch}
-    .quote{font-style:italic;color:#142033}
-    .author{display:flex;align-items:center;gap:12px;margin-top:12px}
-    .avatar{width:48px;height:48px;border-radius:999px;background:#cfe7ff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#0d2a6b}
+  /* Work examples */
+  .section-title{font-family:"Montserrat";font-weight:800;font-size:30px;text-align:center;margin:40px 0 10px}
+  .subtitle{color:#bfbad0;text-align:center;margin-bottom:20px}
 
-    /* pricing */
-    .pricing{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-    .price{padding:20px;border-radius:14px;border:1px solid rgba(10,20,40,0.04);background:linear-gradient(180deg,#fff,#fbfdff)}
+  .thumbnails{
+    display:flex;
+    gap:12px;
+    overflow:hidden;
+    padding:14px 0;
+    align-items:center;
+    justify-content:flex-start;
+  }
+  .thumb{
+    min-width:220px;height:120px;border-radius:10px;overflow:hidden;background:#111;
+    box-shadow:0 10px 40px rgba(0,0,0,0.6);flex:0 0 auto;
+  }
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 
-    /* contact */
-    .contact-wrap{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
-    .contact-form{flex:1;min-width:260px}
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-    input,textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(11,20,40,0.06);background:#fff;font-size:14px;resize:vertical}
-    .footer{margin-top:34px;padding:22px 0;color:var(--muted);font-size:14px;border-top:1px solid rgba(11,20,40,0.04)}
+  /* Testimonials grid */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-top:30px;
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;padding:18px;color:#0a0710;
+    min-height:120px;position:relative;overflow:hidden;
+  }
+  /* inside card white area to mimic screenshot */
+  .card .inner{
+    background:white;padding:14px;border-radius:10px;height:100%;display:flex;flex-direction:column;gap:10px;
+    color:#0b0b0b;
+  }
+  .card .meta{display:flex;gap:12px;align-items:center}
+  .avatar-sm{width:42px;height:42px;border-radius:50%;overflow:hidden;flex:0 0 auto}
+  .avatar-sm img{width:100%;height:100%;object-fit:cover}
+  .person{font-weight:700}
+  .role{font-size:13px;color:#6b6b75}
 
-    /* responsive */
-    @media (max-width:900px){
-      .hero{flex-direction:column-reverse}
-      .hero-right{max-width:100%;width:100%}
-      nav ul{display:none}
-      .nav-actions{display:flex;gap:10px}
-      .testimonials{grid-template-columns:1fr}
-    }
-  </style>
+  /* Pricing */
+  .pricing{
+    display:flex;align-items:center;justify-content:center;margin:40px 0;
+  }
+  .price-card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border-radius:14px;padding:30px;text-align:center;width:220px;box-shadow:0 30px 60px rgba(22,6,40,0.6);
+  }
+  .price-card .label{color:#bfbad0;text-transform:uppercase;font-size:14px;margin-bottom:6px}
+  .price-card .price{
+    font-family:"Montserrat";font-size:44px;font-weight:900;color:var(--accent);margin:6px 0;
+  }
+  .price-card small{display:block;color:#b8b3cb;margin-top:8px}
+
+  /* FAQ */
+  .faq{max-width:760px;margin:20px auto}
+  .faq-item{background:transparent;border-radius:8px;margin-bottom:8px;overflow:hidden}
+  .faq-header{
+    display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(255,255,255,0.02);cursor:pointer;border-radius:8px;
+  }
+  .faq-body{padding:12px 16px;background:rgba(255,255,255,0.01);display:none;color:#d7d3e7}
+
+  /* Contact */
+  .contact{
+    max-width:720px;margin:30px auto;padding:18px;border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow:0 40px 80px rgba(22,6,40,0.6);
+  }
+  .contact label{display:block;color:#cfcfe0;font-size:13px;margin-bottom:6px}
+  .contact input, .contact textarea{
+    width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#eae6f6;
+    resize:vertical;font-size:14px;
+  }
+  .contact textarea{min-height:120px}
+  .contact .submit{margin-top:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));border:0;padding:12px 16px;border-radius:10px;color:white;font-weight:700;cursor:pointer}
+
+  /* Footer small */
+  .footer{color:#bfbad0;text-align:center;padding:22px 0;margin-top:24px;font-size:13px}
+
+  /* Responsive */
+  @media (max-width:980px){
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .thumb{min-width:180px;height:100px}
+  }
+  @media (max-width:640px){
+    .nav-links{display:none}
+    .cards{grid-template-columns:1fr}
+    .avatar{width:120px;height:120px}
+    .hero h1{font-size:28px}
+    .container{padding:18px}
+  }
+</style>
 </head>
 <body>
-  <!-- Header / Nav (соответствует header и навигации в оригинале) -->
-  <header>
-    <div class="wrap nav" role="navigation" aria-label="Главная навигация">
-      <div class="logo">
-        <div class="mark">RD</div>
-        <div>
-          <div style="font-weight:800">Replica Studio</div>
-          <div style="font-size:12px;color:var(--muted)">Premium design structure</div>
-        </div>
+  <div class="container">
+    <!-- NAV -->
+    <nav class="nav" aria-label="Main navigation">
+      <div class="logo">Draus Design</div>
+      <div class="nav-links" role="navigation">
+        <a href="#about">About Me</a>
+        <a href="#examples">Examples</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact" class="cta">Contact</a>
       </div>
+    </nav>
 
-      <nav aria-label="Основные разделы">
-        <ul>
-          <li><a class="nav-link" href="#work">Work</a></li>
-          <li><a class="nav-link" href="#services">Services</a></li>
-          <li><a class="nav-link" href="#pricing">Pricing</a></li>
-          <li><a class="nav-link" href="#testimonials">Reviews</a></li>
-          <li><a class="nav-link" href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-
-      <div class="nav-actions">
-        <a class="cta" href="#contact">Start Project</a>
+    <!-- HERO -->
+    <header class="hero" id="about" role="banner">
+      <div class="avatar" aria-hidden="true">
+        <!-- Заменить src на реальный портрет: ./images/hero.jpg -->
+        <img src="https://picsum.photos/seed/hero/600/600" alt="Avatar">
       </div>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <!-- Hero (соответствует крупному баннеру/hero на сайте препода) -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-left">
-        <span class="eyebrow">Premium YouTube Thumbnails</span>
-        <h1 id="hero-title">Профессиональные эскизы и дизайн миниатюр — та же структура, новый стиль</h1>
-        <p class="lead">Повторяем структуру вашего преподавателя: hero, услуги, портфолио, отзывы, тарифы и контакт — но с обновлённым визуалом. Можно менять цвета и шрифты.</p>
-
-        <div class="hero-cta">
-          <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Связаться</button>
-          <a href="#work" class="btn btn-ghost">Посмотреть работы</a>
-        </div>
+      <h1>Draus Design</h1>
+      <p class="lead">With 5 years in the industry, I specialize in crafting high-performance YouTube thumbnails that drive clicks and engagement. My work has helped creators across various niches stand out. Let's take your channel to the next level!</p>
+      <div class="btns">
+        <button class="btn primary">Get Thumbnails</button>
+        <button class="btn">Free Call</button>
       </div>
+    </header>
 
-      <div class="hero-right" aria-hidden="true">
-        <div class="mock" role="img" aria-label="Превью работы">
-          <div class="thumb">Thumbnail Mockup</div>
-          <div style="display:flex;gap:10px;margin-top:12px">
-            <div style="flex:1;height:60px;border-radius:10px;background:linear-gradient(90deg,#fff,#f2f9ff);display:flex;align-items:center;justify-content:center">Project</div>
-            <div style="width:80px;height:60px;border-radius:10px;background:linear-gradient(90deg,#fff,#fff5f2);display:flex;align-items:center;justify-content:center">Tags</div>
-          </div>
+    <!-- WORK EXAMPLES -->
+    <section id="examples">
+      <h2 class="section-title">Work Examples</h2>
+      <p class="subtitle">Take a look at what I'm capable of</p>
+
+      <div style="overflow:hidden;padding:8px 0 0;">
+        <div class="thumbnails" aria-hidden="true">
+          <!-- заменяй картинки на реальные миниатюры -->
+          <div class="thumb"><img src="https://picsum.photos/seed/t1/800/450" alt=""></div>
+          <div class="thumb"><img src="https://picsum.photos/seed/t2/800/450" alt=""></div>
+          <div class="thumb"><img src="https://picsum.photos/seed/t3/800/450" alt=""></div>
+          <div class="thumb"><img src="https://picsum.photos/seed/t4/800/450" alt=""></div>
+          <div class="thumb"><img src="https://picsum.photos/seed/t5/800/450" alt=""></div>
+          <div class="thumb"><img src="https://picsum.photos/seed/t6/800/450" alt=""></div>
         </div>
       </div>
     </section>
 
-    <!-- Services (эквивалент секции услуг на оригинале) -->
-    <section id="services">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h2 style="margin:0">Услуги</h2>
-        <div style="color:var(--muted)">От концепта до финала</div>
-      </div>
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" style="margin-top:18px;">
+      <h2 class="section-title">What My Customers Say</h2>
 
-      <div class="grid services" style="margin-top:14px">
-        <article class="card">
-          <h3>Дизайн миниатюр</h3>
-          <p>Создание кликабельных, оптимизированных миниатюр для YouTube под вашу нишу.</p>
-        </article>
-
-        <article class="card">
-          <h3>Брендинг канала</h3>
-          <p>Логотипы, шапки, палитры и визуальная система для канала.</p>
-        </article>
-
-        <article class="card">
-          <h3>Шаблоны и наборы</h3>
-          <p>Наборы шаблонов, макеты для серийных выпусков и ускорение рабочего процесса.</p>
-        </article>
-
-        <article class="card">
-          <h3>Консультация и ревью</h3>
-          <p>Обратная связь по текущим миниатурам + рекомендации по A/B тестам.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Portfolio / Work (соответствует карточкам работ в оригинале) -->
-    <section id="work">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h2 style="margin:0">Портфолио</h2>
-        <div style="color:var(--muted)">Примеры завершённых проектов</div>
-      </div>
-
-      <div class="grid portfolio" style="margin-top:14px">
-        <div class="card work">YouTube Pack #1</div>
-        <div class="card work">YouTube Pack #2</div>
-        <div class="card work">Branding Kit</div>
-        <div class="card work">Series Templates</div>
-      </div>
-    </section>
-
-    <!-- Testimonials (эквивалент отзывов) -->
-    <section id="testimonials">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h2 style="margin:0">Отзывы</h2>
-        <div style="color:var(--muted)">Что говорят клиенты</div>
-      </div>
-
-      <div class="grid testimonials" style="margin-top:14px">
-        <div class="card">
-          <div class="quote">"Очень доволен проделанной работой — конверсия миниатюр выросла в 2.5×."</div>
-          <div class="author">
-            <div class="avatar">AK</div>
-            <div>
-              <div style="font-weight:700">Алексей К.</div>
-              <div style="font-size:13px;color:var(--muted)">Редактор, YouTube</div>
+      <div class="cards" role="list">
+        <!-- Повтори карточки сколько нужно -->
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a1/80/80" alt=""></div>
+              <div>
+                <div class="person">Familia Diamond</div>
+                <div class="role">— 12k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              I loved working with him. He is very easy to work with and very patient and creative.
             </div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="quote">"Быстро, аккуратно и по делу. Чёткая структура — такой же порядок, как и на сайте преподавателя."</div>
-          <div class="author">
-            <div class="avatar">MB</div>
-            <div>
-              <div style="font-weight:700">Марта Б.</div>
-              <div style="font-size:13px;color:var(--muted)">Влогер</div>
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a2/80/80" alt=""></div>
+              <div>
+                <div class="person">Danny Kim</div>
+                <div class="role">— 56k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              Andrew is a pleasure to work with. Writing and creating thumbnail graphics was fast and high quality.
             </div>
           </div>
         </div>
+
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a3/80/80" alt=""></div>
+              <div>
+                <div class="person">The Trading Geek</div>
+                <div class="role">— 34k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              Trust me when I say that you will not regret working with him — extremely hardworking and skillful.
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional cards to approximate grid (you can duplicate) -->
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a4/80/80" alt=""></div>
+              <div>
+                <div class="person">Drumrev BG</div>
+                <div class="role">— 29k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              Working with Andrew is awesome. Always trying to improve and deliver great results.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a5/80/80" alt=""></div>
+              <div>
+                <div class="person">Scarface Trades</div>
+                <div class="role">— 18k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              Andrew’s thumbnails are always clean and professional. Highly recommend.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a6/80/80" alt=""></div>
+              <div>
+                <div class="person">Photon Trading</div>
+                <div class="role">— 24k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              I've worked with Andrew on multiple thumbnails and the quality has been excellent.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a7/80/80" alt=""></div>
+              <div>
+                <div class="person">Tech With Soleyman</div>
+                <div class="role">— 11k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              I’ve been working with Andrew for over a year and the results are outstanding.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a8/80/80" alt=""></div>
+              <div>
+                <div class="person">Michael Chanin</div>
+                <div class="role">— 40k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              I have worked with many thumbnail designers and Andrew is one of the best.
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- Pricing (тарифы/планы) -->
+    <!-- PRICING -->
     <section id="pricing">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h2 style="margin:0">Тарифы</h2>
-        <div style="color:var(--muted)">Выберите подходящий пакет</div>
-      </div>
-
-      <div class="grid pricing" style="margin-top:14px">
-        <div class="price card">
-          <h3>Starter</h3>
-          <div style="font-size:22px;font-weight:800;margin:10px 0">€49</div>
-          <p style="color:var(--muted)">1 миниатюра, базовый экспорт, 1 правка</p>
-          <div style="margin-top:12px"><button class="btn btn-primary" onclick="alert('Вы выбрали Starter')">Выбрать</button></div>
-        </div>
-
-        <div class="price card">
-          <h3>Pro</h3>
-          <div style="font-size:22px;font-weight:800;margin:10px 0">€149</div>
-          <p style="color:var(--muted)">5 миниатюр, шаблон, 3 правки</p>
-          <div style="margin-top:12px"><button class="btn btn-primary" onclick="alert('Вы выбрали Pro')">Выбрать</button></div>
-        </div>
-
-        <div class="price card">
-          <h3>Agency</h3>
-          <div style="font-size:22px;font-weight:800;margin:10px 0">€399</div>
-          <p style="color:var(--muted)">Пакет для каналов, приоритет, доработки</p>
-          <div style="margin-top:12px"><button class="btn btn-primary" onclick="alert('Вы выбрали Agency')">Выбрать</button></div>
+      <h2 class="section-title">Pricing</h2>
+      <div class="pricing">
+        <div class="price-card" aria-label="Pricing starting from $40">
+          <div class="label">starting from</div>
+          <div class="price">$40</div>
+          <small>Prices are individual and clarified after the order details are given</small>
         </div>
       </div>
     </section>
 
-    <!-- Contact (форма контакта, как в оригинале) -->
+    <!-- FAQ -->
+    <section id="faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq">
+        <div class="faq-item">
+          <div class="faq-header">Do you offer discounts for bulk orders? <span>+</span></div>
+          <div class="faq-body">Yes — for bulk orders we provide scaled pricing. Contact for details.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">What's your usual turnaround time? <span>+</span></div>
+          <div class="faq-body">Typical turnaround is 24–72 hours depending on complexity and queue.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">How does the ordering process work? <span>+</span></div>
+          <div class="faq-body">You send requirements → I create drafts → you request revisions → final files delivered.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">Can I request revisions? If so, how many are included? <span>+</span></div>
+          <div class="faq-body">One or two minor revisions are included. Additional revisions can be arranged.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">Can you help improve old thumbnails to boost their performance? <span>+</span></div>
+          <div class="faq-body">Yes — I can audit and redesign thumbnails to improve CTR and watchtime.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
     <section id="contact">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h2 style="margin:0">Связаться</h2>
-        <div style="color:var(--muted)">Опишите задачу и мы свяжемся</div>
-      </div>
+      <h2 class="section-title">Contact Me</h2>
+      <p class="subtitle" style="margin-bottom:12px;">Drop a letter to book a free 30-minute call</p>
 
-      <div class="contact-wrap" style="margin-top:14px">
-        <form class="contact-form card" onsubmit="submitContact(event)">
-          <label for="name">Имя</label>
-          <input id="name" name="name" required placeholder="Ваше имя" />
+      <div class="contact" role="form" aria-label="Contact form">
+        <label for="email">Your Email</label>
+        <input id="email" type="email" placeholder="example@example.com">
 
-          <label for="email" style="margin-top:12px">Email</label>
-          <input id="email" name="email" type="email" required placeholder="you@example.com" />
+        <label for="subject">Subject</label>
+        <input id="subject" type="text" placeholder="Brief subject">
 
-          <label for="service" style="margin-top:12px">Услуга</label>
-          <select id="service" name="service">
-            <option>Дизайн миниатюр</option>
-            <option>Шаблоны</option>
-            <option>Брендинг</option>
-            <option>Консультация</option>
-          </select>
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Write your message here..."></textarea>
 
-          <label for="message" style="margin-top:12px">Сообщение</label>
-          <textarea id="message" name="message" rows="5" placeholder="Кратко опишите задачу"></textarea>
-
-          <div style="margin-top:12px;display:flex;gap:10px">
-            <button class="btn btn-primary" type="submit">Отправить</button>
-            <button type="reset" class="btn btn-ghost">Очистить</button>
-          </div>
-        </form>
-
-        <aside style="min-width:260px;flex:0.5">
-          <div class="card">
-            <h4 style="margin-top:0">Контакты</h4>
-            <p style="color:var(--muted)">Email: hello@example.com<br/>Телефон: +31 6 12 34 56 78</p>
-            <div style="margin-top:12px">
-              <strong>Часы:</strong>
-              <p style="margin:4px 0;color:var(--muted)">Пн–Пт 10:00–18:00</p>
-            </div>
-          </div>
-
-          <div class="card" style="margin-top:12px">
-            <h4 style="margin:0 0 8px 0">Локация</h4>
-            <p style="color:var(--muted)">Amsterdam, NL (пример)</p>
-          </div>
-        </aside>
+        <button class="submit" onclick="sendMessage()">Submit</button>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer wrap">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
-        <div style="font-weight:700">Replica Studio</div>
-        <div style="color:var(--muted)">© <span id="year"></span> Все права защищены</div>
-        <div style="margin-left:auto;color:var(--muted)">Made as a structural duplicate (learning exercise)</div>
-      </div>
-    </footer>
-  </main>
+    <div class="footer">© Draus Design — recreated for study project</div>
+  </div>
 
-  <script>
-    // небольшая логика: форма и год в футере
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    function submitContact(e){
-      e.preventDefault();
-      const fm = e.target;
-      const data = {
-        name: fm.name.value,
-        email: fm.email.value,
-        service: fm.service.value,
-        message: fm.message.value
-      };
-      // Эмуляция отправки — в реальном проекте нужно отправлять на сервер.
-      console.log('Contact form submit', data);
-      alert('Спасибо! Сообщение отправлено (эвент-симуляция).');
-      fm.reset();
-    }
-
-    // Простая плавная прокрутка для якорных ссылок (поддержка старых браузеров уже есть)
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', (ev)=>{
-        const href = a.getAttribute('href');
-        if(href.length>1){
-          ev.preventDefault();
-          const el = document.querySelector(href);
-          if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-        }
-      });
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    const header = item.querySelector('.faq-header');
+    header.addEventListener('click', function(){
+      const body = item.querySelector('.faq-body');
+      const isOpen = body.style.display === 'block';
+      document.querySelectorAll('.faq-body').forEach(b => b.style.display = 'none');
+      document.querySelectorAll('.faq-header span').forEach(s => s.textContent = '+');
+      if(!isOpen){
+        body.style.display = 'block';
+        header.querySelector('span').textContent = '−';
+      }
     });
-  </script>
+  });
+
+  // Simple "send" (demo)
+  function sendMessage(){
+    const email = document.getElementById('email').value.trim();
+    const subj = document.getElementById('subject').value.trim();
+    const msg = document.getElementById('message').value.trim();
+    if(!email || !msg){
+      alert('Please enter email and message.');
+      return;
+    }
+    // Демонстрация: просто очищаем поля
+    alert('Message sent (demo). Спасибо!');
+    document.getElementById('email').value='';
+    document.getElementById('subject').value='';
+    document.getElementById('message').value='';
+  }
+</script>
 </body>
 </html>
