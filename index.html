@@ -3,770 +3,389 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DesignHub — маркетплейс дизайнеров превью и обложек</title>
-
-  <!-- Fonts & Icons (CDN — чтобы сайт был онлайн) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/yourfontawesomekit.js" crossorigin="anonymous"></script>
-  <!-- If you don't have a FontAwesome kit, replace icons with inline SVGs or use another icon CDN -->
-
-  <meta name="description" content="DesignHub — найди дизайнера для превью, обложек и баннеров. Безопасные сделки и гарантия возврата средств.">
+  <title>Replica — Структура сайта преподавателя</title>
   <style>
+    /* ===== Reset & базовая типографика ===== */
     :root{
-      --bg:#0f0f12;
-      --card:#141418;
-      --muted:#9aa0a6;
-      --accent1:#8A2BE2; /* purple */
-      --accent2:#20C997; /* teal */
-      --cta:#FF6B35; /* orange */
-      --glass: rgba(255,255,255,0.04);
-      --glass-strong: rgba(255,255,255,0.06);
+      --bg:#f7f8fb;
+      --card:#ffffff;
+      --muted:#707582;
+      --accent:#285ef4;
+      --accent-2:#00bfa6;
       --radius:14px;
-      --maxw:1200px;
-      --ff-heading: "Poppins", "Inter", sans-serif;
-      --ff-body: "Inter", system-ui, sans-serif;
+      --max-w:1100px;
+      --container-gap:24px;
+      --shadow: 0 8px 30px rgba(17,24,39,0.08);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Helvetica Neue", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue";
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      background: radial-gradient(1200px 400px at 10% 10%, rgba(138,43,226,0.06), transparent),
-                  radial-gradient(900px 300px at 90% 90%, rgba(32,201,151,0.03), transparent),
-                  var(--bg);
-      color:#e6eef8;
-      font-family:var(--ff-body);
+      font-family:var(--sans);
+      background:linear-gradient(180deg,#f7f8fb 0%, #eef3ff 100%);
+      color:#0f172a;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       line-height:1.45;
-      padding-bottom:60px;
     }
+    .wrap{max-width:var(--max-w);margin:0 auto;padding:28px;gap:var(--container-gap)}
+    a{color:inherit;text-decoration:none}
 
-    /* Container */
-    .wrap{
-      max-width:var(--maxw);
-      margin:0 auto;
-      padding:28px;
-    }
-
-    /* Header / Nav */
-    header.nav{
+    /* ===== Header / Nav ===== */
+    header{
+      background:transparent;
       position:sticky;
       top:0;
-      z-index:50;
-      backdrop-filter: blur(8px) saturate(120%);
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-bottom: 1px solid rgba(255,255,255,0.03);
+      z-index:40;
+      backdrop-filter: blur(6px);
     }
-    .nav .wrap{display:flex;align-items:center;gap:18px}
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:12px 0;
+    }
     .logo{
-      display:flex;align-items:center;gap:10px;font-family:var(--ff-heading);
-      font-weight:700; font-size:20px; color:linear-gradient(90deg,var(--accent1),var(--accent2));
+      display:flex;
+      gap:12px;
+      align-items:center;
     }
     .logo .mark{
       width:44px;height:44px;border-radius:10px;
-      background: linear-gradient(135deg,var(--accent1),var(--accent2));
-      display:flex;align-items:center;justify-content:center;
-      box-shadow:0 6px 18px rgba(32,201,151,0.08), inset 0 -6px 16px rgba(0,0,0,0.2);
-      font-weight:800;color:#0b0b0b;
-      font-family:var(--ff-heading);
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 6px 18px rgba(41,82,255,0.18);
+      display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
+      font-family:var(--mono);letter-spacing:0.6px;
+    }
+    nav ul{display:flex;gap:18px;align-items:center;margin:0;padding:0;list-style:none}
+    nav a.nav-link{color:var(--muted);padding:8px 10px;border-radius:8px;transition:all .18s}
+    nav a.nav-link:hover{color:var(--accent);background:rgba(40,94,244,0.06)}
+
+    .cta{
+      padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#6f9cff);
+      color:#fff;font-weight:600;box-shadow:0 8px 20px rgba(41,82,255,0.14);
     }
 
-    /* search center */
-    .search-wrap{flex:1;display:flex;justify-content:center}
-    .search{
-      width:60%;min-width:220px;max-width:720px;
-      background:var(--glass); border-radius:999px; padding:10px 16px; display:flex;align-items:center;gap:10px;
-      border:1px solid rgba(255,255,255,0.03);
-      box-shadow:0 6px 20px rgba(8,8,8,0.6);
-    }
-    .search input{
-      background:transparent;border:0;outline:0;color:inherit;font-size:15px;width:100%;
-      font-family:var(--ff-body);
-    }
-    .nav-actions{display:flex;gap:10px;align-items:center}
-    .btn{
-      padding:10px 14px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.06);cursor:pointer;
-      font-weight:600;font-size:14px;color:var(--muted);
-    }
-    .btn.primary{
-      background:linear-gradient(90deg,var(--cta), #ff8a58);
-      color:#081013;border:0;box-shadow: 0 8px 30px rgba(255,107,53,0.14);
-    }
-
-    /* Hero */
+    /* ===== Hero ===== */
     .hero{
-      padding:48px 0 36px;
-      display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:top;
-    }
-    .hero-left h1{font-family:var(--ff-heading);font-size:42px;margin:0 0 12px;line-height:1.02}
-    .hero-left p{color:var(--muted);margin:0 0 20px;max-width:60%}
-    .cta-row{display:flex;gap:12px;align-items:center}
-    .pill{
-      background:linear-gradient(90deg, rgba(138,43,226,0.12), rgba(32,201,151,0.05));
-      padding:6px 10px;border-radius:999px;font-weight:600;color:var(--muted);display:inline-flex;gap:8px;align-items:center;
-    }
-
-    /* Right: featured designer preview */
-    .hero-right{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:var(--radius); padding:18px; border:1px solid rgba(255,255,255,0.03);
-      box-shadow: 0 10px 40px rgba(8,8,8,0.6);
-    }
-    .featured{
-      display:flex;gap:14px;align-items:center;
-    }
-    .featured .avatar{width:72px;height:72px;border-radius:12px;overflow:hidden;background:#222}
-    .featured .meta h4{margin:0;font-size:16px;font-weight:700}
-    .featured .meta p{margin:6px 0 0;color:var(--muted);font-size:13px}
-    .rating {color:var(--accent2); font-weight:700; margin-top:8px;font-size:13px}
-
-    /* How it works */
-    .how{
+      display:flex;
+      gap:30px;
+      align-items:center;
       margin-top:18px;
-      display:flex;gap:18px;align-items:stretch;flex-wrap:wrap;
     }
-    .step{
-      flex:1 1 200px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
-    }
-    .step .icon{
-      width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;
-      background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      color:#041018;margin-bottom:10px;
-    }
-    .guarantee{
-      margin-top:12px;color:var(--muted);font-size:14px;padding:12px;border-radius:12px;background:rgba(32,201,151,0.03);border:1px solid rgba(32,201,151,0.04);
-    }
+    .hero-left{flex:1;min-width:260px}
+    .eyebrow{display:inline-block;background:#e9f1ff;color:var(--accent);padding:6px 10px;border-radius:999px;font-weight:600;font-size:13px}
+    h1{font-size:40px;line-height:1.03;margin:18px 0 12px;font-weight:800;letter-spacing:-0.02em}
+    p.lead{color:var(--muted);margin-bottom:18px;font-size:16px}
+    .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:12px 16px;border-radius:12px;font-weight:700;border:0;cursor:pointer}
+    .btn-ghost{background:transparent;border:1px solid rgba(15,23,42,0.06);color:var(--accent)}
+    .btn-primary{background:var(--accent);color:#fff;box-shadow:var(--shadow)}
 
-    /* Why section */
-    .why{display:flex;gap:18px;margin-top:32px;flex-wrap:wrap}
+    /* hero right (visual) */
+    .hero-right{width:420px;max-width:45%;display:flex;justify-content:center}
+    .mock{
+      width:100%;border-radius:18px;background:linear-gradient(180deg,#fff,#f6fbff);
+      box-shadow:var(--shadow);padding:18px;position:relative;
+      overflow:hidden;border:1px solid rgba(17,24,39,0.04);
+    }
+    .mock .thumb{height:220px;background:linear-gradient(135deg,#ffe6e6,#f3faff);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#10203a}
+
+    /* ===== Sections ===== */
+    section{margin-top:44px}
+    .grid{display:grid;gap:18px}
+    .services{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
     .card{
-      flex:1 1 240px;background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+      background:var(--card);padding:18px;border-radius:12px;box-shadow:var(--shadow);border:1px solid rgba(11,20,40,0.03)
     }
-    .card h3{margin:0 0 8px}
-    .card p{margin:0;color:var(--muted)}
+    .card h3{margin:0 0 10px;font-size:18px}
+    .card p{margin:0;color:var(--muted);font-size:14px}
 
-    /* Reviews */
-    .reviews{
-      margin-top:32px;
-      display:grid;grid-template-columns:1fr 340px;gap:20px;
+    /* portfolio / gallery */
+    .portfolio{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+    .work{height:160px;border-radius:12px;background:#eef3ff;display:flex;align-items:center;justify-content:center;font-weight:700;color:#1740b6}
+
+    /* testimonials */
+    .testimonials{grid-template-columns:1fr 1fr;align-items:stretch}
+    .quote{font-style:italic;color:#142033}
+    .author{display:flex;align-items:center;gap:12px;margin-top:12px}
+    .avatar{width:48px;height:48px;border-radius:999px;background:#cfe7ff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#0d2a6b}
+
+    /* pricing */
+    .pricing{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+    .price{padding:20px;border-radius:14px;border:1px solid rgba(10,20,40,0.04);background:linear-gradient(180deg,#fff,#fbfdff)}
+
+    /* contact */
+    .contact-wrap{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+    .contact-form{flex:1;min-width:260px}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input,textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(11,20,40,0.06);background:#fff;font-size:14px;resize:vertical}
+    .footer{margin-top:34px;padding:22px 0;color:var(--muted);font-size:14px;border-top:1px solid rgba(11,20,40,0.04)}
+
+    /* responsive */
+    @media (max-width:900px){
+      .hero{flex-direction:column-reverse}
+      .hero-right{max-width:100%;width:100%}
+      nav ul{display:none}
+      .nav-actions{display:flex;gap:10px}
+      .testimonials{grid-template-columns:1fr}
     }
-    .reviews .slider{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-    .review{
-      padding:14px;border-radius:10px;margin-bottom:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
-      border:1px solid rgba(255,255,255,0.02);
-    }
-    .review .who{display:flex;gap:12px;align-items:center}
-    .review .who img{width:44px;height:44px;border-radius:8px;object-fit:cover}
-    .review p{margin:10px 0 0;color:var(--muted);font-size:14px}
-
-    /* Sidebar: quick stats / call to action */
-    .side-cta{background:linear-gradient(180deg, rgba(138,43,226,0.06), rgba(32,201,151,0.03));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-    .side-cta h4{margin:0 0 10px}
-    .side-cta .small{color:var(--muted);font-size:13px;margin-bottom:12px}
-
-    /* Footer */
-    footer{margin-top:60px;padding:28px 0;color:var(--muted);border-top:1px solid rgba(255,255,255,0.03)}
-    footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-    footer nav{display:flex;gap:14px}
-    footer a{color:var(--muted);text-decoration:none;font-size:14px}
-
-    /* Responsive */
-    @media (max-width:980px){
-      .hero{grid-template-columns:1fr;margin-top:12px}
-      .search{width:88%}
-      .hero-left p{max-width:100%}
-      .reviews{grid-template-columns:1fr}
-    }
-    @media (max-width:560px){
-      .search{width:100%}
-      .logo{font-size:16px}
-      .hero-left h1{font-size:28px}
-      .hero-right{display:none}
-      .how{flex-direction:column}
-    }
-
-    /* subtle hover animations */
-    .card, .step, .review{transition: transform .28s ease, box-shadow .28s ease}
-    .card:hover, .step:hover, .review:hover{transform: translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.6)}
-
-    /* --- Telegram Mini App: минимальный патч для шапки (вставить в конец <style>) --- */
-@media (max-width: 480px) {
-  header.nav { padding: 8px 6px; }
-
-  /* Упаковываем содержимое шапки в колонку, не ломая остальной контент */
-  .nav .wrap {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-    padding: 6px 12px;
-  }
-
-  /* Лого по центру и чуть меньше марка */
-  .logo {
-    justify-content: center;
-    font-size: 16px;
-    flex: 0 0 auto;
-  }
-  .mark { width: 30px; height: 30px; }
-
-  /* Кнопки под логотипом, по центру, но не растягивать весь сайт */
-  .nav-actions {
-    order: 2;
-    justify-content: center;
-    width: 100%;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .nav-actions .btn {
-    flex: 0 1 auto;
-    min-width: 110px; /* компактнее, но читаемо */
-    padding: 8px 10px;
-  }
-
-  /* Поиск обязательно на отдельной строке */
-  .search-wrap {
-    order: 3;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 0 6px;
-  }
-  .search {
-    max-width: 520px;
-    width: 100%;
-    min-width: 0;
-  }
-  .search input { font-size: 13px; }
-
-  /* Немного снижаем отступы главного контента, чтобы ничего не «спряталось» */
-  main { padding-top: 12px; }
-}
-
-/* --- AUTH MODAL styles --- */
-.modal {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(2,6,23,0.6);
-  z-index: 120;
-}
-.modal.open { display:flex; }
-.modal-dialog{
-  width: 420px;
-  max-width: calc(100% - 28px);
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border-radius:12px;
-  padding:18px;
-  border:1px solid rgba(255,255,255,0.03);
-}
-.modal .modal-close{float:right;border:0;background:transparent;color:var(--muted);font-size:20px;cursor:pointer}
-.auth-buttons{display:flex;gap:10px;margin-bottom:12px}
-.auth-buttons .btn{flex:1}
-.auth-row{display:flex;gap:8px;align-items:center;margin-top:12px}
-.auth-note{color:var(--muted);font-size:13px;margin-top:8px}
-.input-row{margin-top:10px;display:flex;flex-direction:column;gap:8px}
-.input-row input{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;font-size:14px}
-.auth-error{color:#ffb3a7;margin-top:8px;font-size:13px}
-
-/* user badge */
-.user-badge{display:flex;gap:10px;align-items:center}
-.user-badge img{width:36px;height:36px;border-radius:8px;object-fit:cover}
   </style>
 </head>
 <body>
-  <header class="nav" role="banner">
-    <div class="wrap">
-      <div style="display:flex;align-items:center;gap:14px">
-        <div class="logo" aria-hidden="false">
-          <div class="mark">DH</div>
-          <div style="display:flex;flex-direction:column;line-height:1;">
-            <div style="font-weight:800;font-size:14px">DesignHub</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">Маркетплейс дизайнеров</div>
-          </div>
+  <!-- Header / Nav (соответствует header и навигации в оригинале) -->
+  <header>
+    <div class="wrap nav" role="navigation" aria-label="Главная навигация">
+      <div class="logo">
+        <div class="mark">RD</div>
+        <div>
+          <div style="font-weight:800">Replica Studio</div>
+          <div style="font-size:12px;color:var(--muted)">Premium design structure</div>
         </div>
       </div>
 
-      <div class="search-wrap" role="search">
-        <div class="search" aria-label="Поиск услуг">
-          <i class="fa fa-search" aria-hidden="true" style="opacity:0.7"></i>
-          <input id="q" placeholder="Найдите услугу — превью, обложки, баннеры..." />
-          <button class="btn" id="searchBtn" title="Поиск">Найти</button>
-        </div>
-      </div>
+      <nav aria-label="Основные разделы">
+        <ul>
+          <li><a class="nav-link" href="#work">Work</a></li>
+          <li><a class="nav-link" href="#services">Services</a></li>
+          <li><a class="nav-link" href="#pricing">Pricing</a></li>
+          <li><a class="nav-link" href="#testimonials">Reviews</a></li>
+          <li><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
 
-      <div class="nav-actions" role="navigation" aria-label="Навигация">
-        <!-- эти кнопки будут заменяться JS'ом при входе -->
-        <button class="btn" id="loginBtn"><i class="fa fa-sign-in-alt"></i>&nbsp;Вход</button>
-        <button class="btn primary" id="signupBtn">Регистрация</button>
+      <div class="nav-actions">
+        <a class="cta" href="#contact">Start Project</a>
       </div>
     </div>
   </header>
 
-  <main class="wrap" role="main">
-    <!-- HERO -->
+  <main class="wrap">
+    <!-- Hero (соответствует крупному баннеру/hero на сайте препода) -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-left">
-        <div class="pill">Онлайн · Гарантия возврата</div>
-        <h1 id="hero-title">Найди своего дизайнера и получи вау-обложку</h1>
-        <p>DesignHub — маркетплейс, где дизайнеры продают превью, обложки, баннеры и графику под заказ. Безопасные сделки с гарантией возврата средств.</p>
+        <span class="eyebrow">Premium YouTube Thumbnails</span>
+        <h1 id="hero-title">Профессиональные эскизы и дизайн миниатюр — та же структура, новый стиль</h1>
+        <p class="lead">Повторяем структуру вашего преподавателя: hero, услуги, портфолио, отзывы, тарифы и контакт — но с обновлённым визуалом. Можно менять цвета и шрифты.</p>
 
-        <div class="cta-row">
-          <button class="btn primary" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Начать поиск</button>
-          <button class="btn" onclick="openExamples()">Смотреть примеры</button>
-        </div>
-
-        <!-- How it works -->
-        <div class="how" aria-hidden="false">
-          <div class="step">
-            <div class="icon">1</div>
-            <h3>Выберите услугу</h3>
-            <p class="muted">Ищите по категориям: превью, обложки, баннеры и т.д. Фильтруйте по рейтингу и цене.</p>
-          </div>
-          <div class="step">
-            <div class="icon">2</div>
-            <h3>Оплатите с гарантией</h3>
-            <p class="muted">Средства удерживаются системой. Дизайнеру платим только когда вы подтверждаете результат.</p>
-          </div>
-          <div class="step">
-            <div class="icon">3</div>
-            <h3>Получите результат</h3>
-            <p class="muted">Черновики, правки, финальный файл — всё в чате заказа. Не понравилось — деньги возвращаем.</p>
-          </div>
-        </div>
-
-        <div class="guarantee">
-          <strong>Гарантия возврата средств</strong> — если заказ не выполнен или нарушены условия — мы вернём полную оплату.
+        <div class="hero-cta">
+          <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Связаться</button>
+          <a href="#work" class="btn btn-ghost">Посмотреть работы</a>
         </div>
       </div>
 
-      <aside class="hero-right" aria-label="Рекомендуемый дизайнер">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:700">Рекомендуем</div>
-          <div style="font-size:13px;color:var(--muted)">Топ недели</div>
-        </div>
-
-        <div style="height:14px"></div>
-        <div class="featured">
-          <div class="avatar" aria-hidden="true">
-            <img src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=720&auto=format&fit=crop&ixlib=rb-4.0.3&s=01b9c8a1d8c1a1f9a6e1f8b5b9c6f8b2" alt="avatar" style="width:100%;height:100%;object-fit:cover">
+      <div class="hero-right" aria-hidden="true">
+        <div class="mock" role="img" aria-label="Превью работы">
+          <div class="thumb">Thumbnail Mockup</div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <div style="flex:1;height:60px;border-radius:10px;background:linear-gradient(90deg,#fff,#f2f9ff);display:flex;align-items:center;justify-content:center">Project</div>
+            <div style="width:80px;height:60px;border-radius:10px;background:linear-gradient(90deg,#fff,#fff5f2);display:flex;align-items:center;justify-content:center">Tags</div>
           </div>
-          <div class="meta">
-            <h4>Artem Kozlov</h4>
-            <p>Специалист по YouTube-превью и ретуши. Быстро, креативно, с правками.</p>
-            <div class="rating">⭐ 4.9 · 520 заказов</div>
-          </div>
-        </div>
-
-        <div style="height:16px"></div>
-        <div style="display:flex;gap:8px">
-          <button class="btn primary" style="flex:1">Заказать</button>
-          <button class="btn" style="flex:1">Портфолио</button>
-        </div>
-
-        <div style="height:12px"></div>
-        <div style="font-size:13px;color:var(--muted)">Примеры работ</div>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=320&auto=format&fit=crop&ixlib=rb-4.0.3&s=24b63c7b1c7b6f8a3d8a5f4a2e7b3c5a" alt="work" style="width:60px;height:60px;border-radius:8px;object-fit:cover">
-          <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=320&auto=format&fit=crop&ixlib=rb-4.0.3&s=3e1f3b7a4f7b2e9b6a9f8d2b3c4a5d6e" alt="work" style="width:60px;height:60px;border-radius:8px;object-fit:cover">
-          <img src="https://images.unsplash.com/photo-1503602642458-232111445657?q=80&w=320&auto=format&fit=crop&ixlib=rb-4.0.3&s=7a8b9c3d2e1f4a5b6c7d8e9f0a1b2c3d" alt="work" style="width:60px;height:60px;border-radius:8px;object-fit:cover">
-        </div>
-      </aside>
-    </section>
-
-    <!-- Catalog placeholder -->
-    <section id="catalog" style="margin-top:26px">
-      <h2 style="margin:0 0 14px;font-family:var(--ff-heading)">Каталог дизайнеров</h2>
-      <p style="margin:0 0 18px;color:var(--muted)">Фильтры: <span style="color:var(--muted)">превью · обложки · баннеры · соцсети · цена</span></p>
-
-      <!-- sample grid -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
-        <!-- card -->
-        <article class="card" role="article" aria-labelledby="d1">
-          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=1a2b3c4d5e6f7g8h9i0j" alt="work" style="width:100%;height:140px;object-fit:cover;border-radius:10px">
-          <h3 id="d1" style="margin-top:12px">Максим — Thumbnail pro</h3>
-          <p style="margin:6px 0;color:var(--muted);font-size:14px">Превью для YouTube — +2 правки, исходники в PNG/PSD.</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-            <div style="color:var(--accent2);font-weight:700">₽1,200</div>
-            <button class="btn" onclick="orderNow('Максим — Thumbnail pro')">Заказать</button>
-          </div>
-        </article>
-
-        <article class="card" role="article" aria-labelledby="d2">
-          <img src="https://images.unsplash.com/photo-1526318472351-c75fcf070b3f?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=9f8e7d6c5b4a3c2d1e0f" alt="work" style="width:100%;height:140px;object-fit:cover;border-radius:10px">
-          <h3 id="d2" style="margin-top:12px">Елена — Соцсети & баннеры</h3>
-          <p style="margin:6px 0;color:var(--muted);font-size:14px">Баннеры для рекламы, адаптив для 3 площадок.</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-            <div style="color:var(--accent2);font-weight:700">₽2,500</div>
-            <button class="btn" onclick="orderNow('Елена — Соцсети & баннеры')">Заказать</button>
-          </div>
-        </article>
-
-        <article class="card" role="article" aria-labelledby="d3">
-          <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=5b4a3c2d1e0f9a8b7c6d" alt="work" style="width:100%;height:140px;object-fit:cover;border-radius:10px">
-          <h3 id="d3" style="margin-top:12px">Igor — Минимализм & брендинг</h3>
-          <p style="margin:6px 0;color:var(--muted);font-size:14px">Чистые концепты, AI-ready файлы.</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-            <div style="color:var(--accent2);font-weight:700">₽3,100</div>
-            <button class="btn" onclick="orderNow('Igor — Минимализм & брендинг')">Заказать</button>
-          </div>
-        </article>
-
-        <!-- More cards can be loaded dynamically via API -->
-      </div>
-    </section>
-
-    <!-- Why DesignHub -->
-    <section style="margin-top:36px">
-      <h2 style="font-family:var(--ff-heading)">Почему DesignHub</h2>
-      <div class="why">
-        <div class="card">
-          <h3>Безопасные сделки</h3>
-          <p>Оплата удерживается платформой до подтверждения заказа — вы платите только за результат.</p>
-        </div>
-        <div class="card">
-          <h3>Качественные исполнители</h3>
-          <p>Мы показываем рейтинг, отзывы и портфолио — выбирайте профессионалов с проверенной репутацией.</p>
-        </div>
-        <div class="card">
-          <h3>Удобный чат и правки</h3>
-          <p>Общение и передача файлов внутри заказа: черновики, правки и финальный экспорт в одном месте.</p>
-        </div>
-        <div class="card">
-          <h3>Поддержка 24/7</h3>
-          <p>Команда поддержки поможет решить спорные ситуации и при необходимости инициирует возврат средств.</p>
         </div>
       </div>
     </section>
 
-    <!-- Reviews -->
-    <section style="margin-top:36px" aria-labelledby="reviewsTitle">
-      <h2 id="reviewsTitle" style="font-family:var(--ff-heading)">Отзывы клиентов</h2>
-      <div class="reviews">
-        <div class="slider" id="reviewSlider">
-          <div class="review">
-            <div class="who"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="avatar"><div><strong>Алексей</strong><div style="font-size:13px;color:var(--muted)">5⭐ · 10 дней назад</div></div></div>
-            <p>Заказал превью — всё быстро и аккуратно. Дизайнер сделал три правки без доплат. Рекомендую!</p>
-          </div>
+    <!-- Services (эквивалент секции услуг на оригинале) -->
+    <section id="services">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Услуги</h2>
+        <div style="color:var(--muted)">От концепта до финала</div>
+      </div>
 
-          <div class="review">
-            <div class="who"><img src="https://randomuser.me/api/portraits/women/45.jpg" alt="avatar"><div><strong>Марина</strong><div style="font-size:13px;color:var(--muted)">5⭐ · 2 недели назад</div></div></div>
-            <p>Отличный сервис: оплата через платформу, можно не бояться мошенников. Деньги вернули, когда дизайнер пропал.</p>
-          </div>
+      <div class="grid services" style="margin-top:14px">
+        <article class="card">
+          <h3>Дизайн миниатюр</h3>
+          <p>Создание кликабельных, оптимизированных миниатюр для YouTube под вашу нишу.</p>
+        </article>
 
-          <div class="review">
-            <div class="who"><img src="https://randomuser.me/api/portraits/men/52.jpg" alt="avatar"><div><strong>Иван</strong><div style="font-size:13px;color:var(--muted)">4.8⭐ · месяц назад</div></div></div>
-            <p>Крутые специалисты, нашёл дизайнера за 5 минут. Хорошая поддержка и понятная логика заказа.</p>
+        <article class="card">
+          <h3>Брендинг канала</h3>
+          <p>Логотипы, шапки, палитры и визуальная система для канала.</p>
+        </article>
+
+        <article class="card">
+          <h3>Шаблоны и наборы</h3>
+          <p>Наборы шаблонов, макеты для серийных выпусков и ускорение рабочего процесса.</p>
+        </article>
+
+        <article class="card">
+          <h3>Консультация и ревью</h3>
+          <p>Обратная связь по текущим миниатурам + рекомендации по A/B тестам.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Portfolio / Work (соответствует карточкам работ в оригинале) -->
+    <section id="work">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Портфолио</h2>
+        <div style="color:var(--muted)">Примеры завершённых проектов</div>
+      </div>
+
+      <div class="grid portfolio" style="margin-top:14px">
+        <div class="card work">YouTube Pack #1</div>
+        <div class="card work">YouTube Pack #2</div>
+        <div class="card work">Branding Kit</div>
+        <div class="card work">Series Templates</div>
+      </div>
+    </section>
+
+    <!-- Testimonials (эквивалент отзывов) -->
+    <section id="testimonials">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Отзывы</h2>
+        <div style="color:var(--muted)">Что говорят клиенты</div>
+      </div>
+
+      <div class="grid testimonials" style="margin-top:14px">
+        <div class="card">
+          <div class="quote">"Очень доволен проделанной работой — конверсия миниатюр выросла в 2.5×."</div>
+          <div class="author">
+            <div class="avatar">AK</div>
+            <div>
+              <div style="font-weight:700">Алексей К.</div>
+              <div style="font-size:13px;color:var(--muted)">Редактор, YouTube</div>
+            </div>
           </div>
         </div>
 
-        <aside class="side-cta">
-          <h4>Готов начать?</h4>
-          <div class="small">Создай заказ и получи предложение от дизайнеров в течение часа. Гарантия возврата средств.</div>
-          <button class="btn primary" style="width:100%" onclick="document.getElementById('q').focus()">Создать заказ</button>
+        <div class="card">
+          <div class="quote">"Быстро, аккуратно и по делу. Чёткая структура — такой же порядок, как и на сайте преподавателя."</div>
+          <div class="author">
+            <div class="avatar">MB</div>
+            <div>
+              <div style="font-weight:700">Марта Б.</div>
+              <div style="font-size:13px;color:var(--muted)">Влогер</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-          <div style="height:12px"></div>
-          <div style="font-size:13px;color:var(--muted)"><strong>Популярные категории</strong>: Превью YouTube · Баннеры · Логотипы · Соцсети</div>
+    <!-- Pricing (тарифы/планы) -->
+    <section id="pricing">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Тарифы</h2>
+        <div style="color:var(--muted)">Выберите подходящий пакет</div>
+      </div>
+
+      <div class="grid pricing" style="margin-top:14px">
+        <div class="price card">
+          <h3>Starter</h3>
+          <div style="font-size:22px;font-weight:800;margin:10px 0">€49</div>
+          <p style="color:var(--muted)">1 миниатюра, базовый экспорт, 1 правка</p>
+          <div style="margin-top:12px"><button class="btn btn-primary" onclick="alert('Вы выбрали Starter')">Выбрать</button></div>
+        </div>
+
+        <div class="price card">
+          <h3>Pro</h3>
+          <div style="font-size:22px;font-weight:800;margin:10px 0">€149</div>
+          <p style="color:var(--muted)">5 миниатюр, шаблон, 3 правки</p>
+          <div style="margin-top:12px"><button class="btn btn-primary" onclick="alert('Вы выбрали Pro')">Выбрать</button></div>
+        </div>
+
+        <div class="price card">
+          <h3>Agency</h3>
+          <div style="font-size:22px;font-weight:800;margin:10px 0">€399</div>
+          <p style="color:var(--muted)">Пакет для каналов, приоритет, доработки</p>
+          <div style="margin-top:12px"><button class="btn btn-primary" onclick="alert('Вы выбрали Agency')">Выбрать</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact (форма контакта, как в оригинале) -->
+    <section id="contact">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Связаться</h2>
+        <div style="color:var(--muted)">Опишите задачу и мы свяжемся</div>
+      </div>
+
+      <div class="contact-wrap" style="margin-top:14px">
+        <form class="contact-form card" onsubmit="submitContact(event)">
+          <label for="name">Имя</label>
+          <input id="name" name="name" required placeholder="Ваше имя" />
+
+          <label for="email" style="margin-top:12px">Email</label>
+          <input id="email" name="email" type="email" required placeholder="you@example.com" />
+
+          <label for="service" style="margin-top:12px">Услуга</label>
+          <select id="service" name="service">
+            <option>Дизайн миниатюр</option>
+            <option>Шаблоны</option>
+            <option>Брендинг</option>
+            <option>Консультация</option>
+          </select>
+
+          <label for="message" style="margin-top:12px">Сообщение</label>
+          <textarea id="message" name="message" rows="5" placeholder="Кратко опишите задачу"></textarea>
+
+          <div style="margin-top:12px;display:flex;gap:10px">
+            <button class="btn btn-primary" type="submit">Отправить</button>
+            <button type="reset" class="btn btn-ghost">Очистить</button>
+          </div>
+        </form>
+
+        <aside style="min-width:260px;flex:0.5">
+          <div class="card">
+            <h4 style="margin-top:0">Контакты</h4>
+            <p style="color:var(--muted)">Email: hello@example.com<br/>Телефон: +31 6 12 34 56 78</p>
+            <div style="margin-top:12px">
+              <strong>Часы:</strong>
+              <p style="margin:4px 0;color:var(--muted)">Пн–Пт 10:00–18:00</p>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <h4 style="margin:0 0 8px 0">Локация</h4>
+            <p style="color:var(--muted)">Amsterdam, NL (пример)</p>
+          </div>
         </aside>
       </div>
     </section>
 
-    <!-- FAQ / small note -->
-    <section style="margin-top:26px">
-      <h3 style="margin:0 0 8px">Частые вопросы</h3>
-      <p style="color:var(--muted);margin:0">Оплата хранится в системе до подтверждения: если результат не принят — деньги возвращаются. Поддержка помогает при спорах.</p>
-    </section>
-
+    <!-- Footer -->
+    <footer class="footer wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+        <div style="font-weight:700">Replica Studio</div>
+        <div style="color:var(--muted)">© <span id="year"></span> Все права защищены</div>
+        <div style="margin-left:auto;color:var(--muted)">Made as a structural duplicate (learning exercise)</div>
+      </div>
+    </footer>
   </main>
 
-  <!-- Footer -->
-  <footer role="contentinfo">
-    <div class="wrap">
-      <div style="display:flex;gap:16px;align-items:center">
-        <div style="display:flex;align-items:center;gap:10px">
-          <div class="mark" style="width:36px;height:36px;font-size:13px">DH</div>
-          <div style="font-weight:700">DesignHub</div>
-        </div>
-
-        <nav>
-          <a href="#catalog">Дизайнеры</a>
-          <a href="#reviewsTitle">Отзывы</a>
-          <a href="#contacts">Контакты</a>
-          <a href="#faq">FAQ</a>
-        </nav>
-      </div>
-
-      <div style="text-align:right;color:var(--muted);font-size:13px">© 2025 DesignHub</div>
-    </div>
-  </footer>
-
-  <!-- AUTH MODAL (Google + Email/password) -->
-  <div id="authModal" class="modal" aria-hidden="true">
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-      <button class="modal-close" id="closeAuth" title="Закрыть">✕</button>
-      <h3 id="authTitle">Вход</h3>
-
-      <div class="auth-buttons">
-        <button id="googleSignIn" class="btn" title="Войти через Google"><i class="fa fa-google" style="color:inherit"></i> &nbsp; Войти через Google</button>
-      </div>
-
-      <div style="height:6px"></div>
-      <div class="auth-note">Или используйте email и пароль</div>
-
-      <form id="emailForm" class="input-row" autocomplete="on">
-        <input id="authEmail" type="email" placeholder="Email" required />
-        <input id="authPass" type="password" placeholder="Пароль (мин. 6 символов)" minlength="6" required />
-        <div style="display:flex;gap:8px">
-          <button type="submit" id="emailSubmit" class="btn primary">Войти</button>
-          <button type="button" id="switchToSignup" class="btn">Регистрация</button>
-        </div>
-      </form>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-        <button id="forgotBtn" class="btn">Забыли пароль?</button>
-        <div id="authError" class="auth-error" aria-live="polite"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Firebase SDK (compat — проще для быстрой интеграции) -->
-  <!-- ЗАМЕНИТЕ НОМЕРА ВЕРСИИ на актуальные, если нужно -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-
-  <!-- Simple JS for interactivity + Auth -->
   <script>
-    // ------------------------------
-    // 1) YOUR FIREBASE CONFIG: ЗАМЕНИТЕ НА СВОЙ
-    // ------------------------------
-    const firebaseConfig = {
-      apiKey: "REPLACE_WITH_YOUR_API_KEY",
-      authDomain: "REPLACE_WITH_YOUR_PROJECT.firebaseapp.com",
-      projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
-      appId: "REPLACE_WITH_YOUR_APP_ID",
-      // остальные поля (messagingSenderId, storageBucket) можно добавить, если есть
-    };
-    // ------------------------------
-    // End config
-    // ------------------------------
+    // небольшая логика: форма и год в футере
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    // If config not replaced, we still load page but auth will show message
-    let firebaseAvailable = true;
-    try {
-      firebase.initializeApp(firebaseConfig);
-    } catch (e) {
-      console.warn('Firebase init error', e);
-      firebaseAvailable = false;
+    function submitContact(e){
+      e.preventDefault();
+      const fm = e.target;
+      const data = {
+        name: fm.name.value,
+        email: fm.email.value,
+        service: fm.service.value,
+        message: fm.message.value
+      };
+      // Эмуляция отправки — в реальном проекте нужно отправлять на сервер.
+      console.log('Contact form submit', data);
+      alert('Спасибо! Сообщение отправлено (эвент-симуляция).');
+      fm.reset();
     }
 
-    // Helper DOM
-    const authModal = document.getElementById('authModal');
-    const closeAuth = document.getElementById('closeAuth');
-    const loginBtn = document.getElementById('loginBtn');
-    const signupBtn = document.getElementById('signupBtn');
-    const googleSignIn = document.getElementById('googleSignIn');
-    const emailForm = document.getElementById('emailForm');
-    const authEmail = document.getElementById('authEmail');
-    const authPass = document.getElementById('authPass');
-    const emailSubmit = document.getElementById('emailSubmit');
-    const switchToSignup = document.getElementById('switchToSignup');
-    const forgotBtn = document.getElementById('forgotBtn');
-    const authError = document.getElementById('authError');
-    const navActions = document.querySelector('.nav-actions');
-
-    function openAuth(mode = 'login') {
-      authError.textContent = '';
-      authModal.classList.add('open');
-      authModal.setAttribute('aria-hidden','false');
-      document.getElementById('authTitle').textContent = mode === 'signup' ? 'Регистрация' : 'Вход';
-      emailSubmit.textContent = mode === 'signup' ? 'Зарегистрироваться' : 'Войти';
-      switchToSignup.textContent = mode === 'signup' ? 'Уже есть аккаунт' : 'Регистрация';
-      // if signup mode => clicking switchToSignup should toggle
-      switchToSignup.dataset.mode = (mode === 'signup' ? 'login' : 'signup');
-    }
-    function closeAuthModal() {
-      authModal.classList.remove('open');
-      authModal.setAttribute('aria-hidden','true');
-    }
-    closeAuth.addEventListener('click', closeAuthModal);
-    authModal.addEventListener('click', (e)=> { if (e.target === authModal) closeAuthModal(); });
-
-    // Open from header
-    loginBtn.addEventListener('click', ()=> openAuth('login'));
-    signupBtn.addEventListener('click', ()=> openAuth('signup'));
-
-    // switchToSignup acts as toggle
-    switchToSignup.addEventListener('click', ()=>{
-      const next = switchToSignup.dataset.mode === 'signup' ? 'signup' : 'login';
-      openAuth(next);
+    // Простая плавная прокрутка для якорных ссылок (поддержка старых браузеров уже есть)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (ev)=>{
+        const href = a.getAttribute('href');
+        if(href.length>1){
+          ev.preventDefault();
+          const el = document.querySelector(href);
+          if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      });
     });
-
-    // Basic placeholders
-    function openExamples(){ alert('Показ примеров: можно сделать галерею/модал с портфолио.'); }
-    function orderNow(name){ alert('Заказ: ' + name + '\\nОткроется окно оформления заказа (чат, оплата, гарантия).'); }
-
-    // REVIEW slider (same as раньше)
-    (function(){
-      const slider = document.getElementById('reviewSlider');
-      let index = 0;
-      const children = Array.from(slider.children);
-      function show(i){
-        children.forEach((c,idx)=> c.style.display = (idx===i ? 'block' : 'none'));
-      }
-      show(0);
-      setInterval(()=>{
-        index = (index + 1) % children.length;
-        show(index);
-      }, 4200);
-    })();
-
-    // Search minimal
-    document.getElementById('searchBtn').addEventListener('click', ()=>{
-      const q = document.getElementById('q').value.trim();
-      if(!q) return alert('Введите запрос для поиска услуг');
-      alert('Ищем: ' + q + '\\n(В рабочем проекте -> запрос к бэкенду)');
-    });
-
-    // ------------------------------
-    // Firebase Auth logic (compat)
-    // ------------------------------
-    if (!firebaseAvailable || !firebase.auth) {
-      // If Firebase not configured, show visual hint and keep placeholders working
-      console.warn('Firebase not configured or not available. Insert your firebaseConfig to enable auth.');
-      googleSignIn.addEventListener('click', ()=> alert('Firebase не настроен. Вставьте firebaseConfig в код.'));
-      emailForm.addEventListener('submit', (e)=> { e.preventDefault(); alert('Firebase не настроен. Вставьте firebaseConfig в код.'); });
-      forgotBtn.addEventListener('click', ()=> alert('Firebase не настроен. Вставьте firebaseConfig в код.'));
-    } else {
-      const auth = firebase.auth();
-
-      // Update UI on auth state change
-      auth.onAuthStateChanged(user => {
-        renderUser(user);
-      });
-
-      // Try to handle redirect result (if used)
-      auth.getRedirectResult().catch(err => {
-        console.warn('getRedirectResult error:', err);
-      });
-
-      // Google sign-in (popup, fallback to redirect)
-      googleSignIn.addEventListener('click', async ()=>{
-        authError.textContent = '';
-        const provider = new firebase.auth.GoogleAuthProvider();
-        try {
-          await auth.signInWithPopup(provider);
-          closeAuthModal();
-        } catch (err) {
-          // If popup blocked or fails, fallback to redirect
-          console.warn('signInWithPopup error, fallback to redirect:', err);
-          if (err && (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request' || err.code === 'auth/web-storage-unsupported')) {
-            try {
-              await auth.signInWithRedirect(provider);
-            } catch (r) {
-              authError.textContent = r.message || 'Ошибка входа через Google';
-            }
-          } else {
-            authError.textContent = err.message || 'Ошибка входа через Google';
-          }
-        }
-      });
-
-      // Email form: handles both login and signup depending on submit button text
-      emailForm.addEventListener('submit', async (e)=>{
-        e.preventDefault();
-        authError.textContent = '';
-        const email = authEmail.value.trim();
-        const pass = authPass.value;
-        if (!email || !pass) { authError.textContent = 'Введите email и пароль'; return; }
-        const isSignup = (emailSubmit.textContent || '').toLowerCase().includes('зарегистр');
-        try {
-          if (isSignup) {
-            // create user
-            const cred = await auth.createUserWithEmailAndPassword(email, pass);
-            // Optionally set displayName (not requested here) => can be updated by user profile flow
-            closeAuthModal();
-          } else {
-            // sign in
-            await auth.signInWithEmailAndPassword(email, pass);
-            closeAuthModal();
-          }
-        } catch (err) {
-          // show simple messages
-          let msg = err && err.message ? err.message : 'Ошибка авторизации';
-          authError.textContent = msg;
-          console.warn('Auth error', err);
-        }
-      });
-
-      // forgot password
-      forgotBtn.addEventListener('click', async ()=>{
-        const email = authEmail.value.trim();
-        if (!email) { authError.textContent = 'Введите email для сброса пароля'; return; }
-        try {
-          await auth.sendPasswordResetEmail(email);
-          authError.style.color = '#8ad5a8';
-          authError.textContent = 'Письмо для сброса пароля отправлено на ' + email;
-          setTimeout(()=> { authError.style.color = '#ffb3a7'; authError.textContent = ''; }, 5000);
-        } catch (err) {
-          authError.textContent = err.message || 'Ошибка отправки письма';
-        }
-      });
-
-      // Render user in nav
-      function renderUser(user) {
-        if (user) {
-          const img = user.photoURL ? `<img src="${user.photoURL}" alt="avatar">` : '';
-          const name = user.displayName || user.email || 'Пользователь';
-          navActions.innerHTML = `
-            <div class="user-badge">
-              ${img}
-              <div style="display:flex;flex-direction:column">
-                <strong style="font-size:13px">${name}</strong>
-                <span style="font-size:12px;color:var(--muted)">${user.email || ''}</span>
-              </div>
-            </div>
-            <div style="display:flex;gap:8px">
-              <button class="btn" id="profileBtn">Профиль</button>
-              <button class="btn" id="signOutBtn">Выйти</button>
-            </div>
-          `;
-          // attach handlers
-          document.getElementById('signOutBtn').addEventListener('click', ()=> auth.signOut());
-          document.getElementById('profileBtn').addEventListener('click', ()=> alert('Откроется профиль пользователя (реализация далее).'));
-        } else {
-          // restore original buttons
-          navActions.innerHTML = `
-            <button class="btn" id="loginBtn"><i class="fa fa-sign-in-alt"></i>&nbsp;Вход</button>
-            <button class="btn primary" id="signupBtn">Регистрация</button>
-          `;
-          // reattach open modal handlers to the new buttons (since we replaced DOM)
-          document.getElementById('loginBtn').addEventListener('click', ()=> openAuth('login'));
-          document.getElementById('signupBtn').addEventListener('click', ()=> openAuth('signup'));
-        }
-      }
-    } // end firebaseAvailable true
-
-    /* --- Telegram WebApp: аккуратно расширяем и поддерживаем Enter для поиска --- */
-(function () {
-  if (window.Telegram && Telegram.WebApp) {
-    try {
-      Telegram.WebApp.expand();
-      Telegram.WebApp.ready();
-    } catch (e) {
-      console.warn('Telegram WebApp: expand/ready error', e);
-    }
-  }
-
-  // Enter в поле поиска — вызывает ту же логику, что кнопка
-  const qInput = document.getElementById('q');
-  const searchBtn = document.getElementById('searchBtn');
-  if (qInput && searchBtn) {
-    qInput.addEventListener('keydown', function (ev) {
-      if (ev.key === 'Enter') searchBtn.click();
-    });
-  }
-})();
   </script>
 </body>
 </html>
