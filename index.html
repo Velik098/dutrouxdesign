@@ -3,462 +3,429 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Draus Design — Replica</title>
+<title>Hond Design</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
-  :root{
-    --bg1: #040306;
-    --bg2: #0b0910;
-    --accent: #9b2cff; /* purple */
-    --accent-2: #5b22ff;
-    --muted: #cfcfe0;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    font-family: "Rubik", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: radial-gradient(800px 400px at 50% 0%, rgba(155,44,255,0.12), transparent 12%),
-                radial-gradient(600px 300px at 80% 60%, rgba(91,34,255,0.06), transparent 12%),
-                linear-gradient(180deg,var(--bg1),var(--bg2));
-    color:#eae6f6;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    padding-bottom:80px;
-  }
+:root {
+  --bg1: #040306;
+  --bg2: #0b0910;
+  --accent: #9b2cff;
+  --accent-2: #5b22ff;
+  --muted: #cfcfe0;
+}
 
-  /* Container */
-  .container{max-width:1100px;margin:0 auto;padding:30px;}
+* {box-sizing: border-box;}
+html, body {height: 100%; scroll-behavior: smooth;}
+body {
+  margin: 0;
+  font-family: "Rubik", sans-serif;
+  background: radial-gradient(800px 400px at 50% 0%, rgba(155,44,255,0.12), transparent 12%),
+              radial-gradient(600px 300px at 80% 60%, rgba(91,34,255,0.06), transparent 12%),
+              linear-gradient(180deg, var(--bg1), var(--bg2));
+  color: #eae6f6;
+  -webkit-font-smoothing: antialiased;
+  padding-top: 90px;
+}
 
-  /* NAV */
-  .nav{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:18px 0;
-  }
-  .logo{font-weight:800;font-family: "Montserrat",sans-serif;letter-spacing:0.6px;}
-  .nav-links{display:flex;gap:18px;align-items:center}
-  .nav-links a{
-    color: #cfcfe0;
-    text-decoration:none;
-    font-weight:500;
-    padding:8px 12px;
-    border-radius:6px;
-    font-size:14px;
-  }
-  .nav-links a.cta{
-    background: linear-gradient(90deg,var(--accent),var(--accent-2));
-    box-shadow: 0 6px 20px rgba(88,20,170,0.28);
-    color:white;
-    font-weight:700;
-  }
+/* NAVIGATION */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  backdrop-filter: blur(14px);
+  background: rgba(11, 9, 16, 0.6);
+  transition: background 0.3s ease, padding 0.3s ease;
+  z-index: 1000;
+  padding: 22px 0;
+}
 
-  /* HERO */
-  .hero{
-    text-align:center;
-    padding:40px 20px 70px;
-  }
-  .avatar{
-    width:150px;height:150px;border-radius:50%;
-    margin:0 auto 18px;
-    overflow:hidden;
-    border:6px solid rgba(255,255,255,0.06);
-    box-shadow: 0 20px 60px rgba(22,6,40,0.6), 0 0 60px rgba(155,44,255,0.12) inset;
-    background:linear-gradient(180deg,#111,#000);
-  }
-  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.nav.scrolled {
+  background: rgba(11, 9, 16, 0.85);
+}
 
-  .hero h1{
-    margin:8px 0 10px;
-    font-family:"Montserrat",sans-serif;
-    font-size:36px;
-    letter-spacing:0.3px;
-    font-weight:800;
-  }
-  .hero p.lead{
-    max-width:760px;margin:0 auto 18px;color: #c9c5d8;font-size:15px;line-height:1.6;
-  }
-  .hero .btns{display:flex;gap:12px;justify-content:center;margin-top:18px}
-  .btn{
-    padding:10px 18px;border-radius:10px;border:0;cursor:pointer;font-weight:700;
-    background:rgba(255,255,255,0.06);color:#fff;
-  }
-  .btn.primary{
-    background:linear-gradient(90deg,var(--accent),var(--accent-2));
-    box-shadow:0 8px 30px rgba(91,34,255,0.12);
-  }
+.nav .container {
+  max-width: 1150px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+}
 
-  /* Work examples */
-  .section-title{font-family:"Montserrat";font-weight:800;font-size:30px;text-align:center;margin:40px 0 10px}
-  .subtitle{color:#bfbad0;text-align:center;margin-bottom:20px}
+.logo {
+  font-weight: 800;
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: 0.7px;
+  font-size: 22px;
+}
 
-  .thumbnails{
-    display:flex;
-    gap:12px;
-    overflow:hidden;
-    padding:14px 0;
-    align-items:center;
-    justify-content:flex-start;
-  }
-  .thumb{
-    min-width:220px;height:120px;border-radius:10px;overflow:hidden;background:#111;
-    box-shadow:0 10px 40px rgba(0,0,0,0.6);flex:0 0 auto;
-  }
-  .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.nav-links {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+}
 
-  /* Testimonials grid */
-  .cards{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:18px;
-    margin-top:30px;
-  }
-  .card{
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius:12px;padding:18px;color:#0a0710;
-    min-height:120px;position:relative;overflow:hidden;
-  }
-  /* inside card white area to mimic screenshot */
-  .card .inner{
-    background:white;padding:14px;border-radius:10px;height:100%;display:flex;flex-direction:column;gap:10px;
-    color:#0b0b0b;
-  }
-  .card .meta{display:flex;gap:12px;align-items:center}
-  .avatar-sm{width:42px;height:42px;border-radius:50%;overflow:hidden;flex:0 0 auto}
-  .avatar-sm img{width:100%;height:100%;object-fit:cover}
-  .person{font-weight:700}
-  .role{font-size:13px;color:#6b6b75}
+.nav-links a {
+  color: #bcb8d2;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color 0.25s;
+}
 
-  /* Pricing */
-  .pricing{
-    display:flex;align-items:center;justify-content:center;margin:40px 0;
-  }
-  .price-card{
-    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-    border-radius:14px;padding:30px;text-align:center;width:220px;box-shadow:0 30px 60px rgba(22,6,40,0.6);
-  }
-  .price-card .label{color:#bfbad0;text-transform:uppercase;font-size:14px;margin-bottom:6px}
-  .price-card .price{
-    font-family:"Montserrat";font-size:44px;font-weight:900;color:var(--accent);margin:6px 0;
-  }
-  .price-card small{display:block;color:#b8b3cb;margin-top:8px}
+.nav-links a.active {
+  color: white;
+  font-weight: 600;
+}
 
-  /* FAQ */
-  .faq{max-width:760px;margin:20px auto}
-  .faq-item{background:transparent;border-radius:8px;margin-bottom:8px;overflow:hidden}
-  .faq-header{
-    display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(255,255,255,0.02);cursor:pointer;border-radius:8px;
-  }
-  .faq-body{padding:12px 16px;background:rgba(255,255,255,0.01);display:none;color:#d7d3e7}
+.nav-links a.cta {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+}
 
-  /* Contact */
-  .contact{
-    max-width:720px;margin:30px auto;padding:18px;border-radius:10px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    box-shadow:0 40px 80px rgba(22,6,40,0.6);
-  }
-  .contact label{display:block;color:#cfcfe0;font-size:13px;margin-bottom:6px}
-  .contact input, .contact textarea{
-    width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#eae6f6;
-    resize:vertical;font-size:14px;
-  }
-  .contact textarea{min-height:120px}
-  .contact .submit{margin-top:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));border:0;padding:12px 16px;border-radius:10px;color:white;font-weight:700;cursor:pointer}
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 80px 20px 120px;
+}
 
-  /* Footer small */
-  .footer{color:#bfbad0;text-align:center;padding:22px 0;margin-top:24px;font-size:13px}
+.hero h1 {
+  margin: 10px 0 14px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 54px;
+  letter-spacing: 0.3px;
+  font-weight: 800;
+}
 
-  /* Responsive */
-  @media (max-width:980px){
-    .cards{grid-template-columns:repeat(2,1fr)}
-    .thumb{min-width:180px;height:100px}
-  }
-  @media (max-width:640px){
-    .nav-links{display:none}
-    .cards{grid-template-columns:1fr}
-    .avatar{width:120px;height:120px}
-    .hero h1{font-size:28px}
-    .container{padding:18px}
-  }
+.hero p.lead {
+  max-width: 760px;
+  margin: 0 auto 28px;
+  color: #c9c5d8;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.hero .btns {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 14px 28px;
+  border-radius: 12px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 700;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-size: 17px;
+}
+
+.btn.primary {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  box-shadow: 0 8px 30px rgba(91,34,255,0.15);
+}
+
+/* SECTIONS */
+.section-title {
+  font-family: "Montserrat";
+  font-weight: 800;
+  font-size: 40px;
+  text-align: center;
+  margin: 60px 0 12px;
+}
+
+.subtitle {
+  color: #bfbad0;
+  text-align: center;
+  margin-bottom: 26px;
+  font-size: 18px;
+}
+
+/* EXAMPLES */
+.thumbnails {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 20px 10px;
+  justify-content: flex-start;
+  scroll-behavior: smooth;
+}
+.thumb {
+  min-width: 300px;
+  height: 170px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  flex: 0 0 auto;
+}
+.thumb img {width: 100%; height: 100%; object-fit: cover; display: block;}
+
+/* TESTIMONIALS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 36px;
+}
+
+.card {
+  background: rgba(255,255,255,0.03);
+  border-radius: 14px;
+  padding: 22px;
+  color: #0a0710;
+}
+
+.card .inner {
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #0b0b0b;
+  font-size: 16px;
+}
+
+/* PRICING */
+.price-card {
+  background: rgba(255,255,255,0.03);
+  border-radius: 14px;
+  padding: 40px;
+  text-align: center;
+  width: 280px;
+  margin: 0 auto;
+  box-shadow: 0 30px 60px rgba(22,6,40,0.6);
+}
+
+.price-card .price {
+  font-family: "Montserrat";
+  font-size: 56px;
+  font-weight: 900;
+  color: var(--accent);
+  margin: 10px 0;
+}
+
+/* FAQ */
+.faq {
+  max-width: 800px;
+  margin: 30px auto;
+  font-size: 17px;
+}
+.faq-item {
+  margin-bottom: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.04);
+}
+.faq-header {
+  padding: 14px 18px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ddd;
+  font-weight: 600;
+}
+.faq-body {
+  padding: 14px 18px;
+  display: none;
+  color: #c7c7d9;
+}
+
+/* CONTACT */
+.contact {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 24px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  box-shadow: 0 40px 80px rgba(22,6,40,0.6);
+}
+.contact input, .contact textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: transparent;
+  color: #eae6f6;
+  resize: vertical;
+  font-size: 16px;
+  margin-bottom: 14px;
+}
+.contact textarea {min-height: 140px;}
+.contact .submit {
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  border: 0;
+  padding: 14px 24px;
+  border-radius: 10px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+/* FOOTER */
+.footer {
+  color: #bfbad0;
+  text-align: center;
+  padding: 24px 0;
+  margin-top: 40px;
+  font-size: 15px;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .cards {grid-template-columns: repeat(2,1fr);}
+  .hero h1 {font-size: 42px;}
+}
+@media (max-width: 640px) {
+  .cards {grid-template-columns: 1fr;}
+  .nav-links {display: none;}
+  .hero h1 {font-size: 36px;}
+}
 </style>
 </head>
 <body>
+
+<!-- NAV -->
+<nav class="nav" id="navbar">
   <div class="container">
-    <!-- NAV -->
-    <nav class="nav" aria-label="Main navigation">
-      <div class="logo">Draus Design</div>
-      <div class="nav-links" role="navigation">
-        <a href="#about">About Me</a>
-        <a href="#examples">Examples</a>
-        <a href="#testimonials">Testimonials</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact" class="cta">Contact</a>
-      </div>
-    </nav>
-
-    <!-- HERO -->
-    <header class="hero" id="about" role="banner">
-      <div class="avatar" aria-hidden="true">
-        <!-- Заменить src на реальный портрет: ./images/hero.jpg -->
-        <img src="https://picsum.photos/seed/hero/600/600" alt="Avatar">
-      </div>
-      <h1>Draus Design</h1>
-      <p class="lead">With 5 years in the industry, I specialize in crafting high-performance YouTube thumbnails that drive clicks and engagement. My work has helped creators across various niches stand out. Let's take your channel to the next level!</p>
-      <div class="btns">
-        <button class="btn primary">Get Thumbnails</button>
-        <button class="btn">Free Call</button>
-      </div>
-    </header>
-
-    <!-- WORK EXAMPLES -->
-    <section id="examples">
-      <h2 class="section-title">Work Examples</h2>
-      <p class="subtitle">Take a look at what I'm capable of</p>
-
-      <div style="overflow:hidden;padding:8px 0 0;">
-        <div class="thumbnails" aria-hidden="true">
-          <!-- заменяй картинки на реальные миниатюры -->
-          <div class="thumb"><img src="https://picsum.photos/seed/t1/800/450" alt=""></div>
-          <div class="thumb"><img src="https://picsum.photos/seed/t2/800/450" alt=""></div>
-          <div class="thumb"><img src="https://picsum.photos/seed/t3/800/450" alt=""></div>
-          <div class="thumb"><img src="https://picsum.photos/seed/t4/800/450" alt=""></div>
-          <div class="thumb"><img src="https://picsum.photos/seed/t5/800/450" alt=""></div>
-          <div class="thumb"><img src="https://picsum.photos/seed/t6/800/450" alt=""></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TESTIMONIALS -->
-    <section id="testimonials" style="margin-top:18px;">
-      <h2 class="section-title">What My Customers Say</h2>
-
-      <div class="cards" role="list">
-        <!-- Повтори карточки сколько нужно -->
-        <div class="card" role="listitem">
-          <div class="inner">
-            <div class="meta">
-              <div class="avatar-sm"><img src="https://picsum.photos/seed/a1/80/80" alt=""></div>
-              <div>
-                <div class="person">Familia Diamond</div>
-                <div class="role">— 12k subscribers</div>
-              </div>
-            </div>
-            <div style="flex:1;color:#333;font-size:14px;">
-              I loved working with him. He is very easy to work with and very patient and creative.
-            </div>
-          </div>
-        </div>
-
-        <div class="card" role="listitem">
-          <div class="inner">
-            <div class="meta">
-              <div class="avatar-sm"><img src="https://picsum.photos/seed/a2/80/80" alt=""></div>
-              <div>
-                <div class="person">Danny Kim</div>
-                <div class="role">— 56k subscribers</div>
-              </div>
-            </div>
-            <div style="flex:1;color:#333;font-size:14px;">
-              Andrew is a pleasure to work with. Writing and creating thumbnail graphics was fast and high quality.
-            </div>
-          </div>
-        </div>
-
-        <div class="card" role="listitem">
-          <div class="inner">
-            <div class="meta">
-              <div class="avatar-sm"><img src="https://picsum.photos/seed/a3/80/80" alt=""></div>
-              <div>
-                <div class="person">The Trading Geek</div>
-                <div class="role">— 34k subscribers</div>
-              </div>
-            </div>
-            <div style="flex:1;color:#333;font-size:14px;">
-              Trust me when I say that you will not regret working with him — extremely hardworking and skillful.
-            </div>
-          </div>
-        </div>
-
-        <!-- Additional cards to approximate grid (you can duplicate) -->
-        <div class="card" role="listitem">
-          <div class="inner">
-            <div class="meta">
-              <div class="avatar-sm"><img src="https://picsum.photos/seed/a4/80/80" alt=""></div>
-              <div>
-                <div class="person">Drumrev BG</div>
-                <div class="role">— 29k subscribers</div>
-              </div>
-            </div>
-            <div style="flex:1;color:#333;font-size:14px;">
-              Working with Andrew is awesome. Always trying to improve and deliver great results.
-            </div>
-          </div>
-        </div>
-
-        <div class="card" role="listitem">
-          <div class="inner">
-            <div class="meta">
-              <div class="avatar-sm"><img src="https://picsum.photos/seed/a5/80/80" alt=""></div>
-              <div>
-                <div class="person">Scarface Trades</div>
-                <div class="role">— 18k subscribers</div>
-              </div>
-            </div>
-            <div style="flex:1;color:#333;font-size:14px;">
-              Andrew’s thumbnails are always clean and professional. Highly recommend.
-            </div>
-          </div>
-        </div>
-
-        <div class="card" role="listitem">
-          <div class="inner">
-            <div class="meta">
-              <div class="avatar-sm"><img src="https://picsum.photos/seed/a6/80/80" alt=""></div>
-              <div>
-                <div class="person">Photon Trading</div>
-                <div class="role">— 24k subscribers</div>
-              </div>
-            </div>
-            <div style="flex:1;color:#333;font-size:14px;">
-              I've worked with Andrew on multiple thumbnails and the quality has been excellent.
-            </div>
-          </div>
-        </div>
-
-        <div class="card" role="listitem">
-          <div class="inner">
-            <div class="meta">
-              <div class="avatar-sm"><img src="https://picsum.photos/seed/a7/80/80" alt=""></div>
-              <div>
-                <div class="person">Tech With Soleyman</div>
-                <div class="role">— 11k subscribers</div>
-              </div>
-            </div>
-            <div style="flex:1;color:#333;font-size:14px;">
-              I’ve been working with Andrew for over a year and the results are outstanding.
-            </div>
-          </div>
-        </div>
-
-        <div class="card" role="listitem">
-          <div class="inner">
-            <div class="meta">
-              <div class="avatar-sm"><img src="https://picsum.photos/seed/a8/80/80" alt=""></div>
-              <div>
-                <div class="person">Michael Chanin</div>
-                <div class="role">— 40k subscribers</div>
-              </div>
-            </div>
-            <div style="flex:1;color:#333;font-size:14px;">
-              I have worked with many thumbnail designers and Andrew is one of the best.
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- PRICING -->
-    <section id="pricing">
-      <h2 class="section-title">Pricing</h2>
-      <div class="pricing">
-        <div class="price-card" aria-label="Pricing starting from $40">
-          <div class="label">starting from</div>
-          <div class="price">$40</div>
-          <small>Prices are individual and clarified after the order details are given</small>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq">
-      <h2 class="section-title">FAQ</h2>
-      <div class="faq">
-        <div class="faq-item">
-          <div class="faq-header">Do you offer discounts for bulk orders? <span>+</span></div>
-          <div class="faq-body">Yes — for bulk orders we provide scaled pricing. Contact for details.</div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-header">What's your usual turnaround time? <span>+</span></div>
-          <div class="faq-body">Typical turnaround is 24–72 hours depending on complexity and queue.</div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-header">How does the ordering process work? <span>+</span></div>
-          <div class="faq-body">You send requirements → I create drafts → you request revisions → final files delivered.</div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-header">Can I request revisions? If so, how many are included? <span>+</span></div>
-          <div class="faq-body">One or two minor revisions are included. Additional revisions can be arranged.</div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-header">Can you help improve old thumbnails to boost their performance? <span>+</span></div>
-          <div class="faq-body">Yes — I can audit and redesign thumbnails to improve CTR and watchtime.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <h2 class="section-title">Contact Me</h2>
-      <p class="subtitle" style="margin-bottom:12px;">Drop a letter to book a free 30-minute call</p>
-
-      <div class="contact" role="form" aria-label="Contact form">
-        <label for="email">Your Email</label>
-        <input id="email" type="email" placeholder="example@example.com">
-
-        <label for="subject">Subject</label>
-        <input id="subject" type="text" placeholder="Brief subject">
-
-        <label for="message">Message</label>
-        <textarea id="message" placeholder="Write your message here..."></textarea>
-
-        <button class="submit" onclick="sendMessage()">Submit</button>
-      </div>
-    </section>
-
-    <div class="footer">© Draus Design — recreated for study project</div>
+    <div class="logo">Hond Design</div>
+    <div class="nav-links">
+      <a href="#about" class="active">About Me</a>
+      <a href="#examples">Examples</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact" class="cta">Contact</a>
+    </div>
   </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="about">
+  <h1>Hond Design</h1>
+  <p class="lead">With 3 years of experience, I create engaging and modern YouTube thumbnails that help channels grow and attract attention. I focus on quality visuals that make your content stand out naturally — without overcomplication.</p>
+  <div class="btns">
+    <button class="btn primary">Get Thumbnails</button>
+    <button class="btn">Free Call</button>
+  </div>
+</header>
+
+<!-- WORK EXAMPLES -->
+<section id="examples">
+  <h2 class="section-title">Work Examples</h2>
+  <p class="subtitle">See some of my latest projects</p>
+  <div class="thumbnails">
+    <div class="thumb"><img src="https://picsum.photos/seed/t1/800/450" alt=""></div>
+    <div class="thumb"><img src="https://picsum.photos/seed/t2/800/450" alt=""></div>
+    <div class="thumb"><img src="https://picsum.photos/seed/t3/800/450" alt=""></div>
+    <div class="thumb"><img src="https://picsum.photos/seed/t4/800/450" alt=""></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <h2 class="section-title">What My Customers Say</h2>
+  <div class="cards">
+    <div class="card"><div class="inner">Clients appreciate the clean, catchy style that drives real engagement. Many come back regularly for more thumbnails!</div></div>
+    <div class="card"><div class="inner">I’m always open to feedback and quick adjustments — I aim for satisfaction with every project.</div></div>
+    <div class="card"><div class="inner">Professional approach and quick delivery. Highly recommend Hond Design for creators.</div></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <h2 class="section-title">Pricing</h2>
+  <div class="price-card">
+    <div class="label">starting from</div>
+    <div class="price">$40</div>
+    <small>Final price depends on the project details</small>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <h2 class="section-title">FAQ</h2>
+  <div class="faq">
+    <div class="faq-item"><div class="faq-header">Do you offer discounts for bulk orders? <span>+</span></div><div class="faq-body">Yes, I provide discounts for larger requests. Contact for more info.</div></div>
+    <div class="faq-item"><div class="faq-header">What’s your usual turnaround time? <span>+</span></div><div class="faq-body">Usually 1–3 days, depending on the project load.</div></div>
+    <div class="faq-item"><div class="faq-header">Can I request revisions? <span>+</span></div><div class="faq-body">Yes, small revisions are included in each order.</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 class="section-title">Contact Me</h2>
+  <p class="subtitle">Let’s discuss your next project!</p>
+  <div class="contact">
+    <input id="email" type="email" placeholder="Your email">
+    <input id="subject" type="text" placeholder="Subject">
+    <textarea id="message" placeholder="Your message..."></textarea>
+    <button class="submit" onclick="sendMessage()">Submit</button>
+  </div>
+</section>
+
+<div class="footer">© 2025 Hond Design — created as a study project</div>
 
 <script>
-  // FAQ accordion
-  document.querySelectorAll('.faq-item').forEach(function(item){
-    const header = item.querySelector('.faq-header');
-    header.addEventListener('click', function(){
-      const body = item.querySelector('.faq-body');
-      const isOpen = body.style.display === 'block';
-      document.querySelectorAll('.faq-body').forEach(b => b.style.display = 'none');
-      document.querySelectorAll('.faq-header span').forEach(s => s.textContent = '+');
-      if(!isOpen){
-        body.style.display = 'block';
-        header.querySelector('span').textContent = '−';
-      }
-    });
+// FAQ toggle
+document.querySelectorAll('.faq-item').forEach(item=>{
+  const header=item.querySelector('.faq-header');
+  header.addEventListener('click',()=>{
+    const body=item.querySelector('.faq-body');
+    const open=body.style.display==='block';
+    document.querySelectorAll('.faq-body').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.faq-header span').forEach(s=>s.textContent='+');
+    if(!open){body.style.display='block'; header.querySelector('span').textContent='−';}
   });
+});
 
-  // Simple "send" (demo)
-  function sendMessage(){
-    const email = document.getElementById('email').value.trim();
-    const subj = document.getElementById('subject').value.trim();
-    const msg = document.getElementById('message').value.trim();
-    if(!email || !msg){
-      alert('Please enter email and message.');
-      return;
-    }
-    // Демонстрация: просто очищаем поля
-    alert('Message sent (demo). Спасибо!');
-    document.getElementById('email').value='';
-    document.getElementById('subject').value='';
-    document.getElementById('message').value='';
-  }
+// Navbar scroll opacity
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('navbar');
+  if(window.scrollY>30) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+// Highlight active menu link
+const sections=document.querySelectorAll('section, header');
+const navLinks=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(sec=>{
+    const top=sec.offsetTop-100;
+    if(scrollY>=top) current=sec.getAttribute('id');
+  });
+  navLinks.forEach(link=>{
+    link.classList.remove('active');
+    if(link.getAttribute('href')==='#'+current) link.classList.add('active');
+  });
+});
+
+// Fake message
+function sendMessage(){
+  const email=document.getElementById('email').value.trim();
+  const msg=document.getElementById('message').value.trim();
+  if(!email||!msg){alert('Please fill out email and message');return;}
+  alert('Message sent (demo). Thank you!');
+  document.getElementById('email').value='';
+  document.getElementById('subject').value='';
+  document.getElementById('message').value='';
+}
 </script>
+
 </body>
 </html>
