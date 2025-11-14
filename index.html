@@ -37,21 +37,31 @@
   /*   NEW TOP NAV WRAPPER   */
   /* ------------------------ */
   .nav-wrap{
-    width:100%;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+
+    width: calc(100% - 40px);
+
     display:flex;
     justify-content:space-between;
     align-items:center;
     padding:14px 26px;
+
     background:rgba(255,255,255,0.04);
     border:1px solid rgba(255,255,255,0.08);
     border-radius:16px;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
+
+    /* ТВОЯ ОБВОДКА + ТЕНИ */
     box-shadow:
         0 4px 14px rgba(0,0,0,0.45),
+        inset 0 0 0 1px rgba(255,255,255,0.12), /* серая внутренняя рамка */
         inset 0 0 22px rgba(255,255,255,0.03);
-    margin-bottom:20px;
-  }
+}
 
   /* NAV */
   .nav{
