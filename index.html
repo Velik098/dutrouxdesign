@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Draus Design — Replica (Contact style)</title>
+<title>Draus Design — Replica</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,381 +15,413 @@
     --accent: #9b2cff; /* purple */
     --accent-2: #5b22ff;
     --muted: #cfcfe0;
-    --glass: rgba(255,255,255,0.03);
-    --glass-2: rgba(255,255,255,0.02);
   }
-
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
     margin:0;
     font-family: "Rubik", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background:
-      radial-gradient(800px 400px at 50% 0%, rgba(155,44,255,0.12), transparent 12%),
-      radial-gradient(600px 300px at 80% 60%, rgba(91,34,255,0.06), transparent 12%),
-      linear-gradient(180deg,var(--bg1),var(--bg2));
+    background: radial-gradient(800px 400px at 50% 0%, rgba(155,44,255,0.12), transparent 12%),
+                radial-gradient(600px 300px at 80% 60%, rgba(91,34,255,0.06), transparent 12%),
+                linear-gradient(180deg,var(--bg1),var(--bg2));
     color:#eae6f6;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     padding-bottom:80px;
   }
 
-  /* Page container */
-  .container{
-    max-width:1100px;
-    margin:0 auto;
-    padding:26px;
-    position:relative;
-  }
+  /* Container */
+  .container{max-width:1100px;margin:0 auto;padding:30px;}
 
-  /* decorative floating orb like in screenshot */
-  .orb{
-    position:fixed;
-    left:8%;
-    top:6%;
-    width:38px;
-    height:28px;
-    background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.7) 12%, rgba(255,255,255,0.06) 40%);
-    border-radius:50%;
-    filter:blur(6px);
-    opacity:0.9;
-    pointer-events:none;
-    box-shadow: 0 8px 30px rgba(155,44,255,0.08), 0 0 50px rgba(0,0,0,0.6) inset;
-  }
-
-  /* NAV wrapper with rounded rectangle background (matches screenshot) */
-  .nav-wrap{
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius: 18px;
-    padding:10px 16px;
-    box-shadow: 0 6px 22px rgba(0,0,0,0.6), 0 2px 0 rgba(255,255,255,0.01) inset;
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(255,255,255,0.03);
-    margin-bottom:18px;
-  }
-
+  /* NAV */
   .nav{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:12px;
+    padding:18px 0;
   }
-
-  .logo{
-    font-weight:800;font-family: "Montserrat",sans-serif;letter-spacing:0.6px;
-    padding:6px 10px;border-radius:10px;
-    display:flex;align-items:center;gap:10px;
-  }
-  /* small logo mark */
-  .logo .mark{
-    width:34px;height:34px;border-radius:8px;
-    background: linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:inline-block;
-    box-shadow: 0 6px 18px rgba(91,34,255,0.18);
-  }
-  .logo span{font-size:16px;color:#fff}
-
-  .nav-links{display:flex;gap:12px;align-items:center}
+  .logo{font-weight:800;font-family: "Montserrat",sans-serif;letter-spacing:0.6px;}
+  .nav-links{display:flex;gap:18px;align-items:center}
   .nav-links a{
     color: #cfcfe0;
     text-decoration:none;
     font-weight:500;
     padding:8px 12px;
-    border-radius:10px;
+    border-radius:6px;
     font-size:14px;
   }
-  /* subtle hover */
-  .nav-links a:hover{background:rgba(255,255,255,0.02)}
-
-  /* right-side group (examples, testimonials...) */
-  .nav-links .small{
-    font-size:13px;color:#bfbad0;padding:8px 10px;border-radius:8px;
-  }
-
-  /* CONTACT button style exactly like screenshot: round rectangle with gradient + glow */
-  a.cta{
-    display:inline-flex;align-items:center;gap:10px;
+  .nav-links a.cta{
     background: linear-gradient(90deg,var(--accent),var(--accent-2));
-    box-shadow: 0 10px 30px rgba(91,34,255,0.16);
-    color:white;font-weight:700;padding:8px 14px;border-radius:18px;text-decoration:none;
-    font-size:14px;border: 1px solid rgba(255,255,255,0.06);
-    transform:translateZ(0);
+    box-shadow: 0 6px 20px rgba(88,20,170,0.28);
+    color:white;
+    font-weight:700;
   }
-  a.cta:active{transform:translateY(1px)}
 
-  /* HERO simplified for Contact page style */
+  /* HERO */
   .hero{
     text-align:center;
-    padding:48px 18px 26px;
-    margin-top:6px;
+    padding:40px 20px 70px;
   }
-
-  /* "Let's talk" small label in purple above headline */
-  .kicker{
-    color:var(--accent);
-    font-weight:600;
-    margin-bottom:12px;
-    font-size:18px;
-    letter-spacing:0.6px;
+  .avatar{
+    width:150px;height:150px;border-radius:50%;
+    margin:0 auto 18px;
+    overflow:hidden;
+    border:6px solid rgba(255,255,255,0.06);
+    box-shadow: 0 20px 60px rgba(22,6,40,0.6), 0 0 60px rgba(155,44,255,0.12) inset;
+    background:linear-gradient(180deg,#111,#000);
   }
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
 
-  /* Big 'Contact Me' title in heavy Montserrat */
   .hero h1{
-    margin:8px 0 12px;
+    margin:8px 0 10px;
     font-family:"Montserrat",sans-serif;
-    font-size:64px;
-    letter-spacing:0.2px;
-    font-weight:900;
-    line-height:0.98;
-    color:#ffffff;
-    text-shadow: 0 8px 30px rgba(22,6,40,0.6);
+    font-size:36px;
+    letter-spacing:0.3px;
+    font-weight:800;
+  }
+  .hero p.lead{
+    max-width:760px;margin:0 auto 18px;color: #c9c5d8;font-size:15px;line-height:1.6;
+  }
+  .hero .btns{display:flex;gap:12px;justify-content:center;margin-top:18px}
+  .btn{
+    padding:10px 18px;border-radius:10px;border:0;cursor:pointer;font-weight:700;
+    background:rgba(255,255,255,0.06);color:#fff;
+  }
+  .btn.primary{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    box-shadow:0 8px 30px rgba(91,34,255,0.12);
   }
 
-  /* subtitle paragraph */
-  .hero .lead{
-    max-width:760px;margin:0 auto 28px;color: #c9c5d8;font-size:16px;line-height:1.6;
-  }
+  /* Work examples */
+  .section-title{font-family:"Montserrat";font-weight:800;font-size:30px;text-align:center;margin:40px 0 10px}
+  .subtitle{color:#bfbad0;text-align:center;margin-bottom:20px}
 
-  /* big contact panel wrapper that looks like screenshot */
-  .contact-wrap{
-    max-width:880px;margin:28px auto 60px;padding:26px;border-radius:18px;
-    background: linear-gradient(180deg, rgba(18,14,22,0.82), rgba(12,9,16,0.78));
-    box-shadow: 0 40px 100px rgba(6,3,10,0.7);
-    border:1px solid rgba(255,255,255,0.03);
-    position:relative;
-  }
-
-  /* inner glowing top card for direct email like screenshot */
-  .direct-card{
-    background: linear-gradient(180deg, rgba(91,34,255,0.06), rgba(155,44,255,0.03));
-    border-radius:14px;padding:22px;margin-bottom:18px;
-    border:1px solid rgba(255,255,255,0.03);
-    box-shadow: 0 18px 50px rgba(22,6,40,0.6), inset 0 0 40px rgba(155,44,255,0.03);
-    display:flex;flex-direction:column;gap:12px;
-  }
-  .direct-card .label{color:#bfbad0;font-size:12px;letter-spacing:1.2px;text-transform:uppercase}
-  .direct-card .email{
-    font-weight:700;font-size:20px;color:#fff;
-  }
-  .direct-card .email small{display:block;color:rgba(255,255,255,0.85);font-size:18px}
-
-  .direct-card .email-row{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-  }
-  .btn-email{
-    padding:8px 12px;border-radius:12px;border:0;background:rgba(0,0,0,0.35);color:#fff;font-weight:700;cursor:pointer;
-    box-shadow: 0 8px 30px rgba(91,34,255,0.08);
-  }
-
-  /* grid for social blocks */
-  .social-grid{
-    display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
-  }
-
-  .social-card{
-    display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
-    border:1px solid rgba(255,255,255,0.025);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
-    color:#dcd6ea;text-decoration:none;
-  }
-
-  .social-card .icon{
-    width:46px;height:46px;border-radius:10px;background:rgba(0,0,0,0.18);display:flex;align-items:center;justify-content:center;
-    font-weight:700;font-size:20px;color:#fff;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.6), 0 0 30px rgba(155,44,255,0.035) inset;
-  }
-
-  .social-card .meta{flex:1;text-align:left}
-  .social-card .meta .title{font-weight:700;color:#fff}
-  .social-card .meta .desc{font-size:13px;color:#bfbad0;margin-top:4px}
-
-  /* contact form to the right on larger screens (not used exactly in screenshot but present) */
-  .form-row{
-    margin-top:18px;
-    display:grid;
-    grid-template-columns:1fr;
+  .thumbnails{
+    display:flex;
     gap:12px;
+    overflow:hidden;
+    padding:14px 0;
+    align-items:center;
+    justify-content:flex-start;
   }
-  .contact .label{display:block;color:#cfcfe0;font-size:13px;margin-bottom:6px}
+  .thumb{
+    min-width:220px;height:120px;border-radius:10px;overflow:hidden;background:#111;
+    box-shadow:0 10px 40px rgba(0,0,0,0.6);flex:0 0 auto;
+  }
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* Testimonials grid */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-top:30px;
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;padding:18px;color:#0a0710;
+    min-height:120px;position:relative;overflow:hidden;
+  }
+  /* inside card white area to mimic screenshot */
+  .card .inner{
+    background:white;padding:14px;border-radius:10px;height:100%;display:flex;flex-direction:column;gap:10px;
+    color:#0b0b0b;
+  }
+  .card .meta{display:flex;gap:12px;align-items:center}
+  .avatar-sm{width:42px;height:42px;border-radius:50%;overflow:hidden;flex:0 0 auto}
+  .avatar-sm img{width:100%;height:100%;object-fit:cover}
+  .person{font-weight:700}
+  .role{font-size:13px;color:#6b6b75}
+
+  /* Pricing */
+  .pricing{
+    display:flex;align-items:center;justify-content:center;margin:40px 0;
+  }
+  .price-card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border-radius:14px;padding:30px;text-align:center;width:220px;box-shadow:0 30px 60px rgba(22,6,40,0.6);
+  }
+  .price-card .label{color:#bfbad0;text-transform:uppercase;font-size:14px;margin-bottom:6px}
+  .price-card .price{
+    font-family:"Montserrat";font-size:44px;font-weight:900;color:var(--accent);margin:6px 0;
+  }
+  .price-card small{display:block;color:#b8b3cb;margin-top:8px}
+
+  /* FAQ */
+  .faq{max-width:760px;margin:20px auto}
+  .faq-item{background:transparent;border-radius:8px;margin-bottom:8px;overflow:hidden}
+  .faq-header{
+    display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(255,255,255,0.02);cursor:pointer;border-radius:8px;
+  }
+  .faq-body{padding:12px 16px;background:rgba(255,255,255,0.01);display:none;color:#d7d3e7}
+
+  /* Contact */
+  .contact{
+    max-width:720px;margin:30px auto;padding:18px;border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    box-shadow:0 40px 80px rgba(22,6,40,0.6);
+  }
+  .contact label{display:block;color:#cfcfe0;font-size:13px;margin-bottom:6px}
   .contact input, .contact textarea{
-    width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#eae6f6;
+    width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#eae6f6;
     resize:vertical;font-size:14px;
   }
   .contact textarea{min-height:120px}
+  .contact .submit{margin-top:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));border:0;padding:12px 16px;border-radius:10px;color:white;font-weight:700;cursor:pointer}
 
-  .submit{margin-top:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));border:0;padding:12px 16px;border-radius:10px;color:white;font-weight:700;cursor:pointer}
-
-  /* Footer */
+  /* Footer small */
   .footer{color:#bfbad0;text-align:center;padding:22px 0;margin-top:24px;font-size:13px}
 
-  /* small responsive adjustments */
+  /* Responsive */
   @media (max-width:980px){
-    .hero h1{font-size:48px}
-    .social-grid{grid-template-columns:repeat(2,1fr)}
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .thumb{min-width:180px;height:100px}
   }
-  @media (max-width:760px){
-    .nav{flex-direction:row;align-items:center}
-    .nav-wrap{padding:10px}
-    .hero{padding:36px 12px 12px}
-    .hero h1{font-size:36px}
-    .direct-card .email{font-size:18px}
-    .container{padding:14px}
-    .social-grid{grid-template-columns:1fr}
-    .contact-wrap{padding:18px}
+  @media (max-width:640px){
+    .nav-links{display:none}
+    .cards{grid-template-columns:1fr}
+    .avatar{width:120px;height:120px}
+    .hero h1{font-size:28px}
+    .container{padding:18px}
   }
 </style>
 </head>
 <body>
-  <div class="orb" aria-hidden="true"></div>
+  <div class="container">
+    <!-- NAV -->
+    <nav class="nav" aria-label="Main navigation">
+      <div class="logo">Draus Design</div>
+      <div class="nav-links" role="navigation">
+        <a href="#about">About Me</a>
+        <a href="#examples">Examples</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact" class="cta">Contact</a>
+      </div>
+    </nav>
 
-  <div class="container" role="main">
-    <!-- TOP NAV as rounded rectangle panel like in screenshot -->
-    <div class="nav-wrap" role="navigation" aria-label="Main navigation panel">
-      <nav class="nav">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div class="logo" aria-hidden="true">
-            <span class="mark" aria-hidden="true"></span>
-            <span>Draus Design</span>
-          </div>
-
-          <div style="display:flex;gap:8px;align-items:center">
-            <a href="#about" class="nav-link small">About</a>
-            <a href="#examples" class="nav-link small">Examples</a>
-            <a href="#testimonials" class="nav-link small">Testimonials</a>
-            <a href="#pricing" class="nav-link small">Pricing</a>
-            <a href="#faq" class="nav-link small">FAQ</a>
-          </div>
-        </div>
-
-        <div style="display:flex;align-items:center;gap:12px">
-          <a href="#contact" class="cta">Contact</a>
-        </div>
-      </nav>
-    </div>
-
-    <!-- HERO (Contact oriented) -->
-    <header class="hero" id="about" role="banner" aria-label="Contact hero">
-      <div class="kicker">Let's talk</div>
-      <h1>Contact Me</h1>
-      <p class="lead">Questions about a project, partnerships, or speaking engagements? Drop a message or reach out on any platform below!</p>
+    <!-- HERO -->
+    <header class="hero" id="about" role="banner">
+      <div class="avatar" aria-hidden="true">
+        <!-- Заменить src на реальный портрет: ./images/hero.jpg -->
+        <img src="https://picsum.photos/seed/hero/600/600" alt="Avatar">
+      </div>
+      <h1>Draus Design</h1>
+      <p class="lead">With 5 years in the industry, I specialize in crafting high-performance YouTube thumbnails that drive clicks and engagement. My work has helped creators across various niches stand out. Let's take your channel to the next level!</p>
+      <div class="btns">
+        <button class="btn primary">Get Thumbnails</button>
+        <button class="btn">Free Call</button>
+      </div>
     </header>
 
-    <!-- CONTACT AREA (big rounded card matching screenshot) -->
-    <section class="contact-wrap" aria-labelledby="contact-title">
-      <!-- Top "Direct Email" card that mimics the purple / dark wide card in screenshot -->
-      <div class="direct-card" role="region" aria-label="Direct email">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-          <div style="min-width:160px">
-            <div class="label">Direct Email</div>
-            <div class="email-row">
-              <div class="email">
-                <small style="color:#d7cff6;font-weight:600">draus.thumbnails@gmail.com</small>
-                <!-- visible big email text -->
-                <div style="font-size:20px;font-weight:800;margin-top:6px">draus.thumbnails@gmail.com</div>
-              </div>
-            </div>
-          </div>
+    <!-- WORK EXAMPLES -->
+    <section id="examples">
+      <h2 class="section-title">Work Examples</h2>
+      <p class="subtitle">Take a look at what I'm capable of</p>
 
-          <div style="display:flex;gap:10px;align-items:center">
-            <button class="btn-email" onclick="mailto()">Email me</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Social blocks laid out like screenshot (YouTube, Twitter (X), Instagram, Discord) -->
-      <div class="social-grid" role="list" aria-label="Social links">
-        <a class="social-card" href="https://twitter.com" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="X (Twitter)">
-          <div class="icon" aria-hidden="true">X</div>
-          <div class="meta">
-            <div class="title">X (Twitter)</div>
-            <div class="desc">Latest works & Design takes</div>
-          </div>
-          <div style="opacity:0.6;margin-left:auto">↗</div>
-        </a>
-
-        <a class="social-card" href="https://instagram.com" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Instagram">
-          <div class="icon" aria-hidden="true">IG</div>
-          <div class="meta">
-            <div class="title">Instagram</div>
-            <div class="desc">Design tips & Personal life</div>
-          </div>
-          <div style="opacity:0.6;margin-left:auto">↗</div>
-        </a>
-
-        <a class="social-card" href="https://youtube.com" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="YouTube">
-          <div class="icon" aria-hidden="true">▶</div>
-          <div class="meta">
-            <div class="title">YouTube</div>
-            <div class="desc">Design tips & Tutorials</div>
-          </div>
-          <div style="opacity:0.6;margin-left:auto">↗</div>
-        </a>
-
-        <a class="social-card" href="https://discord.com" target="_blank" rel="noopener noreferrer" role="listitem" aria-label="Discord">
-          <div class="icon" aria-hidden="true">D</div>
-          <div class="meta">
-            <div class="title">Discord</div>
-            <div class="desc">Contact me & Community</div>
-          </div>
-          <div style="opacity:0.6;margin-left:auto">↗</div>
-        </a>
-      </div>
-
-      <!-- Simple contact form below the social grid (keeps the demo functionality) -->
-      <div style="margin-top:18px;display:grid;grid-template-columns:1fr;gap:12px">
-        <div class="contact" role="form" aria-label="Contact form">
-          <label for="email">Your Email</label>
-          <input id="email" type="email" placeholder="example@example.com">
-
-          <label for="subject">Subject</label>
-          <input id="subject" type="text" placeholder="Brief subject">
-
-          <label for="message">Message</label>
-          <textarea id="message" placeholder="Write your message here..."></textarea>
-
-          <button class="submit" onclick="sendMessage()">Submit</button>
+      <div style="overflow:hidden;padding:8px 0 0;">
+        <div class="thumbnails" aria-hidden="true">
+          <!-- заменяй картинки на реальные миниатюры -->
+          <div class="thumb"><img src="https://picsum.photos/seed/t1/800/450" alt=""></div>
+          <div class="thumb"><img src="https://picsum.photos/seed/t2/800/450" alt=""></div>
+          <div class="thumb"><img src="https://picsum.photos/seed/t3/800/450" alt=""></div>
+          <div class="thumb"><img src="https://picsum.photos/seed/t4/800/450" alt=""></div>
+          <div class="thumb"><img src="https://picsum.photos/seed/t5/800/450" alt=""></div>
+          <div class="thumb"><img src="https://picsum.photos/seed/t6/800/450" alt=""></div>
         </div>
       </div>
     </section>
 
-    <!-- small testimonials grid reused from original (keeps page full) -->
-    <section id="testimonials" style="margin-top:4px;">
-      <h2 style="font-family:Montserat, sans-serif; font-weight:800; font-size:22px; color:#fff; text-align:center; margin:10px 0 16px">What My Customers Say</h2>
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" style="margin-top:18px;">
+      <h2 class="section-title">What My Customers Say</h2>
 
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-        <div style="background:var(--glass);padding:12px;border-radius:10px">
-          <div style="display:flex;gap:12px;align-items:center">
-            <div style="width:44px;height:44px;border-radius:8px;background:#fff"></div>
-            <div>
-              <div style="font-weight:700;color:#fff">Familia Diamond</div>
-              <div style="color:#bfbad0;font-size:13px">— 12k subscribers</div>
+      <div class="cards" role="list">
+        <!-- Повтори карточки сколько нужно -->
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a1/80/80" alt=""></div>
+              <div>
+                <div class="person">Familia Diamond</div>
+                <div class="role">— 12k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              I loved working with him. He is very easy to work with and very patient and creative.
             </div>
           </div>
-          <div style="margin-top:10px;color:#dcd6ea;font-size:14px">I loved working with him. He is very easy to work with and very patient and creative.</div>
         </div>
 
-        <div style="background:var(--glass);padding:12px;border-radius:10px">
-          <div style="display:flex;gap:12px;align-items:center">
-            <div style="width:44px;height:44px;border-radius:8px;background:#fff"></div>
-            <div>
-              <div style="font-weight:700;color:#fff">Danny Kim</div>
-              <div style="color:#bfbad0;font-size:13px">— 56k subscribers</div>
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a2/80/80" alt=""></div>
+              <div>
+                <div class="person">Danny Kim</div>
+                <div class="role">— 56k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              Andrew is a pleasure to work with. Writing and creating thumbnail graphics was fast and high quality.
             </div>
           </div>
-          <div style="margin-top:10px;color:#dcd6ea;font-size:14px">Andrew is a pleasure to work with. Writing and creating thumbnail graphics was fast and high quality.</div>
         </div>
 
-        <div style="background:var(--glass);padding:12px;border-radius:10px">
-          <div style="display:flex;gap:12px;align-items:center">
-            <div style="width:44px;height:44px;border-radius:8px;background:#fff"></div>
-            <div>
-              <div style="font-weight:700;color:#fff">The Trading Geek</div>
-              <div style="color:#bfbad0;font-size:13px">— 34k subscribers</div>
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a3/80/80" alt=""></div>
+              <div>
+                <div class="person">The Trading Geek</div>
+                <div class="role">— 34k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              Trust me when I say that you will not regret working with him — extremely hardworking and skillful.
             </div>
           </div>
-          <div style="margin-top:10px;color:#dcd6ea;font-size:14px">Trust me when I say that you will not regret working with him — extremely hardworking and skillful.</div>
         </div>
+
+        <!-- Additional cards to approximate grid (you can duplicate) -->
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a4/80/80" alt=""></div>
+              <div>
+                <div class="person">Drumrev BG</div>
+                <div class="role">— 29k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              Working with Andrew is awesome. Always trying to improve and deliver great results.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a5/80/80" alt=""></div>
+              <div>
+                <div class="person">Scarface Trades</div>
+                <div class="role">— 18k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              Andrew’s thumbnails are always clean and professional. Highly recommend.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a6/80/80" alt=""></div>
+              <div>
+                <div class="person">Photon Trading</div>
+                <div class="role">— 24k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              I've worked with Andrew on multiple thumbnails and the quality has been excellent.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a7/80/80" alt=""></div>
+              <div>
+                <div class="person">Tech With Soleyman</div>
+                <div class="role">— 11k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              I’ve been working with Andrew for over a year and the results are outstanding.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" role="listitem">
+          <div class="inner">
+            <div class="meta">
+              <div class="avatar-sm"><img src="https://picsum.photos/seed/a8/80/80" alt=""></div>
+              <div>
+                <div class="person">Michael Chanin</div>
+                <div class="role">— 40k subscribers</div>
+              </div>
+            </div>
+            <div style="flex:1;color:#333;font-size:14px;">
+              I have worked with many thumbnail designers and Andrew is one of the best.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <h2 class="section-title">Pricing</h2>
+      <div class="pricing">
+        <div class="price-card" aria-label="Pricing starting from $40">
+          <div class="label">starting from</div>
+          <div class="price">$40</div>
+          <small>Prices are individual and clarified after the order details are given</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq">
+        <div class="faq-item">
+          <div class="faq-header">Do you offer discounts for bulk orders? <span>+</span></div>
+          <div class="faq-body">Yes — for bulk orders we provide scaled pricing. Contact for details.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">What's your usual turnaround time? <span>+</span></div>
+          <div class="faq-body">Typical turnaround is 24–72 hours depending on complexity and queue.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">How does the ordering process work? <span>+</span></div>
+          <div class="faq-body">You send requirements → I create drafts → you request revisions → final files delivered.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">Can I request revisions? If so, how many are included? <span>+</span></div>
+          <div class="faq-body">One or two minor revisions are included. Additional revisions can be arranged.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">Can you help improve old thumbnails to boost their performance? <span>+</span></div>
+          <div class="faq-body">Yes — I can audit and redesign thumbnails to improve CTR and watchtime.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2 class="section-title">Contact Me</h2>
+      <p class="subtitle" style="margin-bottom:12px;">Drop a letter to book a free 30-minute call</p>
+
+      <div class="contact" role="form" aria-label="Contact form">
+        <label for="email">Your Email</label>
+        <input id="email" type="email" placeholder="example@example.com">
+
+        <label for="subject">Subject</label>
+        <input id="subject" type="text" placeholder="Brief subject">
+
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Write your message here..."></textarea>
+
+        <button class="submit" onclick="sendMessage()">Submit</button>
       </div>
     </section>
 
@@ -397,13 +429,20 @@
   </div>
 
 <script>
-  // mailto: helper for Email me button — opens user's mail client
-  function mailto(){
-    const email = 'draus.thumbnails@gmail.com';
-    const subject = encodeURIComponent('Hello from site');
-    const body = encodeURIComponent('Hi! I would like to discuss...');
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-  }
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    const header = item.querySelector('.faq-header');
+    header.addEventListener('click', function(){
+      const body = item.querySelector('.faq-body');
+      const isOpen = body.style.display === 'block';
+      document.querySelectorAll('.faq-body').forEach(b => b.style.display = 'none');
+      document.querySelectorAll('.faq-header span').forEach(s => s.textContent = '+');
+      if(!isOpen){
+        body.style.display = 'block';
+        header.querySelector('span').textContent = '−';
+      }
+    });
+  });
 
   // Simple "send" (demo)
   function sendMessage(){
@@ -420,13 +459,6 @@
     document.getElementById('subject').value='';
     document.getElementById('message').value='';
   }
-
-  // small accessibility focus: allow Enter to submit when focused in message
-  document.getElementById('message').addEventListener('keydown', function(e){
-    if(e.key === 'Enter' && (e.metaKey || e.ctrlKey)){
-      sendMessage();
-    }
-  });
 </script>
 </body>
 </html>
