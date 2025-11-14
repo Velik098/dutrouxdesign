@@ -25,9 +25,12 @@
     padding-top: 120px;
     margin:0;
     font-family: "Rubik", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: radial-gradient(800px 400px at 50% 0%, rgba(155,44,255,0.12), transparent 12%),
-                radial-gradient(600px 300px at 80% 60%, rgba(91,34,255,0.06), transparent 12%),
-                linear-gradient(180deg,var(--bg1),var(--bg2));
+    background: radial-gradient(800px 400px at 50% 0%, rgba(155,44,255,0.12), transparent 12%) no-repeat,
+              radial-gradient(600px 300px at 80% 60%, rgba(91,34,255,0.06), transparent 12%) no-repeat,
+              linear-gradient(180deg,var(--bg1),var(--bg2));
+    background-attachment: fixed; /* чтобы градиенты не двигались при скролле */
+    background-size: cover; /* масштабирует градиенты под экран */
+
     color:#eae6f6;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
