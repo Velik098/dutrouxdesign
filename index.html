@@ -712,6 +712,84 @@
     document.getElementById('message').value='';
   }
 </script>
+<script>
+/*
+  Гарантирует, что каждый .examples-track будет как минимум в 2 раза шире видимой области.
+  Логика:
+   - берём набор элементов внутри .examples-track (предполагаем, что в начале уже есть 1 набор)
+   - считаем track.scrollWidth и container.clientWidth
+   - клонируем исходный набор столько раз, чтобы полученная ширина >= containerWidth * 2
+   - затем (опционально) устанавливаем animation-duration пропорционально ширине (чтобы скорость ощущалась одинаковой)
+*/
+
+function ensureInfiniteTracks() {
+  document.querySelectorAll('.examples-row').forEach(row => {
+    const track = row.querySelector('.examples-track');
+    if (!track) return;
+
+    // wrapper — это видимая область (row)
+    const wrapper = row;
+    const wrapperW = wrapper.clientWidth || wrapper.getBoundingClientRect().width;
+
+    // если трек уже достаточно широк — ничего не делаем
+    // используем scrollWidth, т.к. track может быть шире своей bounding box
+    let trackW = track.scrollWidth;
+
+    // Если в треке всего одна группа карточек (как у тебя), то возьмём её набор элементов
+    // и будем клонировать весь набор целиком.
+    // Чтобы отличать наборы — считаем исходную коллекцию до клонов.
+    // Пометку: если у тебя уже есть дубли, лучше пометить оригинальные элементы классом .orig
+    let children = Array.from(track.children);
+
+    // Если track пуст — выходим
+    if (children.length === 0) return;
+
+    // Посчитаем "блок" — набор, который повторяется. Мы считаем минимальную последовательность,
+    // но для простоты возьмём начальную группу до первой явной повторной последовательности.
+    // Если у тебя заранее прописаны 5 оригиналов, это ок.
+    // Лучше: возьмём первые N элементов, где N — количество уникальных (пользовательских) карточек.
+    // Но здесь просто клонируем ВСЕ текущие дочерние элементы как единый блок.
+    const baseBlock = children.slice(); // текущий набор
+
+    // Клонируем, пока track.scrollWidth < wrapperW * 2
+    // В некоторых случаях на очень широких экранах потребуется несколько копий.
+    // Ограничим попытки, чтобы не зациклиться (максимум 10 копий).
+    let attempts = 0;
+    while (trackW < wrapperW * 2 && attempts < 10) {
+      baseBlock.forEach(el => {
+        const clone = el.cloneNode(true);
+        // удаляем возможные id внутри клонов (на всякий случай)
+        if (clone.id) clone.id = '';
+        track.appendChild(clone);
+      });
+      trackW = track.scrollWidth;
+      attempts++;
+    }
+
+    // Корректируем animation-duration, чтобы скорость была постоянной
+    // (опция) — чем шире трек, тем дольше полный цикл. Настрой под ощущения.
+    // Мы хотим, чтобы реальная скорость (px/сек) оставалась примерно одинаковой:
+    // durationSec = trackW / speedPxPerSec
+    const speedPxPerSec = 120; // поменяй, если хочешь быстрее/медленнее
+    const duration = Math.max(12, Math.round(trackW / speedPxPerSec)); // сек, минимум 12s
+    if (row.classList.contains('left')) {
+      track.style.animationDuration = duration + 's';
+    } else if (row.classList.contains('right')) {
+      track.style.animationDuration = (duration * 1.1) + 's'; // немного отличаем скорость
+    } else {
+      track.style.animationDuration = duration + 's';
+    }
+  });
+}
+
+// Запускаем при загрузке и при изменении размера окна
+window.addEventListener('load', ensureInfiniteTracks);
+window.addEventListener('resize', () => {
+  // небольшая дебаунс-обёртка
+  clearTimeout(window.__ensureTracksTimer);
+  window.__ensureTracksTimer = setTimeout(ensureInfiniteTracks, 200);
+});
+</script>
 
 </body>
 </html>
