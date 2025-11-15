@@ -245,18 +245,22 @@
     .hero h1{font-size:28px}
     .container{padding:18px}
   }
-
-  ..portfolio-row{
+ 
+.portfolio-row{
+  width: 100%;
+  position: relative;
   overflow:hidden;
-  margin:20px 0;
+  margin:60px 0;
 }
 .portfolio-track{
   display:flex;
   gap:12px;
   width:max-content;
+  animation: scroll 30s linear infinite;
 }
 .thumb{
-  min-width:220px;
+  margin-right: 20px;
+  width:220px;
   height:120px;
   border-radius:10px;
   overflow:hidden;
